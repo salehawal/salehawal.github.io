@@ -44,6 +44,8 @@ h6{
 	padding:2px;
 	margin:2px;
 }
-.avatar{
+.avatar {
 	height: 120px;
+	margin: 0;
+	padding: 0;
 }
