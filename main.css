@@ -1,0 +1,49 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+input {
+	font-size:10px;
+	background:#FFFFFF;
+}
+pre{
+	font-size: 12px;
+	width: 50%;
+	margin: 0 auto;
+	text-align: left;
+}
+a{
+	text-decoration: none;
+}
+.cblock{
+	text-align: center;
+	clear: both;
+	width: 95%;
+	margin: 10px auto;
+}
+.menu{
+	text-align: center;
+	background-color: #f6efef;
+	padding: 1px;
+}
+.menu_txt {
+	font-size: 10px;
+}
+.menu_txt a:link, .menu_txt a:visited, .menu_txt a:active {
+	color:#006699;
+	text-decoration:none;
+}
+.menu_txt a:hover {
+	color:#FFFFFF;
+	text-decoration:none;
+	background:#B7B7FF
+}
+h6{
+	padding:2px;
+	margin:2px;
+}
+.avatar{
+	height: 120px;
+}
