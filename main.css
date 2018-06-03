@@ -13,9 +13,13 @@ pre{
 	width: 50%;
 	margin: 0 auto;
 	text-align: left;
+	white-space:pre-wrap
 }
 a{
 	text-decoration: none;
+}
+ul,ol{
+	padding-left: 20px;
 }
 .cblock{
 	text-align: center;
@@ -48,4 +52,17 @@ h6{
 	height: 120px;
 	margin: 0;
 	padding: 0;
+}
+
+@media (max-width: 600px) {
+	.avatar{
+  		height: 45px;
+	}
+	.menu_txt{
+  		font-size: 9px;
+	}
+	pre{
+		font-size: 10px;
+		width: 100%;
+	}
 }
