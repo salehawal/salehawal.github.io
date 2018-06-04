@@ -20,6 +20,7 @@ a{
 }
 ul,ol{
 	padding-left: 20px;
+	line-height: 80%;
 }
 .cblock{
 	text-align: center;
