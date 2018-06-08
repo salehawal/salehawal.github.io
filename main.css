@@ -22,6 +22,9 @@ ul,ol{
 	padding-left: 20px;
 	line-height: 80%;
 }
+li{
+	line-height: 140%;
+}
 .cblock{
 	text-align: center;
 	clear: both;
