@@ -10,7 +10,7 @@ input {
 }
 pre{
 	font-size: 12px;
-	width: 50%;
+	width: 100%;
 	margin: 0 auto;
 	text-align: left;
 	white-space:pre-wrap
@@ -24,6 +24,16 @@ ul,ol{
 }
 li{
 	line-height: 140%;
+}
+.header{
+	position: fixed;
+	width: 100%;
+	background-color: #fff;
+}
+.content-view{
+	padding-top:320px;
+	width: 70%;
+	margin: auto;
 }
 .cblock{
 	text-align: center;
@@ -57,7 +67,26 @@ h6{
 	margin: 0;
 	padding: 0;
 }
-
+.block-img{
+	width: : 160px;
+	height: 110px;
+	margin: 4px;
+	float: left;
+	border: solid 1px #ccc;
+	overflow: hidden;
+}
+.block-img img{
+	width: 160px;
+}
+.magnify
+{
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+.magnify img{
+	width: 500px;
+}
 @media (max-width: 600px) {
 	.avatar{
   		height: 45px;
@@ -67,6 +96,8 @@ h6{
 	}
 	pre{
 		font-size: 10px;
-		width: 100%;
+	}
+	.content-view{
+		width: 95%;
 	}
 }
