@@ -65,7 +65,7 @@ h6{
 .avatar {
 	height: 120px;
 	margin: 0;
-	padding: 0;
+	padding: 1px;
 }
 .block-img{
 	width: : 160px;
