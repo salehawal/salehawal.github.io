@@ -27,13 +27,13 @@ li{
 	line-height: 140%;
 }
 .header{
-	position: fixed;
+	/*position: fixed;*/
 	width: 100%;
 	background-color: #fff;
 }
 .content-view{
-	padding-top:320px;
-	width: 70%;
+	/*padding-top:320px;*/
+	width: 80%;
 	margin: auto;
 }
 .cblock{
@@ -101,4 +101,24 @@ h6{
 	.content-view{
 		width: 95%;
 	}
+}
+
+.contentWrapper{
+	width:80%;
+	max-width: 80%;
+	min-width: 80%;
+	text-align: center;
+	margin: auto;
+}
+.contentDiv, .contentDivMax{
+	position: relative;
+	display: inline-block;
+	margin: 5px;
+	border: dotted 0.5px #ccc;
+	width: 48%;
+	text-align: left;
+	vertical-align: top;
+}
+.contentDivMax{
+	width: 100%;
 }
