@@ -24,7 +24,7 @@ ul,ol{
 	line-height: 80%;
 }
 li{
-	line-height: 140%;
+	line-height: 150%;
 }
 .header{
 	/*position: fixed;*/
@@ -81,9 +81,11 @@ h6{
 }
 .magnify
 {
+	opacity: 0.9;
 	position: fixed;
 	left: 0;
 	top: 0;
+	z-index: 999;
 }
 .magnify img{
 	width: 500px;
@@ -114,7 +116,6 @@ h6{
 	position: relative;
 	display: inline-block;
 	margin: 5px;
-	border: dotted 0.5px #ccc;
 	width: 48%;
 	text-align: left;
 	vertical-align: top;
