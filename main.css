@@ -36,7 +36,7 @@ li{
 	width: 80%;
 	margin: auto;
 }
-.cblock{
+.hblock{
 	text-align: center;
 	clear: both;
 	width: 95%;
@@ -106,9 +106,9 @@ h6{
 }
 
 .contentWrapper{
-	width:80%;
-	max-width: 80%;
-	min-width: 80%;
+	width:90%;
+	max-width: 90%;
+	min-width: 90%;
 	text-align: center;
 	margin: auto;
 }
@@ -122,4 +122,30 @@ h6{
 }
 .contentDivMax{
 	width: 100%;
+}
+
+.cblock{
+	width: 100%;
+	margin: 10px auto 10px auto;
+	overflow: auto;
+}
+.cblock_title{
+	margin: 20px auto;
+	text-align: left;
+	font-weight: bold;
+	font-size: 14px;
+}
+.cblock_item{
+	margin: 5px 5px 5px 1px;
+	width:140px;
+	height: auto;
+	display:block;
+	float: left;
+	text-align: left;
+	border-radius: 10px;
+  	border: 0.5px solid #ccc;
+  	padding: 15px;
+	word-break: keep-all;
+	vertical-align: middle;
+	display: table-cell;
 }
