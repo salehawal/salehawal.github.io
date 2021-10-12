@@ -1,0 +1,50 @@
+pre {
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap !important;      /* Opera 4-6 */
+    white-space: -o-pre-wrap !important;    /* Opera 7 */
+    word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
+    font-size: 1.4rem !important;
+}
+
+code{
+    white-space: normal !important;
+}
+
+pre[class*=language-] {
+        font-size: 1.4rem;
+}
+
+div.code-toolbar {
+    width: 100%;
+}
+
+div.code-toolbar > .toolbar button {
+    font-size: 12px;
+    text-transform: lowercase;
+    font: 400 13.3333px Arial;
+    border: 1px solid #d6deeb;
+    border-radius: 0.4rem;
+    background: #011627;
+    padding: 4px 8px;
+    right: 1rem;
+    top: 1rem;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, bottom 0.2s ease-in-out;
+}
+
+div.code-toolbar>.toolbar button:focus, 
+div.code-toolbar>.toolbar button:hover {
+    color: #FFFFFF;
+}
+
+div.code-toolbar > .toolbar {
+    position: absolute;
+    right: .3em !important;
+    transition: opacity .3s ease-in-out;
+    opacity: 0;
+}
+
+div.code-toolbar > .toolbar .toolbar-item {
+    padding: 2px;
+}
