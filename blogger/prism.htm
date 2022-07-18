@@ -35,10 +35,4 @@ Prism.plugins.toolbar.registerButton('select-all', function(env) {
     });
     return button;
 });
-window.addEventListener('DOMContentLoaded', (event) => {      
-    document.querySelectorAll('pre[class*=language-]').forEach(function(node) {
-        node.classList.add('line-numbers');
-    });
-    Prism.highlightAll();
-});
 </script>
