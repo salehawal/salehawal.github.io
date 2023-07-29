@@ -1,38 +1,99 @@
-<!-- prism-header to include b4 header end -->
-<link href='https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism.css' rel='stylesheet'/>
-<link href='https://cdn.jsdelivr.net/npm/prismjs@1.20.0/themes/prism-okaidia.css' rel='stylesheet'/>
-<link href='https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/line-numbers/prism-line-numbers.css' rel='stylesheet'/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/toolbar/prism-toolbar.min.css"/>
-<link href='https://salehawal.github.io/blogger/prism.css' rel='stylesheet'/>
+<!-- Include Prism.js library -->
+<link href='https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism-okaidia.min.css' rel='stylesheet'/>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css' rel='stylesheet'/>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.css' rel='stylesheet'/>
+<link href='https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.css' rel='stylesheet'/>
+<style>
+  code {
+    padding: 3px 4px !important;
+    margin: 2px !important;
+}
 
+code[class*=&quot;language-&quot;], pre[class*=&quot;language-&quot;] {
+    overflow-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+}
+.copy-to-clipboard-button {
+    box-shadow:none !important;
+    margin: 5px 15px !important;
+    padding: 10px 14px !important;
+    background: rgba(224,224,224,.7) !important;
+    color: #000 !important;
+}
 
-<!-- prism-footer to include b4 body end -->
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/prism.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/toolbar/prism-toolbar.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components.js"></script>
-<script src="https://prismjs.com/assets/vendor/utopia.js"></script>
-<script src="https://prismjs.com/assets/code.js"></script>
+.copy-to-clipboard-button span
+{
+    margin-left: 5px;
+}
+
+.copy-to-clipboard-button:hover {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    border: solid 1px rgba(255, 255, 255, 0.5) !important;
+    border-radius: 1;
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.copy-to-clipboard-button span {
+    margin: 2px !important;
+}
+
+.toolbar {
+    position: relative;
+    background-color: none;
+    border: none;
+    border-radius: none;
+    margin-bottom: none;
+    padding: none;
+    overflow: auto;
+}
+
+.toolbar-item {
+    display: inline-block;
+    margin-right: none;
+}
+
+/* CSS for copied code */
+pre.prism-code .clipboard-copy {
+    background-color: yellow;
+    color: black;
+}
+</style>
+
+<script src='https://cdn.jsdelivr.net/npm/prismjs@1.28.0/prism.js'/>
+<script src='https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js'/>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js'/>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js'/>
+<script src='https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js'/>
+<script src='https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js'/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
 <script>
-Prism.plugins.toolbar.registerButton('select-all', function(env) {
-    var button = document.createElement('button');
-    button.innerHTML = 'select all';
-    button.addEventListener('click', function () {
-        // Source: http://stackoverflow.com/a/11128179/2757940
-        if (document.body.createTextRange) { // ms
-            var range = document.body.createTextRange();
-            range.moveToElementText(env.element);
-            range.select();
-        } else if (window.getSelection) { // moz, opera, webkit
-            var selection = window.getSelection();
-            var range = document.createRange();
-            range.selectNodeContents(env.element);
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
+    window.addEventListener('DOMContentLoaded', () => {
+        // Add show line numbers to all pre tags
+        document.querySelectorAll('pre').forEach(pre => {
+            pre.classList.add('line-numbers');
+        });
+
+        // Add event listener to the document to handle copy button clicks
+        document.addEventListener('click', event => { 
+            const target = event.target.parentNode;
+            if (target.classList.contains('copy-to-clipboard-button')) {
+                const preElement = target.parentNode.parentNode.previousElementSibling;
+
+                // Add a class to the pre element to change its CSS
+                const codeBlock = preElement.getElementsByTagName('code')[0];
+                const range = document.createRange();
+                range.selectNode(codeBlock);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+
+                // Remove the class after 2 seconds
+                setTimeout(() => {
+                    window.getSelection().removeAllRanges();
+                }, 200);
+            }
+        });
+        Prism.highlightAll(null, Prism.plugins.NormalizeWhitespace);
     });
-    return button;
-});
+
 </script>

@@ -23,7 +23,7 @@
         </div>
         <div class="hblock">
           <h1 style="margin-bottom: 0;">saleh geberty mekonnen</h1>
-          <p style="margin-top: 0px;">📄🖥️💻📱 | E ق T ص<br>#app #consultant #cto #linux #php #magento #native #hybrid<br>[mobile]: <a href="tel:+201224522989">+201224522989</a> | [email]: <a href="mailto:saleh.awal@gmail.com" target="_blank">saleh.awal@gmail.com</a> | [twitter]: <a href="https://twitter.com/saleh_awal" target="_blank">@saleh_awal</a> | [linkedin]: <a href="https://www.linkedin.com/in/salehawal/">@salehawal</a> | [blog]: <a href="http://darelm.cc" target="_blank">darelm</a> [cv]: <a href="cv.pdf">📥</a></p>
+          <p style="margin-top: 0px;">application master | 💻📄📱 | معلم تطبيقات<br>#app #consultant #cto #linux #php #magento #native #hybrid<br>[mobile]: <a href="tel:+201224522989">+201224522989</a> | [email]: <a href="mailto:saleh.awal@gmail.com" target="_blank">saleh.awal@gmail.com</a> | [twitter]: <a href="https://twitter.com/saleh_awal" target="_blank">@saleh_awal</a> | [linkedin]: <a href="https://www.linkedin.com/in/salehawal/">@salehawal</a> | [blog]: <a href="http://darelm.cc" target="_blank">darelm</a> [cv]: <a href="cv.pdf">📥</a></p>
         </div>
         <div class="menu">
           <p class="menu_txt"><a href="#profile"> PROFILE </a>&nbsp;|&nbsp;<a href="#projects"> PROJECTS </a>&nbsp;|&nbsp;<a href="#works"> WORKS </a>&nbsp;|&nbsp;<a href="#thanks"> THANKS </a></p>
@@ -32,18 +32,18 @@
     <div class="contentWrapper">
         <div class="cblock_title">| TECHNICAL EXPERIANCE</div>
         <div class="cblock">
-            <div class="cblock_item">HTML  <script type="text/javascript">genProgressBar(98);</script></div>
-            <div class="cblock_item">CSS   <script type="text/javascript">genProgressBar(96);</script></div>
-            <div class="cblock_item">Javascript  <script type="text/javascript">genProgressBar(95);</script></div>
-            <div class="cblock_item">PHP   <script type="text/javascript">genProgressBar(92);</script></div>
-            <div class="cblock_item">SQL   <script type="text/javascript">genProgressBar(90);</script></div>
-            <div class="cblock_item">Linux  <script type="text/javascript">genProgressBar(82);</script></div>
-            <div class="cblock_item">Bash  <script type="text/javascript">genProgressBar(72);</script></div>
-            <div class="cblock_item">Git   <script type="text/javascript">genProgressBar(76);</script></div>
-            <div class="cblock_item">DevOps  <script type="text/javascript">genProgressBar(78);</script></div>
-            <div class="cblock_item">PWA   <script type="text/javascript">genProgressBar(80);</script></div>
-            <div class="cblock_item">Consultation  <script type="text/javascript">genProgressBar(79);</script></div>
-            <div class="cblock_item">Reserch  <script type="text/javascript">genProgressBar(82);</script></div>
+            <div class="cblock_item">HTML<br><script type="text/javascript">caclYears(1998);</script><script type="text/javascript">genProgressBar(98);</script></div>
+            <div class="cblock_item">CSS<script type="text/javascript">genProgressBar(96);</script></div>
+            <div class="cblock_item">Javascript<script type="text/javascript">genProgressBar(95);</script></div>
+            <div class="cblock_item">PHP<script type="text/javascript">genProgressBar(92);</script></div>
+            <div class="cblock_item">SQL<script type="text/javascript">genProgressBar(90);</script></div>
+            <div class="cblock_item">Linux<script type="text/javascript">genProgressBar(82);</script></div>
+            <div class="cblock_item">Bash<script type="text/javascript">genProgressBar(72);</script></div>
+            <div class="cblock_item">Git<script type="text/javascript">genProgressBar(76);</script></div>
+            <div class="cblock_item">DevOps<script type="text/javascript">genProgressBar(78);</script></div>
+            <div class="cblock_item">PWA<script type="text/javascript">genProgressBar(80);</script></div>
+            <div class="cblock_item">Consultation<script type="text/javascript">genProgressBar(79);</script></div>
+            <div class="cblock_item">Reserch<script type="text/javascript">genProgressBar(82);</script></div>
             <div class="cblock_clear"></div>
         </div>
 
