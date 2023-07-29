@@ -139,7 +139,7 @@ h6{
 .cblock_item{
 	margin: 5px 5px 5px 1px;
 	padding: 15px;
-	border-radius: 10px;
+	/*border-radius: 10px;*/
 	font-size: 12px;
 	line-height: 160%;
 	display:inline-block;
@@ -148,7 +148,8 @@ h6{
 	word-break: keep-all;
 	float: left;
 	text-align: center;
-  	border: 0.5px solid #ccc;
+  	/*border: 0.5px solid #ccc;*/
+  	background-color: #F5F5F5;
 }
 .cblock_clear{
 	clear: both;
