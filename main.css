@@ -140,8 +140,6 @@ h6{
 	margin: 5px 5px 5px 1px;
 	padding: 15px;
 	border-radius: 10px;
-	width:170px;
-	height: 100px;
 	font-size: 12px;
 	line-height: 160%;
 	display:inline-block;
@@ -149,7 +147,7 @@ h6{
 	overflow: auto;
 	word-break: keep-all;
 	float: left;
-	text-align: left;
+	text-align: center;
   	border: 0.5px solid #ccc;
 }
 .cblock_clear{
