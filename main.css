@@ -41,6 +41,8 @@ li{
 	clear: both;
 	width: 95%;
 	margin: 10px auto;
+	font-size: 15px;
+	line-height: 150%;
 }
 .menu{
 	text-align: center;
