@@ -73,15 +73,15 @@ h6{
 	border-radius: 7px;
 }
 .block-img{
-	width: : 160px;
-	height: 110px;
+	width: : 260px;
+	height: 210px;
 	margin: 4px;
 	float: left;
 	border: solid 1px #ccc;
 	overflow: hidden;
 }
 .block-img img{
-	width: 160px;
+	width: 260px;
 }
 .magnify
 {
@@ -153,8 +153,14 @@ h6{
 	float: left;
 	text-align: center;
   	/*border: 0.5px solid #ccc;*/
-  	background-color: #F5F5F5;
+	/*background-color: #F5F5F5;*/
 }
 .cblock_clear{
 	clear: both;
+}
+
+.block-gallery{
+	display: inline-block;
+	margin: auto;
+/*	width: 64%;*/
 }
