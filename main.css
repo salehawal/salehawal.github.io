@@ -164,3 +164,7 @@ h6{
 	margin: auto;
 /*	width: 64%;*/
 }
+
+.icon{
+	display: inline-block;
+}
