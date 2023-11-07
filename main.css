@@ -73,10 +73,10 @@ h6{
 	border-radius: 7px;
 }
 .block-img{
-	width: : 260px;
-	height: 210px;
-	margin: 4px;
-	float: left;
+	width:260px;
+	height:210px;
+	margin:4px;
+	display:inline-block;
 /*	border: solid 1px #ccc;*/
 	overflow: hidden;
 }
@@ -150,7 +150,6 @@ h6{
 	vertical-align: middle;
 	overflow: auto;
 	word-break: keep-all;
-	float: left;
 	text-align: center;
   	/*border: 0.5px solid #ccc;*/
 	/*background-color: #F5F5F5;*/
@@ -162,7 +161,7 @@ h6{
 .block-gallery{
 	display: inline-block;
 	margin: auto;
-/*	width: 64%;*/
+	width: 90% !important;
 }
 
 .icon{
