@@ -1,10 +1,25 @@
 body {
+	font-family: "Noto Sans Arabic";
 	margin: 0px;
 	padding: 0px;
 	font-family: Copperplate,verdana;
 	font-size: 12px;
-	letter-spacing: 1.5px;
 }
+
+@font-face {
+  font-family: "Noto Sans Arabic", sans-serif;
+  src: url("lib/font/notosansarabic.woff2") format("woff");
+}
+
+.ar_txt{
+	font-family: "Noto Sans Arabic";
+	letter-spacing: 1px !important;
+}
+
+.ar_txt .bold{
+	font-weight: bold;
+}
+
 input {
 	font-size:10px;
 	background:#FFFFFF;
