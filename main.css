@@ -183,6 +183,10 @@ h6{
 	display: inline-block;
 }
 
+.icon img{
+    width:40px;
+}
+
 .vimg{
 	border: solid 0.3px #ccc !important;
 }
