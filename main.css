@@ -13,7 +13,10 @@ body {
 
 .ar_txt{
 	font-family: "Noto Sans Arabic";
-	letter-spacing: 1px !important;
+}
+
+.ar_txt_p {
+	font-size: 15px;
 }
 
 .ar_txt .bold{
