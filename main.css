@@ -169,8 +169,15 @@ h6{
 	overflow: auto;
 	word-break: keep-all;
 	text-align: center;
+	max-width: 200px;
+  margin: 0 auto;
+  vertical-align: top;
+  overflow:hidden;
   	/*border: 0.5px solid #ccc;*/
 	/*background-color: #F5F5F5;*/
+}
+.cblock_item p{
+	text-align: center;
 }
 .cblock_clear{
 	clear: both;
@@ -192,4 +199,10 @@ h6{
 
 .vimg{
 	border: solid 0.3px #ccc !important;
+	height: 150px;
+}
+
+.vb_title{
+	font-size: 16px;
+	font-weight: bold;
 }
