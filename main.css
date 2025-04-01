@@ -2,7 +2,6 @@ body {
 	font-family: "Noto Sans Arabic";
 	margin: 0px;
 	padding: 0px;
-	font-family: Copperplate,verdana;
 	font-size: 12px;
 }
 
@@ -218,7 +217,7 @@ h6{
 }
 
 .profile{
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 160%;
 	margin-bottom: 15px !important;
 	width: 90%;
