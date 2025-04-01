@@ -179,6 +179,12 @@ h6{
 .cblock_item p{
 	text-align: center;
 }
+
+.p_block{
+	margin: 1px;
+	padding: 1px;
+	display: inline-block;
+}
 .cblock_clear{
 	clear: both;
 }
@@ -205,4 +211,8 @@ h6{
 .vb_title{
 	font-size: 16px;
 	font-weight: bold;
+}
+
+.progress{
+	font-size: 10px;
 }
