@@ -216,3 +216,20 @@ h6{
 .progress{
 	font-size: 10px;
 }
+
+.profile{
+	font-size: 16px;
+	line-height: 160%;
+	margin-bottom: 15px !important;
+	width: 90%;
+	margin: auto;
+}
+
+.profile_ar{
+	direction: rtl;
+	text-align: right;
+}
+
+.profile_en{
+	text-align: left;
+}
