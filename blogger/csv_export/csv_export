@@ -1,0 +1,37 @@
+#!/bin/bash
+
+FEED_URL="https://lal-c.blogspot.com/feeds/posts/default?alt=rss"
+OUTPUT="blog_posts.csv"
+
+# Write header
+echo "Message,Link,ImageURL,VideoURL,Month(1-12),Day(1-31),Year,Hour,Minute(0-59),PinTitle,Category,Watermark,HashtagGroup,VideoThumbnailURL,CTAGroup,FirstComment,PinterestBoard,AltText" > "$OUTPUT"
+
+# Fetch feed and parse items
+curl -s "$FEED_URL" | xmllint --format - 2>/dev/null | \
+awk '
+BEGIN{RS="</item>"; FS="\n"}
+{
+    message=""; link=""; image="";
+    for(i=1;i<=NF;i++){
+        line=$i
+        # Extract title + description
+        if(line ~ /<title>/){
+            gsub(/<[^>]*>/,"",line)
+            message=line
+            if(length(message)>280){message=substr(message,1,280)}
+        }
+        if(line ~ /<link>/){
+            gsub(/<[^>]*>/,"",line)
+            link=line
+        }
+        if(line ~ /<description>/){
+            match(line,/img[^>]*src="([^"]+)"/,b)
+            image=b[1]
+        }
+    }
+    if(message!="" && link!=""){
+        print "\""message"\",\""link"\",\""image"\",\"\",,,,,,,,,,,,,"
+    }
+}' >> "$OUTPUT"
+
+echo "CSV generated: $OUTPUT"
