@@ -1,0 +1,37 @@
+# Project Modification Instructions
+
+You are the coding agent responsible for updating my existing website project to follow these exact guidelines and changes.
+
+| Coding Guidelines
+- The site must be completely native: no external libraries, frameworks, or dependencies.
+- All data must be organized and stored in one structured DB file (for example, `data/db.json`), containing categories and records.
+- The DB file should be imported and used in pure JavaScript (no server-side rendering) to feed content into the site dynamically.
+- The site should have **3 strict layers**:
+  1. Data (DB file)
+  2. HTML structure (index.htm)
+  3. Theme/CSS layout (main.css)
+  Each layer overlays the previous one in a structured order.
+- All site functionality and logic must be contained in `lib/fun.js`.
+- All CSS should be in `main.css`. No inline styles are allowed in HTML.
+- All site HTML content should be located in `index.htm`.
+
+| Changes to Implement
+1. Add a **responsive menu bar** that:
+   - Changes its theme or background color when the user scrolls down.
+   - Centers its menu items horizontally.
+   - Each menu item should link to an anchor (section) on the same page.
+   - Menu Items are (Home, Research, Achivments, Certificates )
+2. Add a **light shadow** effect to each block of content for better depth.
+3. Replace all icons with **font icons** (for example, via Unicode or custom fonts already available in the project).
+4. Add **SEO meta tags** in `<head>`:
+   - `<title>` → short descriptive site title.
+   - `<meta name="description">` → clear site summary.
+   - `<meta name="keywords">` → relevant keywords.
+5. Add a **favicon** using the existing image in `assets/favicon.ico`.
+6. Ensure everything works smoothly in a single-page structure.
+
+| Additional Notes
+- Keep the site responsive for desktop and mobile.
+- Maintain a clean and readable code structure.
+- Do not add or import any external files or libraries.
+- Focus on performance, clarity, and maintainability.
