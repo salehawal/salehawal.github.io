@@ -30,26 +30,44 @@
     <a href="#certificates">الشهادات | Certificates</a>
   </nav>
     <div class="header" id="home">
-        <div class="hblock" dir="rtl">
-          <img class="avatar" src="img/profle_work_avatar.jpg">
-        </div>
-        <div class="hblock">
-          <div>
-              <div class="icon"><a href="mailto:saleh.awal@gmail.com" target="_blank"><img src="img/icons/email.jpg" title="email"/></a></div>
-              <div class="icon"><a href="tel:+201141433919" target="_blank"><img src="img/icons/mobile.jpg" title="mobile"/></a></div>
-              <div class="icon"><a href="https://api.whatsapp.com/send?phone=201141433919" target="_blank"><img src="img/icons/whatsapp.jpg" title="whatsapp"/></a></div>
-              <div class="icon"><a href="https://www.linkedin.com/in/salehawal/" target="_blank"><img src="img/icons/linkedin.jpg" title="linkedin"/></a></div>
-              <div class="icon"><a href="https://www.tiktok.com/@saleh.awal" target="_blank"><img src="img/icons/tiktok.jpg" title="linkedin"/></a></div>
-              <div class="icon"><a href="https://x.com/saleh_awal" target="_blank"><img src="img/icons/x.jpg" title="twitter"/></a></div>
-              <div class="icon"><a href="https://www.youtube.com/@salehgeberty" target="_blank"><img src="img/icons/youtube.jpg" title="youtube"/></a></div>
-              <div class="icon"><a href="https://github.com/salehawal" target="_blank"><img src="img/icons/github.jpg" title="gthub"/></a></div>
-              <div class="icon"><a href="https://drive.google.com/file/d/100wfmJgeMWLE1Xwq4qmIFYQDlSc0ETMV" target="_blank"><img src="img/icons/cv.jpg" title="cv"/></a></div>
-          </div>
-          <h1>Saleh ElGaberty - <span class="ar_txt bold">صالح الجبرتي</span></h1>
-	  <p style="margin-top: 0px;">application consultant | 💻📄📱 | <span class="ar_txt ar_txt_p">إستشاري تطبيق</span><br>#html #php #js #native #mysql #linux #git #bash #sql #magento #system #app #consultant #ai<br></p>
-        <div> <a href="http://lal.one" target="_blank"><img src="img/lal.png" title="blog" /></a> </div>
-        </div>
+  <div class="header-container">
+    
+    <!-- Avatar -->
+    <div class="hblock h-avatar" dir="rtl">
+      <img class="avatar" src="img/profle_work_avatar.jpg" alt="Saleh ElGaberty">
     </div>
+
+    <!-- Info and icons -->
+    <div class="hblock h-info">
+      <h1>Saleh ElGaberty - <span class="ar_txt bold">صالح الجبرتي</span></h1>
+      <p class="roles">
+        application consultant | 💻📄📱 | 
+        <span class="ar_txt ar_txt_p">إستشاري تطبيق</span><br>
+        #html #php #js #native #mysql #linux #git #bash #sql #magento #system #app #consultant #ai
+      </p>
+      <div class="icons-row">
+        <div class="icon"><a href="mailto:saleh.awal@gmail.com" target="_blank"><img src="img/icons/email.jpg" title="email" /></a></div>
+        <div class="icon"><a href="tel:+201141433919" target="_blank"><img src="img/icons/mobile.jpg" title="mobile" /></a></div>
+        <div class="icon"><a href="https://api.whatsapp.com/send?phone=201141433919" target="_blank"><img src="img/icons/whatsapp.jpg" title="whatsapp" /></a></div>
+        <div class="icon"><a href="https://www.linkedin.com/in/salehawal/" target="_blank"><img src="img/icons/linkedin.jpg" title="linkedin" /></a></div>
+        <div class="icon"><a href="https://www.tiktok.com/@saleh.awal" target="_blank"><img src="img/icons/tiktok.jpg" title="tiktok" /></a></div>
+        <div class="icon"><a href="https://x.com/saleh_awal" target="_blank"><img src="img/icons/x.jpg" title="twitter" /></a></div>
+        <div class="icon"><a href="https://www.youtube.com/@salehgeberty" target="_blank"><img src="img/icons/youtube.jpg" title="youtube" /></a></div>
+        <div class="icon"><a href="https://github.com/salehawal" target="_blank"><img src="img/icons/github.jpg" title="github" /></a></div>
+        <div class="icon"><a href="https://drive.google.com/file/d/100wfmJgeMWLE1Xwq4qmIFYQDlSc0ETMV" target="_blank"><img src="img/icons/cv.jpg" title="cv" /></a></div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="hblock h-logo">
+      <a href="http://lal.one" target="_blank">
+        <img src="img/lal.png" title="Lal Consultation" alt="Lal logo" class="lal-logo">
+      </a>
+    </div>
+
+  </div>
+</div>
+
     <div class="contentWrapper">
       <div class="cblock">
         <div class="profile profile_ar">
@@ -122,7 +140,9 @@
         </div>
         <div class="cblock_clear"></div>
       </div>
-
+      <div class="cblock" id="achievements">
+        <center><div class="block-gallery" id="gallery-ach"></div></center>
+      </div>
       <div class="cblock" id="works">
         <center>
           <script type="text/javascript">
@@ -142,9 +162,6 @@
             YoutubeLink('oHRvk_esMXo');
           </script>
         <center>
-      </div>
-      <div class="cblock" id="achievements">
-        <center><div class="block-gallery" id="gallery-ach"></div></center>
       </div>
       <div class="cblock" id="projects">
         <center><div class="block-gallery" id="gallery-prj"></div></center>
