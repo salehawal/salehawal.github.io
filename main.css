@@ -1,3 +1,8 @@
+/* ---------- Existing Arabic-style CSS ---------- */
+html{
+	scroll-behavior: smooth;      /* smooth scrolling */
+  	scroll-padding-top: 120px;     /* offset for fixed header */
+}
 body {
 	font-family: "Noto Sans Arabic";
 	margin: 0px;
@@ -44,20 +49,16 @@ li{
 	line-height: 150%;
 }
 .header{
-	/*position: fixed;*/
 	width: 100%;
 	background-color: #fff;
+	margin-top: 90px;
 }
 .content-view{
-	/*padding-top:320px;*/
 	width: 80%;
 	margin: auto;
 }
 .hblock{
 	text-align: center;
-	clear: both;
-	width: 95%;
-	margin: 10px auto;
 	font-size: 15px;
 	line-height: 150%;
 }
@@ -86,7 +87,6 @@ h6{
 	height: 220px;
 	margin: 0;
 	padding: 0px;
-	/*border: 1px solid #ccc;*/
 	border-radius: 7px;
 }
 .block-img{
@@ -94,7 +94,6 @@ h6{
 	height:210px;
 	margin:4px;
 	display:inline-block;
-/*	border: solid 1px #ccc;*/
 	overflow: hidden;
 }
 .block-img img{
@@ -160,7 +159,6 @@ h6{
 .cblock_item{
 	margin: 5px 5px 5px 1px;
 	padding: 15px;
-	/*border-radius: 10px;*/
 	font-size: 12px;
 	line-height: 160%;
 	display:inline-block;
@@ -172,8 +170,6 @@ h6{
   margin: 0 auto;
   vertical-align: top;
   overflow:hidden;
-  	/*border: 0.5px solid #ccc;*/
-	/*background-color: #F5F5F5;*/
 }
 .cblock_item p{
 	text-align: center;
@@ -232,3 +228,90 @@ h6{
 .profile_en{
 	text-align: left;
 }
+
+/* ---------- Added Modern Menu & Sections CSS ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Override body font only for English sections if needed */
+body {
+  background-color: #fff;
+  color: #111;
+  font-family: "Noto Sans Arabic", sans-serif;
+}
+
+/* Menu styles */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 10px 0;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: none;
+}
+
+/* Shadow and slight transparency when scrolled */
+nav.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #ff6f61;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+nav a:hover {
+  color: #ff6f61;
+}
+
+/* Section styles */
+section {
+  min-height: 100vh;
+  padding: 120px 20px 50px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  text-align: center;
+}
+
+#home { background-color: #fff; }
+#works { background-color: #f9f9f9; }
+#projects { background-color: #fff; }
+#certificates { background-color: #f9f9f9; }
+#achievements { background-color: #fff; }

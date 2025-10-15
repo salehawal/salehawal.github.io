@@ -19,7 +19,14 @@
 <script type="text/javascript" src="lib/fun.js"></script>
 </head>
 <body>
-    <div class="header">
+  <nav id="menu" dir="rtl">
+    <a href="#home">الرئيسية | Home</a>
+    <a href="#achievements">الإنجازات | Achievements</a>
+    <a href="#works">الأعمال | Works</a>
+    <a href="#projects">المشاريع | Projects</a>
+    <a href="#certificates">الشهادات | Certificates</a>
+  </nav>
+    <div class="header" id="home">
         <div class="hblock" dir="rtl">
           <img class="avatar" src="img/profile-work.jpg">
         </div>
@@ -116,7 +123,7 @@
         <div class="cblock_clear"></div>
       </div>
 
-      <div class="cblock" id="youtubeblocks">
+      <div class="cblock" id="works">
         <center>
           <script type="text/javascript">
             YoutubeLink('k6PB-MFmp6c');
@@ -136,14 +143,14 @@
           </script>
         <center>
       </div>
-      <div class="cblock">
+      <div class="cblock" id="achievements">
         <center><div class="block-gallery" id="gallery-ach"></div></center>
       </div>
-      <div class="cblock">
+      <div class="cblock" id="projects">
         <center><div class="block-gallery" id="gallery-prj"></div></center>
       </div>
 
-      <div class="cblock">
+      <div class="cblock" id="certificates">
         <center><div class="block-gallery" id="gallery-crt"></div></center>
       </div>
 
@@ -161,6 +168,7 @@
         loadProjects();
         loadCertificates();
         //arrangeblocks('block_certificates');
+        menuEffect();
     </script>
 </body>
 </html>
