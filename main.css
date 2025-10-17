@@ -620,7 +620,7 @@ section {
 	width: 90%;
 	max-width: 1400px;
 	padding: 0 10px;
-	min-height: 600px;
+	min-height: auto;
 }
 
 /* Tabs Navigation on the Left */
@@ -665,8 +665,8 @@ section {
 	border-radius: 8px;
 	padding: 32px;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-	overflow-y: auto;
-	max-height: 700px;
+	overflow: hidden;
+	height: auto;
 }
 
 .task-panel {
@@ -696,7 +696,7 @@ section {
 }
 
 .task-content {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 1.8;
 	color: #444;
 }
@@ -756,7 +756,7 @@ section {
 	}
 
 	.task-content {
-		font-size: 13px;
+		font-size: 12px;
 		line-height: 1.7;
 	}
 
