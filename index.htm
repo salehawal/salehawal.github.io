@@ -150,6 +150,161 @@
       <div class="cblock" id="achievements">
         <center><div class="block-gallery" id="gallery-ach"></div></center>
       </div>
+
+      <!-- Case Studies Section -->
+      <div class="cblock" id="top-tasks">
+        <h2 class="section-title">Top Tasks | المهام الأساسية</h2>
+        <p class="section-subtitle">Complex Challenges I've Successfully Delivered</p>
+        
+        <div class="top-tasks-container">
+          <!-- Tabs Navigation on the Left -->
+          <div class="tasks-tabs">
+            <button class="task-tab active" data-tab="0">01</button>
+            <button class="task-tab" data-tab="1">02</button>
+            <button class="task-tab" data-tab="2">03</button>
+            <button class="task-tab" data-tab="3">04</button>
+            <button class="task-tab" data-tab="4">05</button>
+            <button class="task-tab" data-tab="5">06</button>
+            <button class="task-tab" data-tab="6">07</button>
+            <button class="task-tab" data-tab="7">08</button>
+            <button class="task-tab" data-tab="8">09</button>
+            <button class="task-tab" data-tab="9">10</button>
+          </div>
+
+          <!-- Tab Content on the Right -->
+          <div class="tasks-content">
+            <!-- Task 1 -->
+            <div class="task-panel active" data-tab="0">
+              <h3 class="task-title">01. Multi-Currency E-Commerce Platform Migration | ترحيل منصة التجارة الإلكترونية متعددة العملات</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A client with an aging Magento 1 system handling transactions in 15+ currencies was losing sales due to performance issues and security vulnerabilities. The platform processed over 10,000 SKUs with complex inventory management, multiple warehouse locations, and intricate pricing rules. The challenge was to migrate without losing any transactional history, customer data, or disrupting the daily operations.</p>
+                <p>The system had custom extensions written over 10+ years, no proper documentation, and relied on deprecated APIs. We needed to preserve all functionality while modernizing the infrastructure, ensuring zero downtime during the critical peak season.</p>
+                <p><strong>Solution:</strong> I designed and led a phased migration strategy using a hybrid approach. First, I conducted a comprehensive audit of the existing system, documenting all custom functionality and data structures. I architected a new Magento 2 installation with optimized database schemas, implemented a custom ETL process to migrate 8+ years of historical data while validating data integrity at each step.</p>
+                <p>The solution included building a parallel system that ran simultaneously for 6 weeks, allowing real-time synchronization of new transactions. I developed custom API connectors for their ERP, accounting software, and logistics partners. Implemented Redis caching for product data and session management, reducing page load times by 70%. Set up comprehensive monitoring and automated backups.</p>
+                <p><strong>Result:</strong> Successfully migrated 500K+ customer records, 10K+ products, and 2M+ historical orders without data loss. System uptime achieved 99.98%. Transaction processing speed improved from 8 seconds to 1.2 seconds. Mobile conversion rate increased by 34%. Reduced infrastructure costs by 45% through optimization. Client saw revenue growth of 28% in the first quarter post-migration.</p>
+              </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task-panel" data-tab="1">
+              <h3 class="task-title">02. Real-Time Financial Dashboard with AI Predictive Analytics | لوحة معلومات مالية فورية مع التنبؤ بالذكاء الاصطناعي</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A financial services firm needed a real-time dashboard to monitor transactions across 50+ branches, processing 100K+ daily transactions. Traditional reporting took 24-48 hours. They needed instant alerts for fraudulent patterns, anomalies, and forecasting of cash flow with 85%+ accuracy. The system had to handle 1000+ concurrent users with sub-second response times while integrating with legacy banking systems that only offered batch APIs.</p>
+                <p>Data came from multiple disparate sources in different formats (CSV, XML, ODBC connections), and there was no unified data model. Compliance requirements meant audit trails for every calculation and strict data encryption standards.</p>
+                <p><strong>Solution:</strong> I architected a microservices-based solution using Node.js and Python. Created a real-time data ingestion layer using Kafka to consume transaction streams from all branches. Built a unified data warehouse using PostgreSQL with optimized partitioning by date and branch. Implemented a machine learning pipeline using Python and TensorFlow to detect fraud patterns and predict cash flow.</p>
+                <p>Developed a React-based frontend with WebSocket connections for real-time updates, achieving 200ms latency from transaction to dashboard visibility. Built multiple dashboard views with role-based access control for managers, auditors, and executives. Implemented automated alerts using Twilio for critical events. Created an audit log system capturing all transactions and calculations with timestamps and user information.</p>
+                <p><strong>Result:</strong> Reduced reporting time from 48 hours to real-time (< 5 seconds). Fraud detection accuracy reached 94% with minimal false positives (2%). Cash flow forecasting achieved 89% accuracy, helping the firm optimize working capital. Handled 1200+ concurrent users with 98% uptime. System identified and prevented $2.3M in fraudulent transactions in the first year. Compliance audits passed without issues.</p>
+              </div>
+            </div>
+
+            <!-- Task 3 -->
+            <div class="task-panel" data-tab="2">
+              <h3 class="task-title">03. Distributed School Management System Serving 500+ Schools | نظام إدارة المدارس الموزع يخدم 500+ مدرسة</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> An EdTech company needed to build a system managing 500+ schools with 200K+ students, 25K+ teachers, and handling attendance, grading, parent communication, and fee management. Each school had different workflows, languages (Arabic and English), and fee structures. The system needed to work reliably on poor internet connections (2G/3G) found in rural areas, support offline functionality, and sync when connectivity returned.</p>
+                <p>Schools needed to generate reports instantly (student transcripts, attendance sheets, fee ledgers), run on budget hardware, and maintain data privacy per school. The challenge was building one system that could serve diverse use cases without per-school customization.</p>
+                <p><strong>Solution:</strong> I designed a cloud-based architecture with offline-first capabilities. Built a React Native mobile app that syncs data when connected, stores data locally using SQLite, and allows full functionality without internet. Implemented a Node.js/PostgreSQL backend with microservices for attendance, grading, fees, and communication.</p>
+                <p>Created configurable workflows using a rules engine allowing schools to customize processes without code changes. Built PDF generation system for reports using Puppeteer, generating 500+ unique student transcripts in batch mode. Implemented AES encryption for sensitive data at rest and TLS for data in transit. Built an automated backup system with daily snapshots.</p>
+                <p>For poor connectivity, implemented delta sync—only changed records transmit, reducing bandwidth by 85%. Multi-language support (Arabic/English) with RTL support built into UI components.</p>
+                <p><strong>Result:</strong> System successfully deployed across 500+ schools serving 200K+ students. Mobile app works seamlessly on 2G connections. Report generation improved from 30 minutes to under 5 seconds. System uptime achieved 99.94%. Handled 25K concurrent API requests during peak hours. Parents reported 40% reduction in time spent on school communications. Schools reduced administrative time by 35% through automation. Zero security incidents in 3+ years of operation.</p>
+              </div>
+            </div>
+
+            <!-- Task 4 -->
+            <div class="task-panel" data-tab="3">
+              <h3 class="task-title">04. Legacy System Refactoring & Modernization | إعادة هندسة وتحديث النظام القديم</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A 15-year-old PHP/MySQL e-commerce system with 100K+ lines of procedural code, no tests, minimal documentation, and tight coupling throughout. New features took weeks to implement, bugs were common, and the server hardware couldn't handle growth. Code was written by 20+ developers over the years with inconsistent styles. The business needed to add new functionality but was blocked by technical debt.</p>
+                <p>Main issues: 2-3 second page loads, frequent crashes during peak traffic, difficult debugging, high deployment risk (every deploy could break production), no API for mobile apps, and security vulnerabilities from deprecated functions.</p>
+                <p><strong>Solution:</strong> I led a gradual refactoring approach rather than big-bang rewrite. Started with comprehensive logging and monitoring to understand system behavior. Created an automated test suite covering critical paths, then incrementally refactored modules. Extracted business logic from presentation using an MVC pattern. Built a new API layer using Laravel that sat between the legacy code and frontends.</p>
+                <p>Moved static assets to CDN. Implemented query optimization, database indexing, and caching using Redis. Split the monolith into services—user service, product service, order service. Each service had its own database for independence. Set up CI/CD pipeline with automated testing and staging environment validation before production deployment.</p>
+                <p>Gradually migrated frontend to React while keeping the PHP backend, allowing incremental value delivery. Implemented proper authentication and authorization throughout.</p>
+                <p><strong>Result:</strong> Page load time reduced from 2.3 seconds to 320ms. Server capacity increased 5x through optimization. Feature development time reduced from 3 weeks to 3-4 days. Deployment frequency increased from monthly to 5-10 times daily with high confidence. Test coverage improved from 0% to 75% of critical paths. Zero critical production incidents in 18+ months post-refactoring. Technical team morale improved, development velocity increased by 200%.</p>
+              </div>
+            </div>
+
+            <!-- Task 5 -->
+            <div class="task-panel" data-tab="4">
+              <h3 class="task-title">05. AI-Powered Customer Support Chatbot System | نظام روبوت الدعم العميل المعتمد على الذكاء الاصطناعي</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A retail company with 50+ customer service representatives handling 500+ daily support tickets, with average resolution time of 24-48 hours. The company wanted to deploy an AI chatbot to handle routine inquiries (order status, returns, refunds), reducing load on human agents and improving response time. The challenge was building a system that understood context, handled multilingual support (Arabic/English), integrated with their order management system, and gracefully handed off to humans for complex issues.</p>
+                <p>Requirements included maintaining conversation history, learning from agent responses to improve, handling multiple channels (WhatsApp, Facebook, website), and ensuring 24/7 availability. The system needed to reduce support tickets by 60% while maintaining quality.</p>
+                <p><strong>Solution:</strong> I architected a multi-layer AI solution. First layer: intent recognition using transformers (BERT-based model fine-tuned on their support tickets). Second layer: entity extraction to understand specific order numbers, customer names, date ranges. Third layer: context retrieval from their CRM and order databases.</p>
+                <p>Integrated OpenAI GPT-3.5/4 APIs with a safety layer to prevent hallucinations on sensitive business data. Built a knowledge base with 500+ FAQ articles and their previous support interactions. Implemented a handoff mechanism—when confidence drops below threshold or issue becomes complex, seamlessly transfers to human agent with full context. Added feedback loop where human-resolved conversations feed back to improve the model.</p>
+                <p>Built connectors for WhatsApp, Facebook Messenger, and website chat using Twilio and Meta APIs. Implemented conversation management with session timeout and memory. Multi-language support using language detection, translating to English for processing, then translating responses back to user's language.</p>
+                <p><strong>Result:</strong> Handled 65% of inquiries without human intervention (up from 0%). Reduced average response time from 24 hours to under 2 minutes for chatbot and 15 minutes for human-escalated issues. Achieved 87% customer satisfaction rating on chatbot interactions. Reduced support team workload by 58%, allowing them to focus on complex issues. Deployed across 3 channels (WhatsApp, Facebook, website). System learns continuously—accuracy improved from 76% in month 1 to 92% by month 6. ROI achieved in 4 months through labor cost savings.</p>
+              </div>
+            </div>
+
+            <!-- Task 6 -->
+            <div class="task-panel" data-tab="5">
+              <h3 class="task-title">06. High-Availability Database Migration & Replication | ترحيل قاعدة البيانات عالي التوفر والتكرار</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> An organization with a 2TB MySQL database running on aging hardware needed to migrate to a new infrastructure without any downtime. The database supported 50+ applications, processed 10K+ queries per second at peak, and had complex dependencies with ETL jobs and batch processes running nightly. One hour of downtime would cost $50K+ in lost revenue. The migration had to be coordinated with complex cutover timing to minimize risk.</p>
+                <p>Issues: Current infrastructure was at 85% capacity, backups were taking 6+ hours impacting performance, replication lag sometimes reached 30 seconds, and failover wasn't tested.</p>
+                <p><strong>Solution:</strong> I designed a sophisticated migration strategy using MySQL replication and Percona XtraBackup. First, set up a replica of the production database on the new hardware using a non-blocking backup method. While the replica caught up asynchronously, I implemented monitoring and automated failover testing.</p>
+                <p>Created comprehensive cutover procedures with detailed timing, validation steps at each stage, and rollback procedures. Coordinated with dependent teams to schedule ETL jobs appropriately. Used Percona toolkit to verify data consistency between source and replica before cutover. Implemented multi-master replication setup for high availability.</p>
+                <p>Parallelized query processing by splitting databases by functional area (users, transactions, analytics) with proper foreign key management. Implemented query result caching where appropriate. Added database-level monitoring, slow query logs, and alerting for anomalies.</p>
+                <p><strong>Result:</strong> Completed migration with zero downtime and zero data loss. Replication lag reduced to <1ms from 30s. Backup time reduced from 6 hours to 45 minutes through optimization. Query performance improved by 40% through optimization and better hardware. Peak capacity increased from 10K to 35K queries per second. Implemented automated failover—if primary goes down, read replicas take over in <2 seconds. Disaster recovery procedures tested monthly with successful failover.</p>
+              </div>
+            </div>
+
+            <!-- Task 7 -->
+            <div class="task-panel" data-tab="6">
+              <h3 class="task-title">07. Complex Data Warehouse & Business Intelligence | مستودع البيانات والذكاء التجاري المعقد</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A manufacturing company with 30 years of operational history needed to consolidate data from 15+ ERP systems, CRM platforms, supply chain management systems, and legacy databases into one unified warehouse for analytics and reporting. Data was inconsistent, had duplicates, different standards for product codes and customer IDs, and many gaps from system migrations over the years. Business users needed real-time dashboards, advanced analytics, and the ability to drill-down from summary to transaction-level detail.</p>
+                <p>The system needed to handle growing data volume (10GB+ daily new data), maintain historical accuracy for financial audits, and support ad-hoc queries while not impacting operational systems.</p>
+                <p><strong>Solution:</strong> I designed a medallion architecture with bronze/silver/gold layers. Bronze layer ingested raw data from all sources into a data lake, preserving original format with metadata. Silver layer applied transformations, standardization, deduplication, and validation. Gold layer provided business-ready datasets for analytics.</p>
+                <p>Built ETL pipelines using Apache Airflow orchestrating data flows. Implemented slowly changing dimensions (SCD type 2) to track historical changes. Created master data management layer standardizing customer IDs, product codes across all systems. Used PySpark for large-scale data processing on Hadoop cluster.</p>
+                <p>Built a data dictionary and metadata repository so analysts understood data lineage. Created star schemas optimized for analytical queries. Implemented incremental loading—only new/changed data processes, reducing daily runtime from 8 hours to 30 minutes. Set up Tableau dashboards with 50+ visualizations tracking KPIs across sales, manufacturing, supply chain, and finance.</p>
+                <p><strong>Result:</strong> Successfully consolidated 15+ systems into unified warehouse with 10 years of historical data. Query response time reduced from minutes to seconds. Analysts gained self-service analytics capability, reducing IT report request backlog from 6 weeks to 2 days. Discovered $3M in previously hidden inefficiencies across supply chain through advanced analytics. Financial audit time reduced by 60% through automated data validation. Business users now make data-driven decisions with confidence in data accuracy.</p>
+              </div>
+            </div>
+
+            <!-- Task 8 -->
+            <div class="task-panel" data-tab="7">
+              <h3 class="task-title">08. Custom Language Design & Compiler Implementation | تصميم لغة مخصصة وتنفيذ المترجم</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A non-profit wanted domain-specific tools for non-programmers to define workflows, data validations, and business rules without coding. I designed and implemented Aseel—a visual UML-like language that can be compiled into executable code. The challenge was making syntax intuitive for business users, making parsing unambiguous, handling nested structures and scoping, and generating efficient code across multiple target languages (PHP, JavaScript, Python).</p>
+                <p>The language needed to support variables, conditions, loops, functions, data structures, and higher-order operations like mapping and filtering. It had to generate code that matches hand-written code quality and could interoperate with existing applications.</p>
+                <p><strong>Solution:</strong> I designed Aseel language with visual grammar inspired by flowcharts but syntactically precise. Implemented a two-pass compiler: lexer tokenizes input, parser builds abstract syntax tree (AST) using recursive descent parsing, semantic analyzer validates types and scopes, code generator emits target language.</p>
+                <p>Built IDE with real-time syntax validation, autocomplete, and visual debugging. Each target language (PHP, JS, Python) had its own code generator but shared the AST and validation layer. Implemented comprehensive type system preventing runtime errors at compile time. Built optimization layer performing constant folding, dead code elimination, and loop unrolling.</p>
+                <p>Created extensive documentation and tutorials. Built playground web interface where users write Aseel code and see generated code and execution results in real-time.</p>
+                <p><strong>Result:</strong> Aseel successfully enables business users to define workflows without programming knowledge. Generated code performs within 10% of hand-written code. Successfully compiled 1000+ user programs with 0% runtime errors (errors caught at compile time). Community of 200+ users building solutions. Language is extensible—users can define custom functions and data types. Available as open-source with active community contributions.</p>
+              </div>
+            </div>
+
+            <!-- Task 9 -->
+            <div class="task-panel" data-tab="8">
+              <h3 class="task-title">09. Microservices Architecture Migration from Monolith | الهجرة من البنية أحادية إلى العمارة الموزعة بالخدمات الصغيرة</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A SaaS company with a 7-year-old monolithic Node.js application (500K+ lines of code) needed to scale independent components. The monolith did everything—user management, billing, analytics, notifications, API gateway. A single bug could take down the entire system. Deploying required testing everything. Teams were blocked on each other. The company wanted to decompose into 10+ independent microservices that could be developed, tested, and deployed independently.</p>
+                <p>The challenge was executing migration without disrupting 500+ paying customers, maintaining consistency across services, handling distributed transactions, and building operational complexity (monitoring, logging, deployment) for multiple services.</p>
+                <p><strong>Solution:</strong> I designed a strangler fig pattern—gradually replacing pieces of the monolith with microservices while keeping the whole running. Started with low-risk, high-value services: notifications, analytics, and file storage.</p>
+                <p>Built API gateway (Kong) handling routing, authentication, rate limiting. Created services using Node.js/Express with clear contracts (OpenAPI specs). Each service had its own database (schema per service pattern), eliminating tight coupling. Implemented async communication using RabbitMQ for events like user.created, order.completed. For strong consistency needs (billing), used saga pattern coordinating across services.</p>
+                <p>Built comprehensive observability: structured logging to ELK stack, distributed tracing with Jaeger, Prometheus metrics. Created shared libraries for cross-cutting concerns (logging, authentication, circuit breakers). Implemented automated deployment with Docker and Kubernetes, allowing teams to independently deploy without coordination. Built service mesh (Istio) for advanced features like traffic splitting for canary deployments, mutual TLS, and intelligent retries.</p>
+                <p><strong>Result:</strong> Successfully migrated 10 core services off monolith with zero customer-facing downtime. Deployment frequency increased from monthly to 20+ times daily. Feature development time reduced by 60% through service independence. System now handles 10x traffic with same infrastructure through independent scaling. Team velocity increased significantly—teams can make progress independently. Reliability improved—outage impact now limited to affected service instead of entire system. Operational cost reduced by 30% through better resource utilization.</p>
+              </div>
+            </div>
+
+            <!-- Task 10 -->
+            <div class="task-panel" data-tab="9">
+              <h3 class="task-title">10. Security Hardening & Compliance Framework Implementation | تصلب الأمان وتنفيذ إطار العمل للامتثال</h3>
+              <div class="task-content">
+                <p><strong>Challenge:</strong> A fintech company processing payment transactions needed to achieve PCI-DSS level 1 compliance, SOC 2 Type II certification, and GDPR compliance. They had security issues: unencrypted sensitive data in logs, weak authentication, unpatched servers, no audit trails, and insufficient access controls. They needed to become compliant within 6 months while maintaining service availability and avoiding disruption.</p>
+                <p>The organization had limited security expertise and needed guidance on best practices, architecture changes, and operational procedures. They needed to prove compliance through documentation, evidence collection, and penetration test results.</p>
+                <p><strong>Solution:</strong> I led comprehensive security program. First, conducted security audit identifying 150+ findings. Prioritized by risk and feasibility. Implemented infrastructure security: network segmentation, VPC with security groups, WAF deployment, DDoS protection. Implemented encryption for data at rest (AES-256) and in transit (TLS 1.3).</p>
+                <p>Overhauled authentication: implemented multi-factor authentication, strong password policies, OAuth 2.0 for third-party integrations. Implemented fine-grained access control with role-based access (RBAC). Built comprehensive audit logging capturing all access, configuration changes, and sensitive operations. Logs stored in immutable, WORM-compliant storage.</p>
+                <p>Implemented secure development practices: code review processes, dependency scanning for vulnerabilities, SAST/DAST security testing in CI/CD. Established vulnerability management program with automated patching for non-critical updates, manual testing for critical patches. Conducted security awareness training for all staff.</p>
+                <p>Implemented intrusion detection systems, real-time security monitoring, and incident response procedures. Created documentation supporting compliance, performed gap analyses against standards, coordinated with auditors.</p>
+                <p><strong>Result:</strong> Achieved PCI-DSS level 1 certification, SOC 2 Type II certification, and GDPR compliance within 6-month timeline. Penetration tests found zero critical vulnerabilities (previous: 12 critical). Security incidents reduced by 95%. Enabled processing credit card payments directly (was previously using third-party payment processor costing 5% per transaction). Compliance certifications gave competitive advantage, increasing customer confidence. Customer acquisition increased 40% with compliance certifications. Operational security incidents dropped to zero in first year of compliance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="cblock" id="works">
         <center>
           <script type="text/javascript">
