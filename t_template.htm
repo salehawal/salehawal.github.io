@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saleh — System Architect & Technical Innovator</title>
+    <meta name="description" content="System architecture, language design, and technical innovation. Founder of Aseel language.">
+    <style>
+        /* ==========================================
+           ASEEL DESIGN PATTERN: x → i → a → o → h
+           Minimal. Premium. Techy.
+           ========================================== */
+
+        /* x_ = foundational design tokens */
+        :root {
+            --x_color_bg: #ffffff;
+            --x_color_text: #0a0e27;
+            --x_color_text_muted: #6b7280;
+            --x_color_accent: #0066cc;
+            --x_color_accent_dark: #004199;
+            --x_color_accent_light: #f0f4ff;
+            --x_color_border: #e5e7eb;
+            --x_color_code_bg: #f9fafb;
+            
+            --x_font_mono: 'Monaco', 'Menlo', 'Courier New', monospace;
+            --x_font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --x_font_size_base: 16px;
+            --x_line_height: 1.6;
+            --x_spacing_unit: 8px;
+            --x_transition: 200ms ease-in-out;
+        }
+
+        @media (max-width: 640px) {
+            :root {
+                --x_font_size_base: 15px;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--x_font_sans);
+            background: var(--x_color_bg);
+            color: var(--x_color_text);
+            font-size: var(--x_font_size_base);
+            line-height: var(--x_line_height);
+        }
+
+        a {
+            color: var(--x_color_accent);
+            text-decoration: none;
+            transition: color var(--x_transition);
+        }
+
+        a:hover {
+            color: var(--x_color_accent_dark);
+        }
+
+        /* o_ = component classes */
+
+        .o_button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(var(--x_spacing_unit) * 1.5) calc(var(--x_spacing_unit) * 2.5);
+            font-size: 15px;
+            font-weight: 500;
+            border: 2px solid var(--x_color_accent);
+            border-radius: 6px;
+            background: var(--x_color_accent);
+            color: white;
+            cursor: pointer;
+            transition: all var(--x_transition);
+            text-decoration: none;
+            font-family: var(--x_font_sans);
+        }
+
+        .o_button:hover {
+            background: var(--x_color_accent_dark);
+            border-color: var(--x_color_accent_dark);
+            transform: translateY(-1px);
+        }
+
+        .o_button--outline {
+            background: transparent;
+            color: var(--x_color_accent);
+        }
+
+        .o_button--outline:hover {
+            background: var(--x_color_accent_light);
+        }
+
+        .o_tag {
+            display: inline-block;
+            padding: calc(var(--x_spacing_unit) * 0.75) calc(var(--x_spacing_unit) * 1.5);
+            background: var(--x_color_code_bg);
+            border: 1px solid var(--x_color_border);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: var(--x_font_mono);
+            color: var(--x_color_text);
+            margin-right: var(--x_spacing_unit);
+            margin-bottom: var(--x_spacing_unit);
+        }
+
+        /* a_ = component logic & containers */
+
+        .a_header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: var(--x_color_bg);
+            border-bottom: 1px solid var(--x_color_border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 calc(var(--x_spacing_unit) * 2);
+        }
+
+        .a_header__logo {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: var(--x_font_mono);
+            color: var(--x_color_accent);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .a_header__nav {
+            display: flex;
+            gap: calc(var(--x_spacing_unit) * 3);
+            align-items: center;
+        }
+
+        .a_header__nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--x_color_text_muted);
+        }
+
+        .a_header__nav a:hover {
+            color: var(--x_color_accent);
+        }
+
+        @media (max-width: 640px) {
+            .a_header__nav {
+                gap: calc(var(--x_spacing_unit) * 1.5);
+            }
+            .a_header__nav a {
+                display: none;
+            }
+        }
+
+        .a_hero {
+            margin-top: 64px;
+            padding: calc(var(--x_spacing_unit) * 8) calc(var(--x_spacing_unit) * 2);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .a_hero__pre {
+            font-family: var(--x_font_mono);
+            font-size: 13px;
+            color: var(--x_color_text_muted);
+            margin-bottom: calc(var(--x_spacing_unit) * 2);
+            letter-spacing: 0.5px;
+        }
+
+        .a_hero__title {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: calc(var(--x_spacing_unit) * 2);
+            color: var(--x_color_text);
+        }
+
+        .a_hero__subtitle {
+            font-size: 18px;
+            color: var(--x_color_text_muted);
+            margin-bottom: calc(var(--x_spacing_unit) * 4);
+            max-width: 600px;
+        }
+
+        .a_hero__cta {
+            display: flex;
+            gap: calc(var(--x_spacing_unit) * 2);
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+            .a_hero {
+                padding: calc(var(--x_spacing_unit) * 4) calc(var(--x_spacing_unit) * 2);
+            }
+            .a_hero__title {
+                font-size: 32px;
+            }
+        }
+
+        .a_section {
+            padding: calc(var(--x_spacing_unit) * 6) calc(var(--x_spacing_unit) * 2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .a_section__title {
+            font-size: 24px;
+            font-weight: 600;
+            font-family: var(--x_font_mono);
+            color: var(--x_color_accent);
+            margin-bottom: calc(var(--x_spacing_unit) * 3);
+            letter-spacing: -0.5px;
+        }
+
+        .a_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: calc(var(--x_spacing_unit) * 3);
+        }
+
+        .a_card {
+            padding: calc(var(--x_spacing_unit) * 3);
+            border: 1px solid var(--x_color_border);
+            border-radius: 8px;
+            transition: all var(--x_transition);
+            background: var(--x_color_bg);
+        }
+
+        .a_card:hover {
+            border-color: var(--x_color_accent);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+        }
+
+        .a_card__title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: calc(var(--x_spacing_unit) * 1.5);
+            color: var(--x_color_text);
+        }
+
+        .a_card__desc {
+            font-size: 14px;
+            color: var(--x_color_text_muted);
+            line-height: 1.6;
+        }
+
+        .a_divider {
+            height: 1px;
+            background: var(--x_color_border);
+            margin: calc(var(--x_spacing_unit) * 4) 0;
+        }
+
+        /* h_ = full pages & layouts */
+
+        .h_footer {
+            padding: calc(var(--x_spacing_unit) * 4) calc(var(--x_spacing_unit) * 2);
+            border-top: 1px solid var(--x_color_border);
+            text-align: center;
+            background: var(--x_color_code_bg);
+        }
+
+        .h_footer__content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .h_footer__text {
+            font-size: 14px;
+            color: var(--x_color_text_muted);
+            margin-bottom: calc(var(--x_spacing_unit) * 2);
+        }
+
+        .h_footer__links {
+            display: flex;
+            gap: calc(var(--x_spacing_unit) * 2);
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        /* utility */
+        .u_mono {
+            font-family: var(--x_font_mono);
+            background: var(--x_color_code_bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .u_accent {
+            color: var(--x_color_accent);
+        }
+
+        .u_grid__2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: calc(var(--x_spacing_unit) * 2);
+        }
+
+        /* Gallery components */
+        .a_gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: calc(var(--x_spacing_unit) * 3);
+            margin-top: calc(var(--x_spacing_unit) * 4);
+        }
+
+        .a_gallery__item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: var(--x_color_code_bg);
+            transition: all var(--x_transition);
+            aspect-ratio: 1;
+        }
+
+        .a_gallery__item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+        }
+
+        .a_gallery__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--x_transition);
+        }
+
+        .a_gallery__item:hover .a_gallery__image {
+            transform: scale(1.05);
+        }
+
+        .a_gallery__video {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .a_gallery__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--x_transition);
+            border-radius: 8px;
+        }
+
+        .a_gallery__item:hover .a_gallery__overlay {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .a_gallery__icon {
+            font-size: 32px;
+            color: white;
+            opacity: 0;
+            transition: opacity var(--x_transition);
+        }
+
+        .a_gallery__item:hover .a_gallery__icon {
+            opacity: 1;
+        }
+
+        .a_gallery__caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: calc(var(--x_spacing_unit) * 2);
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity var(--x_transition);
+        }
+
+        .a_gallery__item:hover .a_gallery__caption {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="a_header">
+        <a href="#" class="a_header__logo">{ s.awal }</a>
+        <nav class="a_header__nav">
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- ABOUT -->
+    <div class="a_divider"></div>
+    <section id="about" class="a_section" style="text-align: center; margin-top: 64px;">
+        <h2 class="a_section__title" style="text-align: center;">// about</h2>
+        <p style="max-width: 600px; margin: 0 auto; color: var(--x_color_text_muted); line-height: 1.8;">
+            Founder of <span class="u_accent">Aseel</span>, a visual language for system architecture. Specialist in designing scalable, reliable enterprise solutions with emphasis on organic stability, research-backed approaches, and sustainable growth. 
+            <br><br>
+            Expertise across full-stack development, system architecture, Linux infrastructure, and AI optimization.
+        </p>
+    </section>
+
+    <!-- ACCOMPLISHMENTS -->
+    <div class="a_divider"></div>
+    <section id="work" class="a_section">
+        <h2 class="a_section__title">// accomplishments</h2>
+        <div class="a_grid">
+            <div class="a_card">
+                <div class="a_card__title">Aseel Language</div>
+                <p class="a_card__desc">Visual language for system planning inspired by UML. Unified pattern for database, backend, and frontend architecture.</p>
+                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
+                    <span class="o_tag">Language Design</span>
+                    <span class="o_tag">Architecture</span>
+                </div>
+            </div>
+            <div class="a_card">
+                <div class="a_card__title">System Architecture</div>
+                <p class="a_card__desc">Expert in designing scalable ERP, SaaS, and enterprise solutions. Emphasis on organic stability and cost-effectiveness.</p>
+                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
+                    <span class="o_tag">ERP</span>
+                    <span class="o_tag">SaaS</span>
+                </div>
+            </div>
+            <div class="a_card">
+                <div class="a_card__title">Web Development</div>
+                <p class="a_card__desc">Full-stack expertise: HTML/CSS, JavaScript, PHP, MySQL. Building performant, accessible web applications.</p>
+                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
+                    <span class="o_tag">Frontend</span>
+                    <span class="o_tag">Backend</span>
+                </div>
+            </div>
+            <div class="a_card">
+                <div class="a_card__title">Linux & DevOps</div>
+                <p class="a_card__desc">System administration, infrastructure optimization, and deployment strategies for reliable production environments.</p>
+                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
+                    <span class="o_tag">Linux</span>
+                    <span class="o_tag">Infrastructure</span>
+                </div>
+            </div>
+            <div class="a_card">
+                <div class="a_card__title">AI Optimization</div>
+                <p class="a_card__desc">Research-driven approaches to enhance system performance and intelligence. Focus on practical, sustainable solutions.</p>
+                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
+                    <span class="o_tag">AI</span>
+                    <span class="o_tag">Research</span>
+                </div>
+            </div>
+            <div class="a_card">
+                <div class="a_card__title">Technical Strategy</div>
+                <p class="a_card__desc">Consulting for tech leaders. Clear requirements, practical strategies, and actionable guidance for sustainable growth.</p>
+                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
+                    <span class="o_tag">Advisory</span>
+                    <span class="o_tag">Strategy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMAGE GALLERY -->
+    <div class="a_divider"></div>
+    <section class="a_section">
+        <h2 class="a_section__title">// gallery</h2>
+        <p style="text-align: center; color: var(--x_color_text_muted); margin-bottom: calc(var(--x_spacing_unit) * 4);">Visual highlights from projects and events</p>
+        <div class="a_gallery">
+            <div class="a_gallery__item">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=400&fit=crop" alt="Gallery item 1" class="a_gallery__image">
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">🔍</div>
+                </div>
+                <div class="a_gallery__caption">Project Architecture</div>
+            </div>
+            <div class="a_gallery__item">
+                <img src="https://images.unsplash.com/photo-1517694712605-da63cf335559?w=400&h=400&fit=crop" alt="Gallery item 2" class="a_gallery__image">
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">🔍</div>
+                </div>
+                <div class="a_gallery__caption">System Design</div>
+            </div>
+            <div class="a_gallery__item">
+                <img src="https://images.unsplash.com/photo-1517694712065-b6b2b4c5f4f5?w=400&h=400&fit=crop" alt="Gallery item 3" class="a_gallery__image">
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">🔍</div>
+                </div>
+                <div class="a_gallery__caption">Development Workflow</div>
+            </div>
+            <div class="a_gallery__item">
+                <img src="https://images.unsplash.com/photo-1517694712028-c3c4af8d0b67?w=400&h=400&fit=crop" alt="Gallery item 4" class="a_gallery__image">
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">🔍</div>
+                </div>
+                <div class="a_gallery__caption">Code Review</div>
+            </div>
+            <div class="a_gallery__item">
+                <img src="https://images.unsplash.com/photo-1517694712085-8ab10b8c0a34?w=400&h=400&fit=crop" alt="Gallery item 5" class="a_gallery__image">
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">🔍</div>
+                </div>
+                <div class="a_gallery__caption">Team Collaboration</div>
+            </div>
+            <div class="a_gallery__item">
+                <img src="https://images.unsplash.com/photo-1517694712001-8eb05c5f5ce1?w=400&h=400&fit=crop" alt="Gallery item 6" class="a_gallery__image">
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">🔍</div>
+                </div>
+                <div class="a_gallery__caption">Innovation Lab</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIDEO GALLERY -->
+    <div class="a_divider"></div>
+    <section class="a_section">
+        <h2 class="a_section__title">// videos</h2>
+        <p style="text-align: center; color: var(--x_color_text_muted); margin-bottom: calc(var(--x_spacing_unit) * 4);">Tutorials, talks, and technical deep dives</p>
+        <div class="a_gallery">
+            <div class="a_gallery__item">
+                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 1" allowfullscreen></iframe>
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">▶</div>
+                </div>
+            </div>
+            <div class="a_gallery__item">
+                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 2" allowfullscreen></iframe>
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">▶</div>
+                </div>
+            </div>
+            <div class="a_gallery__item">
+                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 3" allowfullscreen></iframe>
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">▶</div>
+                </div>
+            </div>
+            <div class="a_gallery__item">
+                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 4" allowfullscreen></iframe>
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">▶</div>
+                </div>
+            </div>
+            <div class="a_gallery__item">
+                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 5" allowfullscreen></iframe>
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">▶</div>
+                </div>
+            </div>
+            <div class="a_gallery__item">
+                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 6" allowfullscreen></iframe>
+                <div class="a_gallery__overlay">
+                    <div class="a_gallery__icon">▶</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- CONTACT -->
+    <div class="a_divider"></div>
+    <section id="contact" class="a_section" style="text-align: center; padding: calc(var(--x_spacing_unit) * 8) calc(var(--x_spacing_unit) * 2);">
+        <h2 class="a_section__title" style="text-align: center;">// let's connect</h2>
+        <p style="color: var(--x_color_text_muted); margin-bottom: calc(var(--x_spacing_unit) * 4);">
+            Open to consulting, collaborations, and technical discussions.
+        </p>
+        <div style="display: flex; gap: calc(var(--x_spacing_unit) * 2); justify-content: center; flex-wrap: wrap;">
+            <a href="mailto:saleh.awal@gmail.com" class="o_button">Email</a>
+            <a href="https://linkedin.com/in/salehawal" target="_blank" class="o_button o_button--outline">LinkedIn</a>
+            <a href="https://github.com/salehawal" target="_blank" class="o_button o_button--outline">GitHub</a>
+        </div>
+    </section>
+
+</body>
+</html>
