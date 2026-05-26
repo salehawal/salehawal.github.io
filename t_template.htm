@@ -1,593 +1,735 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saleh — System Architect & Technical Innovator</title>
-    <meta name="description" content="System architecture, language design, and technical innovation. Founder of Aseel language.">
-    <style>
-        /* ==========================================
-           ASEEL DESIGN PATTERN: x → i → a → o → h
-           Minimal. Premium. Techy.
-           ========================================== */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saleh ElGaberty — System Architect</title>
+<meta name="description" content="System Architect & founder of Aseel — a visual language for system architecture. Enterprise ERP & SaaS, full-stack development, Linux infrastructure, DevOps, and AI-optimized workflows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --k0:#000;--k1:#111;--k2:#222;--k3:#444;--k4:#666;--k5:#999;--k6:#ccc;--k7:#e5e5e5;--k8:#f0f0f0;
+  --w:#fff;
+  --b0:#0a2f8a;--b1:#1a56db;--b2:#3b82f6;--b3:#93c5fd;
+  --g1:#15803d;--r1:#b91c1c;--gr1:#374151;
+  --fd:'Playfair Display',Georgia,serif;
+  --fm:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  --fa:'Cairo','Segoe UI',Tahoma,sans-serif;
+  --s:8px;--ease:200ms ease;--ease-lg:380ms ease;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-        /* x_ = foundational design tokens */
-        :root {
-            --x_color_bg: #ffffff;
-            --x_color_text: #0a0e27;
-            --x_color_text_muted: #6b7280;
-            --x_color_accent: #0066cc;
-            --x_color_accent_dark: #004199;
-            --x_color_accent_light: #f0f4ff;
-            --x_color_border: #e5e7eb;
-            --x_color_code_bg: #f9fafb;
-            
-            --x_font_mono: 'Monaco', 'Menlo', 'Courier New', monospace;
-            --x_font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            --x_font_size_base: 16px;
-            --x_line_height: 1.6;
-            --x_spacing_unit: 8px;
-            --x_transition: 200ms ease-in-out;
-        }
+/* ══════════════════════════════════════════
+   PAGE DIRECTION ARCHITECTURE
+   EN = LTR (default), AR = RTL (full document flip)
+   Layout containers flow naturally with document direction.
+   Only code-level elements (canvas, .cur) are LTR-locked.
+══════════════════════════════════════════ */
+html{direction:ltr}
+html[lang="ar"]{direction:rtl}
 
-        @media (max-width: 640px) {
-            :root {
-                --x_font_size_base: 15px;
-            }
-        }
+/* Code-level elements: always LTR regardless of language */
+.cur,.code,#mat{direction:ltr!important}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* English language spans: force LTR */
+.lv-en{direction:ltr;text-align:left;unicode-bidi:embed}
 
-        html {
-            scroll-behavior: smooth;
-        }
+/* Bilingual paragraph content */
+.dl-p .lv-en{direction:ltr;text-align:left}
+.dl-p .lv-ar{direction:rtl;text-align:right}
 
-        body {
-            font-family: var(--x_font_sans);
-            background: var(--x_color_bg);
-            color: var(--x_color_text);
-            font-size: var(--x_font_size_base);
-            line-height: var(--x_line_height);
-        }
+/* Hero text: left for EN (default), right for AR */
+.hero-name,.hero-sub{text-align:start}
+.hero-role{direction:ltr!important} /* pipe row always LTR */
 
-        a {
-            color: var(--x_color_accent);
-            text-decoration: none;
-            transition: color var(--x_transition);
-        }
+html{scroll-behavior:smooth}
+body{background:var(--w);color:var(--k1);font-family:var(--fm);font-size:15px;line-height:1.7;overflow-x:hidden;min-height:100vh}
+html[lang="ar"] body{font-family:var(--fa)}
 
-        a:hover {
-            color: var(--x_color_accent_dark);
-        }
+/* Bilingual spans: force direction per language */
+.ar-t{direction:rtl}.en-t{direction:ltr}
 
-        /* o_ = component classes */
+/* data-i18n elements in AR: plaintext bidi so Arabic flows RTL */
+html[lang="ar"] [data-i18n]{unicode-bidi:plaintext}
 
-        .o_button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: calc(var(--x_spacing_unit) * 1.5) calc(var(--x_spacing_unit) * 2.5);
-            font-size: 15px;
-            font-weight: 500;
-            border: 2px solid var(--x_color_accent);
-            border-radius: 6px;
-            background: var(--x_color_accent);
-            color: white;
-            cursor: pointer;
-            transition: all var(--x_transition);
-            text-decoration: none;
-            font-family: var(--x_font_sans);
-        }
+a{color:inherit;text-decoration:none}
 
-        .o_button:hover {
-            background: var(--x_color_accent_dark);
-            border-color: var(--x_color_accent_dark);
-            transform: translateY(-1px);
-        }
+/* MATRIX */
+#mat{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-        .o_button--outline {
-            background: transparent;
-            color: var(--x_color_accent);
-        }
+/* SHELL */
+.sh{position:relative;z-index:1;width:min(1100px,calc(100% - 48px));margin:0 auto;padding-bottom:calc(var(--s)*14)}
 
-        .o_button--outline:hover {
-            background: var(--x_color_accent_light);
-        }
+/* ── HEADER ── */
+.hdr{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:calc(var(--s)*2) 0;
+  background:rgba(255,255,255,.93);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid transparent;transition:border-color var(--ease);
+}
+.hdr.sc{border-bottom-color:var(--k7)}
+.logo{display:inline-flex;align-items:center;font-size:14px;font-weight:600;color:var(--k0);min-height:22px}
+/* Nav: centered using auto margins */
+.nav{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:0 auto}
+.nav a{font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--k4);padding:4px 0;white-space:nowrap;position:relative;transition:color var(--ease);display:inline-flex;align-items:center}
+/* Nav items: hidden language span should not affect width */
+.nav .dl>.lv-ar{position:absolute}
+html[lang="ar"] .nav .dl>.lv-ar{position:static}
+html[lang="ar"] .nav .dl>.lv-en{position:absolute}
+.nav a::after{content:"";position:absolute;bottom:0;inset-inline:0;height:1px;background:var(--b1);transform:scaleX(0);transition:transform var(--ease)}
+.nav a:hover{color:var(--k0)}
+.nav a:hover::after{transform:scaleX(1)}
+.nav a.lal-lnk{color:var(--b1);font-weight:600}
+.nav a.lal-lnk:hover{color:var(--b0)}
+/* Language switcher: fixed at top-right, same position in all languages */
+.hdr-right{width:60px;flex-shrink:0}
+.lang{position:fixed;top:0;right:16px;height:48px;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;z-index:200;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:0 8px;border-radius:0 0 6px 6px;direction:ltr}
+.lang-sep{color:var(--k6);user-select:none}
+.lang a{color:var(--k4);padding:3px 6px;border:1px solid transparent;transition:color var(--ease),border-color var(--ease)}
+.lang a.active{color:var(--b1);border-color:var(--b1)}
+.lang a:hover:not(.active){color:var(--k0)}
 
-        .o_tag {
-            display: inline-block;
-            padding: calc(var(--x_spacing_unit) * 0.75) calc(var(--x_spacing_unit) * 1.5);
-            background: var(--x_color_code_bg);
-            border: 1px solid var(--x_color_border);
-            border-radius: 4px;
-            font-size: 13px;
-            font-family: var(--x_font_mono);
-            color: var(--x_color_text);
-            margin-right: var(--x_spacing_unit);
-            margin-bottom: var(--x_spacing_unit);
-        }
+/* PIPE SYNTAX */
+.p{color:var(--b1);font-weight:700}
+.t{color:var(--k0);font-weight:600}
+.s{color:var(--k4);font-size:.92em}
+.row{display:flex;align-items:baseline;gap:7px;line-height:1.5}
+.li{display:flex;align-items:baseline;gap:7px;font-size:14px;color:var(--k3)}
+.li .d{color:var(--b1);font-weight:700;flex-shrink:0}
+.cur{display:inline-block;width:2px;height:.85em;background:var(--b1);margin-inline-start:5px;vertical-align:-.05em;animation:bl 900ms steps(1) infinite}
+@keyframes bl{0%,49%{opacity:1}50%,100%{opacity:0}}
 
-        /* a_ = component logic & containers */
 
-        .a_header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 64px;
-            background: var(--x_color_bg);
-            border-bottom: 1px solid var(--x_color_border);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 calc(var(--x_spacing_unit) * 2);
-        }
+/* ═══════════════════════════════════════════════════════
+    DUAL-LANGUAGE GRID STACKING
+    Both EN and AR content occupy the SAME grid cell.
+    Cell size = max(EN_size, AR_size) — permanently stable.
+    Language switch = CSS opacity crossfade only.
+    Zero JS needed. Zero layout recalculation. Zero movement.
+═══════════════════════════════════════════════════════ */
+/* Container */
+.dl{display:grid;grid-template-areas:'s';align-items:start}
+/* Both language spans in the same cell */
+.dl>.lv{grid-area:s;transition:opacity 180ms ease}
+/* Default (EN): AR hidden, EN visible */
+.dl>.lv-ar{opacity:0;pointer-events:none;user-select:none}
+.dl>.lv-en{opacity:1}
+/* Arabic mode: swap */
+html[lang="ar"] .dl>.lv-ar{opacity:1;pointer-events:auto;user-select:auto}
+html[lang="ar"] .dl>.lv-en{opacity:0;pointer-events:none;user-select:none}
 
-        .a_header__logo {
-            font-size: 18px;
-            font-weight: 700;
-            font-family: var(--x_font_mono);
-            color: var(--x_color_accent);
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
+/* For bilingual paragraph blocks (.ep, .cs-brief, etc.)
+   Same grid stacking — paragraph height = max(EN,AR) always */
+.dl-p{display:grid!important;grid-template-areas:'s';align-items:start}
+.dl-p>.lv{grid-area:s;transition:opacity 180ms ease}
+.dl-p>.lv-ar{opacity:0;pointer-events:none;user-select:none}
+.dl-p>.lv-en{opacity:1}
+html[lang="ar"] .dl-p>.lv-ar{opacity:1;pointer-events:auto;user-select:auto}
+html[lang="ar"] .dl-p>.lv-en{opacity:0;pointer-events:none;user-select:none}
 
-        .a_header__nav {
-            display: flex;
-            gap: calc(var(--x_spacing_unit) * 3);
-            align-items: center;
-        }
 
-        .a_header__nav a {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--x_color_text_muted);
-        }
+/* ── Fast typewriter clip-path reveal for language switch ──
+   Incoming span starts fully clipped → reveals char by char.
+   clip-path doesn't affect layout → zero movement.           */
+.lv{will-change:opacity,clip-path}
 
-        .a_header__nav a:hover {
-            color: var(--x_color_accent);
-        }
 
-        @media (max-width: 640px) {
-            .a_header__nav {
-                gap: calc(var(--x_spacing_unit) * 1.5);
-            }
-            .a_header__nav a {
-                display: none;
-            }
-        }
+/* ── Case Studies: 2-column grid ── */
+#case-studies .g{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--s)*5);align-items:start}
+#case-studies .cs{
+  display:grid;grid-template-columns:1fr;gap:calc(var(--s)*2);
+  padding:calc(var(--s)*4) 0;border-top:1px solid var(--k7);
+}
+#case-studies .cs:last-of-type{border-bottom:1px solid var(--k7)}
+#case-studies .cs:nth-last-of-type(2){border-bottom:1px solid var(--k7)}
+#case-studies .cs-img .ph{aspect-ratio:16/10}
+#case-studies .cs-img{border:1px solid var(--k7);transition:border-color var(--ease);overflow:hidden}
+#case-studies .cs:hover .cs-img{border-color:var(--b1)}
+@media(max-width:760px){
+  #case-studies .g{grid-template-columns:1fr}
+}
 
-        .a_hero {
-            margin-top: 64px;
-            padding: calc(var(--x_spacing_unit) * 8) calc(var(--x_spacing_unit) * 2);
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            min-height: 50vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+/* ── HERO ── */
+.hero{padding:calc(var(--s)*9) 0 calc(var(--s)*8);border-bottom:1px solid var(--k7);max-width:640px}
+.hero-name{font-family:var(--fd);font-size:clamp(28px,3.5vw,42px);font-weight:900;line-height:1.05;letter-spacing:-.025em;color:var(--k0);margin-bottom:calc(var(--s)*1.5);opacity:0;animation:rv 600ms ease 150ms forwards}
+html[lang="ar"] .hero-name{font-family:var(--fa);letter-spacing:0}
+.hero-role{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--k4);margin-bottom:calc(var(--s)*2.5);opacity:0;animation:rv 600ms ease 280ms forwards}
+html[lang="ar"] .hero-role{letter-spacing:.02em;text-transform:none}
+.hero-sub{font-size:14px;color:var(--k3);line-height:1.9;border-inline-start:2px solid var(--b1);padding-inline-start:calc(var(--s)*2.5);margin-bottom:calc(var(--s)*4);opacity:0;animation:rv 600ms ease 400ms forwards}
+.hero-row{display:flex;align-items:center;flex-wrap:wrap;gap:calc(var(--s)*2.5);opacity:0;animation:rv 600ms ease 540ms forwards}
+.status{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:var(--k4)}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:#22C55E;animation:gp 2.2s ease infinite;flex-shrink:0}
+@keyframes gp{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}60%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
 
-        .a_hero__pre {
-            font-family: var(--x_font_mono);
-            font-size: 13px;
-            color: var(--x_color_text_muted);
-            margin-bottom: calc(var(--x_spacing_unit) * 2);
-            letter-spacing: 0.5px;
-        }
+/* BOOK BUTTON — big icon + small label */
+.btn-book{
+  display:inline-flex;flex-direction:column;align-items:center;gap:7px;
+  padding:18px 28px;background:var(--b1);color:var(--w);border:2px solid var(--b1);
+  box-shadow:0 4px 18px rgba(26,86,219,.32);cursor:pointer;min-width:120px;
+  transition:background var(--ease),transform var(--ease),box-shadow var(--ease),border-color var(--ease);
+}
+.btn-book:hover{background:var(--b0);border-color:var(--b0);transform:translateY(-2px);box-shadow:0 10px 28px rgba(26,86,219,.44)}
+.btn-book svg{width:32px;height:32px;flex-shrink:0}
+.btn-book-lbl{font-family:var(--fm);font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+html[lang="ar"] .btn-book-lbl{font-family:var(--fa);letter-spacing:.02em;text-transform:none}
 
-        .a_hero__title {
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: calc(var(--x_spacing_unit) * 2);
-            color: var(--x_color_text);
-        }
+/* ── CONTAINER ── */
+.ct{margin-top:calc(var(--s)*11);opacity:0;transform:translateY(16px);transition:opacity 580ms ease,transform 580ms ease}
+.ct.vis{opacity:1;transform:translateY(0)}
+/* Language switch: smooth slide transition — content shifts slightly when switching */
+.sh{transition:padding-inline-start 450ms ease}
+html[lang="ar"] .sh{padding-inline-start:24px}
+/* During language switch, disable all transitions to prevent jank */
+body.lang-switching *{transition-duration:0ms!important}
+.ct-hd{display:flex;align-items:center;gap:calc(var(--s)*2);padding-bottom:calc(var(--s)*2.5);margin-bottom:calc(var(--s)*5);border-bottom:1px solid var(--k7)}
+.ct-idx{display:none}
+.ct-ttl{display:flex;align-items:baseline;gap:8px;flex:1;font-family:var(--fd);font-size:clamp(22px,3.4vw,40px);font-weight:700;line-height:1.05;letter-spacing:-.025em}
+html[lang="ar"] .ct-ttl{font-family:var(--fa);letter-spacing:0}
+.ct-ttl h2{color:var(--b1)}
+.ct-ttl .sub{font-family:var(--fm);font-size:12px;font-weight:400;color:var(--k5);letter-spacing:.05em;margin-inline-start:2px}
+html[lang="ar"] .ct-ttl .sub{font-family:var(--fa)}
+.g{display:flex;flex-wrap:wrap;gap:calc(var(--s)*3);align-items:flex-start}
 
-        .a_hero__subtitle {
-            font-size: 18px;
-            color: var(--x_color_text_muted);
-            margin-bottom: calc(var(--x_spacing_unit) * 4);
-            max-width: 600px;
-        }
+/* B1 Paragraph */
+.ep{flex:0 0 100%;font-size:14px;line-height:1.95;color:var(--k3)}
 
-        .a_hero__cta {
-            display: flex;
-            gap: calc(var(--x_spacing_unit) * 2);
-            flex-wrap: wrap;
-        }
+/* ── SKILL BARS — compact horizontal grid ── */
+.sk-track-w{flex:0 0 100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:0 20px;margin-top:calc(var(--s)*1.5)}
+.sk-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--k8)}
+.sk-row:last-child{border-bottom:none}
+.sk-nm{width:128px;flex-shrink:0;font-size:11px;font-weight:500;color:var(--k2);display:flex;align-items:center;gap:4px;min-width:0}
+.sk-nm::before{content:'-';color:var(--b1);font-weight:700;flex-shrink:0}
+.sk-nm-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html[lang="ar"] .sk-nm{width:148px}
+.sk-segs{display:flex;gap:2px;width:120px;flex-shrink:0}
+.sk-s{height:7px;flex:1;border-radius:1px;background:var(--k7);transform-origin:inline-start}
+.sk-s.on{background:var(--c,var(--b1))}
+.sk-s.on.anim{animation:sk-in 250ms ease both;animation-delay:var(--d,0ms)}
+@keyframes sk-in{from{background:var(--k6);transform:scaleX(.08);opacity:.3}to{background:var(--c);transform:scaleX(1);opacity:1}}
 
-        @media (max-width: 640px) {
-            .a_hero {
-                padding: calc(var(--x_spacing_unit) * 4) calc(var(--x_spacing_unit) * 2);
-            }
-            .a_hero__title {
-                font-size: 32px;
-            }
-        }
+/* B2 Image — equal height flex column */
+.ei{flex:1 1 260px;min-width:260px;display:flex;flex-direction:column}
+.ei-f{width:100%;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--k7);transition:border-color var(--ease),transform var(--ease-lg),box-shadow var(--ease-lg)}
+.ei:hover .ei-f{border-color:var(--b1);transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.09)}
+.ei-f img{width:100%;height:100%;object-fit:cover;display:block}
+/* B3 Image+meta — equal height flex column */
+.em{flex:1 1 260px;min-width:260px;display:flex;flex-direction:column}
+.em-f{width:100%;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--k7);margin-bottom:calc(var(--s)*1.5);transition:border-color var(--ease),transform var(--ease-lg),box-shadow var(--ease-lg)}
+.em:hover .em-f{border-color:var(--b1);transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.09)}
+.em-f img{width:100%;height:100%;object-fit:cover;display:block}
+.em-desc{font-size:12px;color:var(--k4);line-height:1.65;margin-top:3px;flex:1}
+/* B4 YouTube — equal height flex column */
+.ey{flex:1 1 340px;min-width:340px;display:flex;flex-direction:column}
+.ey-lbl{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--k4);margin-bottom:calc(var(--s)*1.5)}
+html[lang="ar"] .ey-lbl{letter-spacing:.02em;text-transform:none}
+.ey-w{position:relative;width:100%;padding-top:56.25%;border:1px solid var(--k7);overflow:hidden;transition:border-color var(--ease);flex:1}
+.ey:hover .ey-w{border-color:var(--b1)}
+.ey-w iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ey-w .ph{position:absolute;inset:0}
+.ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--k8);font-size:11px;letter-spacing:.07em;color:var(--k5);min-height:40px}
 
-        .a_section {
-            padding: calc(var(--x_spacing_unit) * 6) calc(var(--x_spacing_unit) * 2);
-            max-width: 900px;
-            margin: 0 auto;
-        }
+/* CASE STUDIES */
+.cs-body{display:flex;flex-direction:column;gap:calc(var(--s)*1.5);padding-top:4px}
+.cs-num{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--k4)}
+html[lang="ar"] .cs-num{letter-spacing:.02em;text-transform:none}
+.cs-ttl{font-family:var(--fd);font-size:clamp(18px,2.4vw,26px);font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--k0)}
+html[lang="ar"] .cs-ttl{font-family:var(--fa);letter-spacing:0}
+.cs-brief{font-size:13.5px;line-height:1.9;color:var(--k3)}
+.cs-more{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--b1);margin-top:calc(var(--s)*.5);transition:gap var(--ease),color var(--ease)}
+html[lang="ar"] .cs-more{letter-spacing:.02em;text-transform:none}
+.cs-more:hover{gap:12px;color:var(--b0)}
+.cs-more svg{width:13px;height:13px}
+html[lang="ar"] .cs-more svg{transform:scaleX(-1)}
 
-        .a_section__title {
-            font-size: 24px;
-            font-weight: 600;
-            font-family: var(--x_font_mono);
-            color: var(--x_color_accent);
-            margin-bottom: calc(var(--x_spacing_unit) * 3);
-            letter-spacing: -0.5px;
-        }
+/* ACHIEVEMENTS */
+.ach-g{flex:0 0 100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.ach{padding:calc(var(--s)*4) calc(var(--s)*3.5);border:1px solid var(--k7);margin:-1px 0 0 -1px;position:relative;z-index:0;transition:border-color var(--ease),transform var(--ease),box-shadow var(--ease);cursor:pointer;text-decoration:none;color:inherit;display:block}
+.ach:hover{border-color:var(--b1);z-index:1;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.ach:hover .ach-n{color:var(--b3)}
+.ach-n{font-family:var(--fd);font-size:clamp(48px,5vw,68px);font-weight:900;line-height:.88;letter-spacing:-.05em;color:var(--k7);user-select:none;margin-bottom:calc(var(--s)*1.5);transition:color 300ms ease}
+html[lang="ar"] .ach-n{font-family:var(--fa);letter-spacing:0}
+.ach-ttl{display:flex;align-items:baseline;gap:7px;font-size:13px;font-weight:600;color:var(--b1);margin-bottom:calc(var(--s)*1);line-height:1.3}
+.ach-desc{font-size:12.5px;line-height:1.75;color:var(--k4)}
 
-        .a_grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: calc(var(--x_spacing_unit) * 3);
-        }
+/* FOOTER */
+.foot{margin-top:calc(var(--s)*14);padding-top:calc(var(--s)*5);border-top:1px solid var(--k7);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:calc(var(--s)*3)}
+.foot-copy{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--k4)}
+.soc{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.soc a{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;border:1px solid var(--k7);color:var(--k4);transition:border-color var(--ease),color var(--ease),transform var(--ease)}
+.soc a:hover{border-color:var(--b1);color:var(--b1);transform:translateY(-2px)}
+.soc svg{width:15px;height:15px}
 
-        .a_card {
-            padding: calc(var(--x_spacing_unit) * 3);
-            border: 1px solid var(--x_color_border);
-            border-radius: 8px;
-            transition: all var(--x_transition);
-            background: var(--x_color_bg);
-        }
+/* ANIMATIONS */
+@keyframes rv{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-        .a_card:hover {
-            border-color: var(--x_color_accent);
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
-        }
-
-        .a_card__title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: calc(var(--x_spacing_unit) * 1.5);
-            color: var(--x_color_text);
-        }
-
-        .a_card__desc {
-            font-size: 14px;
-            color: var(--x_color_text_muted);
-            line-height: 1.6;
-        }
-
-        .a_divider {
-            height: 1px;
-            background: var(--x_color_border);
-            margin: calc(var(--x_spacing_unit) * 4) 0;
-        }
-
-        /* h_ = full pages & layouts */
-
-        .h_footer {
-            padding: calc(var(--x_spacing_unit) * 4) calc(var(--x_spacing_unit) * 2);
-            border-top: 1px solid var(--x_color_border);
-            text-align: center;
-            background: var(--x_color_code_bg);
-        }
-
-        .h_footer__content {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .h_footer__text {
-            font-size: 14px;
-            color: var(--x_color_text_muted);
-            margin-bottom: calc(var(--x_spacing_unit) * 2);
-        }
-
-        .h_footer__links {
-            display: flex;
-            gap: calc(var(--x_spacing_unit) * 2);
-            justify-content: center;
-            flex-wrap: wrap;
-            font-size: 14px;
-        }
-
-        /* utility */
-        .u_mono {
-            font-family: var(--x_font_mono);
-            background: var(--x_color_code_bg);
-            padding: 2px 6px;
-            border-radius: 3px;
-        }
-
-        .u_accent {
-            color: var(--x_color_accent);
-        }
-
-        .u_grid__2col {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: calc(var(--x_spacing_unit) * 2);
-        }
-
-        /* Gallery components */
-        .a_gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: calc(var(--x_spacing_unit) * 3);
-            margin-top: calc(var(--x_spacing_unit) * 4);
-        }
-
-        .a_gallery__item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            background: var(--x_color_code_bg);
-            transition: all var(--x_transition);
-            aspect-ratio: 1;
-        }
-
-        .a_gallery__item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
-        }
-
-        .a_gallery__image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform var(--x_transition);
-        }
-
-        .a_gallery__item:hover .a_gallery__image {
-            transform: scale(1.05);
-        }
-
-        .a_gallery__video {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-        }
-
-        .a_gallery__overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background var(--x_transition);
-            border-radius: 8px;
-        }
-
-        .a_gallery__item:hover .a_gallery__overlay {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .a_gallery__icon {
-            font-size: 32px;
-            color: white;
-            opacity: 0;
-            transition: opacity var(--x_transition);
-        }
-
-        .a_gallery__item:hover .a_gallery__icon {
-            opacity: 1;
-        }
-
-        .a_gallery__caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            color: white;
-            padding: calc(var(--x_spacing_unit) * 2);
-            font-size: 13px;
-            font-weight: 500;
-            opacity: 0;
-            transition: opacity var(--x_transition);
-        }
-
-        .a_gallery__item:hover .a_gallery__caption {
-            opacity: 1;
-        }
-    </style>
+/* RESPONSIVE */
+@media(max-width:680px){
+  .sh{width:calc(100% - 32px)}
+  .hdr{gap:calc(var(--s)*1)}
+  .nav a{padding:3px 7px;font-size:10.5px}
+  .hero{padding:calc(var(--s)*7) 0 calc(var(--s)*6);max-width:100%}
+  .ei,.em,.ey{flex:0 0 100%;min-width:0}
+  .ach-g{grid-template-columns:1fr}
+  .sk-row{flex-wrap:wrap;gap:4px 10px}
+  .sk-nm{flex:1 1 120px}
+  .sk-segs{flex:0 0 100%}
+  .lang{right:8px}
+  .hdr-right{width:40px}
+}
+@media(max-width:480px){
+  .hdr{flex-wrap:wrap}
+  .nav{order:3;width:100%;border-top:1px solid var(--k7);padding-top:calc(var(--s)*.75);margin:0}
+  .lang{right:4px;font-size:10px}
+  .hdr-right{display:none}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-    <!-- HEADER -->
-    <header class="a_header">
-        <a href="#" class="a_header__logo">{ s.awal }</a>
-        <nav class="a_header__nav">
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+<canvas id="mat" aria-hidden="true"></canvas>
+<div class="sh">
 
-    <!-- ABOUT -->
-    <div class="a_divider"></div>
-    <section id="about" class="a_section" style="text-align: center; margin-top: 64px;">
-        <h2 class="a_section__title" style="text-align: center;">// about</h2>
-        <p style="max-width: 600px; margin: 0 auto; color: var(--x_color_text_muted); line-height: 1.8;">
-            Founder of <span class="u_accent">Aseel</span>, a visual language for system architecture. Specialist in designing scalable, reliable enterprise solutions with emphasis on organic stability, research-backed approaches, and sustainable growth. 
-            <br><br>
-            Expertise across full-stack development, system architecture, Linux infrastructure, and AI optimization.
-        </p>
-    </section>
+<header class="hdr" id="hdr">
+  <a href="#" class="logo dl" aria-label="Home"><span class="lv lv-en" id="tw-logo"></span><span class="lv lv-ar"><span class="p">|</span> صالح الجبرتي <span class="cur" aria-hidden="true"></span></span></a>
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="#about" class="dl"><span class="lv lv-en"><span class="p">|</span> about</span><span class="lv lv-ar"><span class="p">|</span> عن</span></a>
+    <a href="#work" class="dl"><span class="lv lv-en"><span class="p">|</span> work</span><span class="lv lv-ar"><span class="p">|</span> أعمال</span></a>
+    <a href="#case-studies" class="dl"><span class="lv lv-en"><span class="p">|</span> case studies</span><span class="lv lv-ar"><span class="p">|</span> دراسات حالة</span></a>
+    <a href="#achievements" class="dl"><span class="lv lv-en"><span class="p">|</span> achievements</span><span class="lv lv-ar"><span class="p">|</span> إنجازات</span></a>
+    <a href="https://www.lal.one/" target="_blank" rel="noreferrer" class="lal-lnk dl"><span class="lv lv-en"><span class="p">|</span> lal ↗</span><span class="lv lv-ar"><span class="p">|</span> لال ↗</span></a>
+  </nav>
+  <div class="hdr-right"></div>
+</header>
+<div class="lang" aria-label="Language">
+  <a href="#" id="btn-en" class="active" onclick="setLang('en');return false">en</a>
+  <span class="lang-sep">|</span>
+  <a href="#" id="btn-ar" onclick="setLang('ar');return false">ar</a>
+</div>
 
-    <!-- ACCOMPLISHMENTS -->
-    <div class="a_divider"></div>
-    <section id="work" class="a_section">
-        <h2 class="a_section__title">// accomplishments</h2>
-        <div class="a_grid">
-            <div class="a_card">
-                <div class="a_card__title">Aseel Language</div>
-                <p class="a_card__desc">Visual language for system planning inspired by UML. Unified pattern for database, backend, and frontend architecture.</p>
-                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
-                    <span class="o_tag">Language Design</span>
-                    <span class="o_tag">Architecture</span>
-                </div>
-            </div>
-            <div class="a_card">
-                <div class="a_card__title">System Architecture</div>
-                <p class="a_card__desc">Expert in designing scalable ERP, SaaS, and enterprise solutions. Emphasis on organic stability and cost-effectiveness.</p>
-                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
-                    <span class="o_tag">ERP</span>
-                    <span class="o_tag">SaaS</span>
-                </div>
-            </div>
-            <div class="a_card">
-                <div class="a_card__title">Web Development</div>
-                <p class="a_card__desc">Full-stack expertise: HTML/CSS, JavaScript, PHP, MySQL. Building performant, accessible web applications.</p>
-                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
-                    <span class="o_tag">Frontend</span>
-                    <span class="o_tag">Backend</span>
-                </div>
-            </div>
-            <div class="a_card">
-                <div class="a_card__title">Linux & DevOps</div>
-                <p class="a_card__desc">System administration, infrastructure optimization, and deployment strategies for reliable production environments.</p>
-                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
-                    <span class="o_tag">Linux</span>
-                    <span class="o_tag">Infrastructure</span>
-                </div>
-            </div>
-            <div class="a_card">
-                <div class="a_card__title">AI Optimization</div>
-                <p class="a_card__desc">Research-driven approaches to enhance system performance and intelligence. Focus on practical, sustainable solutions.</p>
-                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
-                    <span class="o_tag">AI</span>
-                    <span class="o_tag">Research</span>
-                </div>
-            </div>
-            <div class="a_card">
-                <div class="a_card__title">Technical Strategy</div>
-                <p class="a_card__desc">Consulting for tech leaders. Clear requirements, practical strategies, and actionable guidance for sustainable growth.</p>
-                <div style="margin-top: calc(var(--x_spacing_unit) * 2);">
-                    <span class="o_tag">Advisory</span>
-                    <span class="o_tag">Strategy</span>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="hero" aria-labelledby="heroName">
+  <h1 class="hero-name" id="heroName" data-i18n="hero_name">Saleh ElGaberty</h1>
+  <p class="hero-role"><span class="p">|</span><span data-i18n="hero_role">System Architect &nbsp;·&nbsp; Founder &nbsp;·&nbsp; Innovator</span></p>
+  <p class="hero-sub" data-i18n="hero_sub">Founder of Aseel — a visual language for system architecture. Building scalable enterprise systems shaped by research, organic stability &amp; sustainable technical growth.</p>
+  <div class="hero-row">
+    <span class="status"><span data-i18n="status">Open to consulting &amp; collaborations</span></span>
+    <a href="https://cal.id/saleh" target="_blank" rel="noreferrer" class="btn-book">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+      <span class="btn-book-lbl" data-i18n="btn_book">Book an Appointment</span>
+    </a>
+  </div>
+</section>
 
-    <!-- IMAGE GALLERY -->
-    <div class="a_divider"></div>
-    <section class="a_section">
-        <h2 class="a_section__title">// gallery</h2>
-        <p style="text-align: center; color: var(--x_color_text_muted); margin-bottom: calc(var(--x_spacing_unit) * 4);">Visual highlights from projects and events</p>
-        <div class="a_gallery">
-            <div class="a_gallery__item">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=400&fit=crop" alt="Gallery item 1" class="a_gallery__image">
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">🔍</div>
-                </div>
-                <div class="a_gallery__caption">Project Architecture</div>
-            </div>
-            <div class="a_gallery__item">
-                <img src="https://images.unsplash.com/photo-1517694712605-da63cf335559?w=400&h=400&fit=crop" alt="Gallery item 2" class="a_gallery__image">
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">🔍</div>
-                </div>
-                <div class="a_gallery__caption">System Design</div>
-            </div>
-            <div class="a_gallery__item">
-                <img src="https://images.unsplash.com/photo-1517694712065-b6b2b4c5f4f5?w=400&h=400&fit=crop" alt="Gallery item 3" class="a_gallery__image">
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">🔍</div>
-                </div>
-                <div class="a_gallery__caption">Development Workflow</div>
-            </div>
-            <div class="a_gallery__item">
-                <img src="https://images.unsplash.com/photo-1517694712028-c3c4af8d0b67?w=400&h=400&fit=crop" alt="Gallery item 4" class="a_gallery__image">
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">🔍</div>
-                </div>
-                <div class="a_gallery__caption">Code Review</div>
-            </div>
-            <div class="a_gallery__item">
-                <img src="https://images.unsplash.com/photo-1517694712085-8ab10b8c0a34?w=400&h=400&fit=crop" alt="Gallery item 5" class="a_gallery__image">
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">🔍</div>
-                </div>
-                <div class="a_gallery__caption">Team Collaboration</div>
-            </div>
-            <div class="a_gallery__item">
-                <img src="https://images.unsplash.com/photo-1517694712001-8eb05c5f5ce1?w=400&h=400&fit=crop" alt="Gallery item 6" class="a_gallery__image">
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">🔍</div>
-                </div>
-                <div class="a_gallery__caption">Innovation Lab</div>
-            </div>
-        </div>
-    </section>
+<!-- C1 — ABOUT -->
+<section class="ct" id="about" aria-labelledby="aboutTtl">
+  <div class="ct-hd">
+    <span class="ct-idx">01</span>
+    <div class="ct-ttl"><span class="p">|</span><h2 id="aboutTtl" data-i18n="s_about">About</h2><span class="sub" data-i18n="s_about_sub">— Saleh ElGaberty</span></div>
+  </div>
+  <div class="g">
+    <p class="ep dl-p">
+      <span class="lv lv-en">Saleh ElGaberty is a system architect and technical innovator whose career is defined by turning complexity into durable, elegant systems. As founder of <strong>Aseel</strong> — the first visual notation language for system architecture — he pioneered new methods for communicating technical design across disciplines. His expertise spans enterprise ERP &amp; SaaS platforms, full-stack development, Linux infrastructure, DevOps, and AI-optimized workflows.</span>
+      <span class="lv lv-ar">صالح الجبرتي مهندس أنظمة ومبتكر تقني تميّزت مسيرته المهنية بتحويل التعقيد إلى أنظمة راسخة وأنيقة. بوصفه مؤسس <strong>أصيل</strong> — أول لغة بصرية لهندسة الأنظمة — رسم طرقًا جديدة للتواصل التقني عبر التخصصات. تشمل خبرته منصات ERP وSaaS المؤسسية والتطوير الشامل وبنية Linux التحتية وعمليات DevOps وسير عمل محسَّن بالذكاء الاصطناعي.</span>
+    </p>
+    <!-- Skills heading -->
+    <div style="flex:0 0 100%">
+      <div class="row"><span class="p">|</span><span class="t" data-i18n="skills_lbl">Core Skills</span><span class="s" data-i18n="skills_sub">— Proficiency Levels</span></div>
+    </div>
+    <!-- Skills bars — built by JS -->
+    <div class="sk-track-w" id="sk-track"></div>
+  </div>
+</section>
 
-    <!-- VIDEO GALLERY -->
-    <div class="a_divider"></div>
-    <section class="a_section">
-        <h2 class="a_section__title">// videos</h2>
-        <p style="text-align: center; color: var(--x_color_text_muted); margin-bottom: calc(var(--x_spacing_unit) * 4);">Tutorials, talks, and technical deep dives</p>
-        <div class="a_gallery">
-            <div class="a_gallery__item">
-                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 1" allowfullscreen></iframe>
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">▶</div>
-                </div>
-            </div>
-            <div class="a_gallery__item">
-                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 2" allowfullscreen></iframe>
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">▶</div>
-                </div>
-            </div>
-            <div class="a_gallery__item">
-                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 3" allowfullscreen></iframe>
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">▶</div>
-                </div>
-            </div>
-            <div class="a_gallery__item">
-                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 4" allowfullscreen></iframe>
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">▶</div>
-                </div>
-            </div>
-            <div class="a_gallery__item">
-                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 5" allowfullscreen></iframe>
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">▶</div>
-                </div>
-            </div>
-            <div class="a_gallery__item">
-                <iframe class="a_gallery__video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video 6" allowfullscreen></iframe>
-                <div class="a_gallery__overlay">
-                    <div class="a_gallery__icon">▶</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- 02 — WORK -->
+<section class="ct" id="work" aria-labelledby="workTtl">
+  <div class="ct-hd">
+    <span class="ct-idx">02</span>
+    <div class="ct-ttl"><span class="p">|</span><h2 id="workTtl" data-i18n="s_work">Work</h2><span class="sub" data-i18n="s_work_sub">— Media &amp; Projects</span></div>
+  </div>
+  <div class="g">
+    <p class="ep dl-p"><span class="lv lv-en">Spanning Aseel language design, enterprise architecture for ERP and SaaS platforms, full-stack development, and AI-optimized engineering workflows. A body of work built on clarity, durability, and the conviction that complex systems deserve elegant communication.</span><span class="lv lv-ar">يمتد نطاق عمله ليشمل تصميم لغة أصيل، وهندسة منظومات ERP وSaaS المؤسسية، والتطوير الشامل، وسير العمل الهندسي المحسَّن بالذكاء الاصطناعي.</span></p>
+    <div class="ei"><div class="ei-f"><div class="ph">image</div></div></div>
+    <div class="ei"><div class="ei-f"><div class="ph" style="background:#fafafa">image</div></div></div>
+    <div class="em">
+      <div class="em-f"><div class="ph">image</div></div>
+      <div class="row"><span class="p">|</span><span class="t" data-i18n="img1_ttl">Aseel Architecture Diagram</span></div>
+      <p class="em-desc" data-i18n="img1_desc">Visual notation system for communicating distributed enterprise architecture without ambiguity.</p>
+    </div>
+    <div class="em">
+      <div class="em-f"><div class="ph" style="background:#fafafa">image</div></div>
+      <div class="row"><span class="p">|</span><span class="t" data-i18n="img2_ttl">ERP System Blueprint</span></div>
+      <p class="em-desc" data-i18n="img2_desc">Modular architecture design for a large-scale enterprise resource planning platform.</p>
+    </div>
+    <div class="ey">
+      <div class="ey-lbl"><span class="p">|</span> <span data-i18n="yt_lbl">Featured Talk — System Architecture Deep Dive</span></div>
+      <div class="ey-w"><div class="ph" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--k8);font-size:11px;letter-spacing:.07em;color:var(--k5);">Video — coming soon</div></div>
+    </div>
+  </div>
+</section>
 
+<!-- C2 — CASE STUDIES -->
+<section class="ct" id="case-studies" aria-labelledby="caseTtl">
+  <div class="ct-hd">
+    <span class="ct-idx">03</span>
+    <div class="ct-ttl"><span class="p">|</span><h2 id="caseTtl" data-i18n="s_cases">Case Studies</h2><span class="sub" data-i18n="s_cases_sub">— Selected Work</span></div>
+  </div>
+  <div class="g">
+    <article class="cs">
+      <div class="cs-img"><div class="ph" style="aspect-ratio:16/10">image</div></div>
+      <div class="cs-body">
+        <div class="cs-num"><span class="p">|</span> <span data-i18n="case_lbl">Case</span> &nbsp; 01</div>
+        <h3 class="cs-ttl"><span class="lv lv-en">Aseel — Visual Language for System Architecture</span><span class="lv lv-ar">أصيل — لغة بصرية لهندسة الأنظمة</span></h3>
+        <p class="cs-brief dl-p"><span class="lv lv-en">Designed and built a proprietary visual notation system enabling cross-functional teams to communicate complex distributed architectures without ambiguity. Adopted by multiple enterprise clients to standardize technical documentation at scale.</span><span class="lv lv-ar">صمّم وأنشأ نظام تدوين بصري خاصًّا يمكّن الفرق متعددة التخصصات من توصيل معماريات موزعة دون لبس. بات معيارًا لعدد من كبرى المؤسسات.</span></p>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px"><div class="li"><span class="d">-</span><span class="lv lv-en">Visual notation for distributed systems</span><span class="lv lv-ar">تدوين بصري للأنظمة الموزعة</span></div><div class="li"><span class="d">-</span><span class="lv lv-en">Adopted across multiple enterprise clients</span><span class="lv lv-ar">مُعتمد لدى عدة مؤسسات كبرى</span></div><div class="li"><span class="d">-</span><span class="lv lv-en">Bridges technical and non-technical stakeholders</span><span class="lv lv-ar">يجسر الهوة بين الفنيين وغير الفنيين</span></div></div>
+        <a href="#" class="cs-more"><span data-i18n="read_more">Read more</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+    <article class="cs">
+      <div class="cs-img"><div class="ph" style="aspect-ratio:16/10;background:#fafafa">image</div></div>
+      <div class="cs-body">
+        <div class="cs-num"><span class="p">|</span> <span data-i18n="case_lbl">Case</span> &nbsp; 02</div>
+        <h3 class="cs-ttl"><span class="lv lv-en">Enterprise ERP Architecture at Regional Scale</span><span class="lv lv-ar">هندسة ERP المؤسسية على نطاق إقليمي</span></h3>
+        <p class="cs-brief dl-p"><span class="lv lv-en">Architected a modular ERP platform serving thousands of concurrent users. Reduced operational overhead by 40% through domain separation and API-first design principles.</span><span class="lv lv-ar">صمّم منصة ERP معيارية تخدم آلاف المستخدمين المتزامنين، محققةً انخفاضًا 40% في التكاليف التشغيلية.</span></p>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px"><div class="li"><span class="d">-</span><span class="lv lv-en">40% reduction in operational overhead</span><span class="lv lv-ar">انخفاض 40% في التكاليف التشغيلية</span></div><div class="li"><span class="d">-</span><span class="lv lv-en">Modular, domain-separated architecture</span><span class="lv lv-ar">معمارية معيارية مفصولة النطاقات</span></div><div class="li"><span class="d">-</span><span class="lv lv-en">Thousands of concurrent users supported</span><span class="lv lv-ar">دعم آلاف المستخدمين المتزامنين</span></div></div>
+        <a href="#" class="cs-more"><span data-i18n="read_more">Read more</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+    <article class="cs">
+      <div class="cs-img"><div class="ph" style="aspect-ratio:16/10">image</div></div>
+      <div class="cs-body">
+        <div class="cs-num"><span class="p">|</span> <span data-i18n="case_lbl">Case</span> &nbsp; 03</div>
+        <h3 class="cs-ttl"><span class="lv lv-en">AI-Optimized Engineering Workflow</span><span class="lv lv-ar">سير العمل الهندسي المحسَّن بالذكاء الاصطناعي</span></h3>
+        <p class="cs-brief dl-p"><span class="lv lv-en">Integrated AI-assisted tooling into a 15-person engineering team's development lifecycle — achieving 30% reduction in sprint cycle time and measurably higher requirement clarity.</span><span class="lv lv-ar">دمج أدوات مدعومة بالذكاء الاصطناعي في دورة تطوير فريق هندسي من 15 شخصًا، محققًا تقليصًا 30% في وقت دورة السبرينت.</span></p>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px"><div class="li"><span class="d">-</span><span class="lv lv-en">30% reduction in sprint cycle time</span><span class="lv lv-ar">انخفاض 30% في وقت دورة السبرينت</span></div><div class="li"><span class="d">-</span><span class="lv lv-en">Automated code review integration</span><span class="lv lv-ar">تكامل مراجعة الكود الآلي</span></div><div class="li"><span class="d">-</span><span class="lv lv-en">Intelligent requirement parsing at scale</span><span class="lv lv-ar">تحليل المتطلبات الذكي على نطاق واسع</span></div></div>
+        <a href="#" class="cs-more"><span data-i18n="read_more">Read more</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </article>
+  </div>
+</section>
 
+<!-- C3 — ACHIEVEMENTS -->
+<section class="ct" id="achievements" aria-labelledby="achTtl">
+  <div class="ct-hd">
+    <span class="ct-idx">04</span>
+    <div class="ct-ttl"><span class="p">|</span><h2 id="achTtl" data-i18n="s_ach">Achievements</h2><span class="sub" data-i18n="s_ach_sub">— Career Highlights</span></div>
+  </div>
+  <div class="g">
+    <div class="ach-g">
+      <a href="#" class="ach"><p class="ach-n" aria-hidden="true">01</p><h3 class="ach-ttl"><span class="p">|</span> <span class="lv lv-en">Founded Aseel Language</span><span class="lv lv-ar">تأسيس لغة أصيل</span></h3><p class="ach-desc dl-p"><span class="lv lv-en">Created the first visual notation language for system architecture — enabling technical communication across disciplines with unprecedented clarity.</span><span class="lv lv-ar">أنشأ أول لغة تدوين بصرية لهندسة الأنظمة، مكّنت التواصل التقني عبر التخصصات بدقة غير مسبوقة.</span></p></a>
+      <a href="#" class="ach"><p class="ach-n" aria-hidden="true">02</p><h3 class="ach-ttl"><span class="p">|</span> <span class="lv lv-en">10+ Enterprise Systems</span><span class="lv lv-ar">+10 أنظمة مؤسسية</span></h3><p class="ach-desc dl-p"><span class="lv lv-en">Architected and shipped over a decade of enterprise-grade systems — ERP platforms, SaaS products, and infrastructure — all still in active production.</span><span class="lv lv-ar">صمّم وسلّم أكثر من عقد من أنظمة المؤسسات الإنتاجية: منصات ERP ومنتجات SaaS وبنى تحتية، كلها في إنتاج فعلي حتى اليوم.</span></p></a>
+      <a href="#" class="ach"><p class="ach-n" aria-hidden="true">03</p><h3 class="ach-ttl"><span class="p">|</span> <span class="lv lv-en">AI Integration Pioneer</span><span class="lv lv-ar">رائد تكامل الذكاء الاصطناعي</span></h3><p class="ach-desc dl-p"><span class="lv lv-en">Among the early adopters of AI-optimized development workflows in the region, demonstrating measurable productivity and quality gains at team scale.</span><span class="lv lv-ar">من الرواد الأوائل في تبني سير العمل المحسَّن بالذكاء الاصطناعي إقليميًا، مع نتائج قابلة للقياس في الإنتاجية والجودة.</span></p></a>
+      <a href="#" class="ach"><p class="ach-n" aria-hidden="true">04</p><h3 class="ach-ttl"><span class="p">|</span> <span class="lv lv-en">Linux Infrastructure Lead</span><span class="lv lv-ar">قائد بنية Linux التحتية</span></h3><p class="ach-desc dl-p"><span class="lv lv-en">High-availability Linux server infrastructure serving thousands of concurrent users with 99.9%+ uptime across production environments.</span><span class="lv lv-ar">بنية تحتية عالية الإتاحة على Linux لآلاف المستخدمين المتزامنين بمعدل تشغيل 99.9%+ في بيئات الإنتاج.</span></p></a>
+      <a href="#" class="ach"><p class="ach-n" aria-hidden="true">05</p><h3 class="ach-ttl"><span class="p">|</span> <span class="lv lv-en">Technical Strategy Advisor</span><span class="lv lv-ar">مستشار استراتيجية تقنية</span></h3><p class="ach-desc dl-p"><span class="lv lv-en">Provided technical direction to multiple product teams — translating business goals into clear system requirements, architecture blueprints, and roadmaps.</span><span class="lv lv-ar">قدّم التوجيه التقني لفرق منتجات متعددة بترجمة الأهداف التجارية إلى متطلبات نظام واضحة ومخططات هندسية وخرائط طريق.</span></p></a>
+      <a href="#" class="ach"><p class="ach-n" aria-hidden="true">06</p><h3 class="ach-ttl"><span class="p">|</span> <span class="lv lv-en">Knowledge &amp; Community</span><span class="lv lv-ar">المعرفة والمجتمع</span></h3><p class="ach-desc dl-p"><span class="lv lv-en">Contributed through GitHub, tutorials, and talks on system design, architecture patterns, and sustainable engineering practices.</span><span class="lv lv-ar">ساهم في المجتمع التقني عبر GitHub والشروحات والمحادثات حول التصميم المعماري والممارسات الهندسية المستدامة.</span></p></a>
+    </div>
+  </div>
+</section>
 
-    <!-- CONTACT -->
-    <div class="a_divider"></div>
-    <section id="contact" class="a_section" style="text-align: center; padding: calc(var(--x_spacing_unit) * 8) calc(var(--x_spacing_unit) * 2);">
-        <h2 class="a_section__title" style="text-align: center;">// let's connect</h2>
-        <p style="color: var(--x_color_text_muted); margin-bottom: calc(var(--x_spacing_unit) * 4);">
-            Open to consulting, collaborations, and technical discussions.
-        </p>
-        <div style="display: flex; gap: calc(var(--x_spacing_unit) * 2); justify-content: center; flex-wrap: wrap;">
-            <a href="mailto:saleh.awal@gmail.com" class="o_button">Email</a>
-            <a href="https://linkedin.com/in/salehawal" target="_blank" class="o_button o_button--outline">LinkedIn</a>
-            <a href="https://github.com/salehawal" target="_blank" class="o_button o_button--outline">GitHub</a>
-        </div>
-    </section>
+<footer class="foot" id="contact">
+  <p class="foot-copy"><span class="p">|</span> <span data-i18n="footer_copy">&copy; 2025 Saleh ElGaberty. All rights reserved.</span></p>
+  <nav class="soc" aria-label="Social links">
+    <a href="mailto:saleh.awal@gmail.com" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+    <a href="https://linkedin.com/in/salehawal" target="_blank" rel="noreferrer" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.98H3.72v10.3h3.22V8.98ZM5.32 4.8a1.86 1.86 0 1 0 0 3.72 1.86 1.86 0 0 0 0-3.72Zm13.68 8.62c0-3.06-1.64-4.48-3.82-4.48a3.3 3.3 0 0 0-3 1.65h-.04V8.98H9.05v10.3h3.22v-5.1c0-1.34.25-2.64 1.92-2.64 1.64 0 1.66 1.54 1.66 2.72v5.02h3.22v-5.86Z"/></svg></a>
+    <a href="https://github.com/salehawal" target="_blank" rel="noreferrer" title="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.1-6-2.6"/><path d="M15 22v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.2a11.5 11.5 0 0 0-6.2 0C6.6 3.3 5.6 3.6 5.6 3.6a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.2 10c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22"/></svg></a>
+    <a href="https://www.facebook.com/salehawal" target="_blank" rel="noreferrer" title="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+    <a href="https://x.com/salehawal" target="_blank" rel="noreferrer" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    <a href="https://www.threads.net/@salehawal" target="_blank" rel="noreferrer" title="Threads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg></a>
+    <a href="https://salehawal.blogspot.com/" target="_blank" rel="noreferrer" title="Blogger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h4a4 4 0 0 1 4 4v1h-2a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h2v1a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z"/><path d="M8 9h4M8 13h8M8 17h6"/></svg></a>
+    <a href="https://cal.id/saleh" target="_blank" rel="noreferrer" title="Book Appointment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></a>
+  </nav>
+</footer>
+</div>
 
+<script>
+/* ══════════════════════════════════════════
+   1. MATRIX — optimised multi-speed
+══════════════════════════════════════════ */
+(function(){
+  var C=document.getElementById('mat');if(!C)return;
+  var X=C.getContext('2d');var RM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var AL=[0.11,0.055,0.028,0.013,0.005];
+  var TC=[[0,1],[1,3],[3,5],[5,10],[10,999]];
+  var TRL=[20,14,8];var SPD=[[2.5,5.5],[6,10.5],[11,17]];
+  var W,H,N,fz,cw,YS,SP,TR,lastT=0,tk=0;
+  function init(){
+    W=C.width=window.innerWidth;H=C.height=window.innerHeight;
+    C.style.width=W+'px';C.style.height=H+'px';
+    fz=Math.max(10,Math.min(13,W/88));cw=fz*1.52;N=Math.ceil(W/cw)|0;
+    YS=new Float32Array(N);SP=new Float32Array(N);TR=new Uint8Array(N);
+    for(var i=0;i<N;i++){var tier=i%3;var r=SPD[tier];SP[i]=r[0]+(Math.abs(Math.sin(i*1.9))*(r[1]-r[0]));TR[i]=tier;YS[i]=-H*((i%11)/11)-fz*(i%19)*2.2;}
+  }
+  function draw(t){
+    if(t-lastT<33){requestAnimationFrame(draw);return;}
+    var dt=Math.min(0.1,(t-lastT)/1000);lastT=t;tk=(tk+1)&1023;
+    X.fillStyle='rgba(255,255,255,0.17)';X.fillRect(0,0,W,H);
+    X.font='400 '+fz+'px "JetBrains Mono",monospace';X.textAlign='center';X.textBaseline='top';
+    for(var ai=0;ai<AL.length;ai++){
+      X.fillStyle='rgba(0,0,0,'+AL[ai]+')';var from=TC[ai][0],to=TC[ai][1];
+      for(var i=0;i<N;i++){
+        if(ai===0){YS[i]+=SP[i]*dt*60;if(YS[i]>H+fz*24)YS[i]=-H*.14-fz*(i%14)*3;}
+        var maxT=TRL[TR[i]];
+        for(var tr=from;tr<to;tr++){if(tr>=maxT)break;var y=YS[i]-tr*fz*1.22;if(y<-fz||y>H+fz)continue;X.fillText(((i*7+tr*3+tk)>>2)&1?'1':'0',i*cw+cw*.5,y);}
+      }
+    }
+    if(!RM)requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);init();
+  if(!RM)requestAnimationFrame(draw);
+})();
+
+/* ══════════════════════════════════════════
+   2. SKILLS DATA & BUILDER
+══════════════════════════════════════════ */
+var SKILLS=[
+  {en:'System Architecture',ar:'\u0647\u0646\u062f\u0633\u0629 \u0627\u0644\u0623\u0646\u0638\u0645\u0629',     fill:11,cat:'blue', lv_en:'Expert',   lv_ar:'\u062e\u0628\u064a\u0631'},
+  {en:'Aseel Language',      ar:'\u0644\u063a\u0629 \u0623\u0635\u064a\u0644',                                  fill:10,cat:'blue', lv_en:'Master',   lv_ar:'\u0645\u062a\u0642\u0646'},
+  {en:'Full-Stack Dev',      ar:'\u062a\u0637\u0648\u064a\u0631 \u0634\u0627\u0645\u0644',                      fill:10,cat:'green',lv_en:'Master',   lv_ar:'\u0645\u062a\u0642\u0646'},
+  {en:'HTML · CSS · JS',     ar:'HTML \u00b7 CSS \u00b7 JS',                                                   fill:12,cat:'green',lv_en:'Expert',   lv_ar:'\u062e\u0628\u064a\u0631'},
+  {en:'PHP & MySQL',         ar:'PHP \u0648 MySQL',                                                            fill:10,cat:'green',lv_en:'Master',   lv_ar:'\u0645\u062a\u0642\u0646'},
+  {en:'Linux & DevOps',      ar:'Linux \u0648 DevOps',                                                        fill:9, cat:'red',  lv_en:'Advanced', lv_ar:'\u0645\u062a\u0642\u062f\u0645'},
+  {en:'AI Optimization',     ar:'\u062a\u062d\u0633\u064a\u0646 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a',fill:8,cat:'red',lv_en:'Senior',lv_ar:'\u0645\u062d\u062a\u0631\u0641'},
+  {en:'ERP & SaaS Design',   ar:'\u062a\u0635\u0645\u064a\u0645 ERP \u0648 SaaS',                              fill:9, cat:'gray', lv_en:'Advanced', lv_ar:'\u0645\u062a\u0642\u062f\u0645'},
+  {en:'Technical Strategy',  ar:'\u0627\u0644\u0627\u0633\u062a\u0631\u0627\u062a\u064a\u062c\u064a\u0629 \u0627\u0644\u062a\u0642\u0646\u064a\u0629',fill:9,cat:'blue',lv_en:'Advanced',lv_ar:'\u0645\u062a\u0642\u062f\u0645'},
+  {en:'Team Leadership',     ar:'\u0642\u064a\u0627\u062f\u0629 \u0627\u0644\u0641\u0631\u0642',               fill:9, cat:'gray', lv_en:'Advanced', lv_ar:'\u0645\u062a\u0642\u062f\u0645'},
+];
+var CAT_C={blue:'#1a56db',green:'#15803d',red:'#b91c1c',gray:'#374151'};
+
+function buildSkills(lang,animate){
+  var t=document.getElementById('sk-track');if(!t)return;
+  t.innerHTML='';
+  SKILLS.forEach(function(sk,row){
+    var r=document.createElement('div');r.className='sk-row';
+    /* Name — split into wrapper + text span for ellipsis */
+    var n=document.createElement('span');n.className='sk-nm';
+    var nt=document.createElement('span');nt.className='sk-nm-t';
+    nt.textContent=lang==='ar'?sk.ar:sk.en;n.appendChild(nt);r.appendChild(n);
+    /* Segments — fixed 120px via CSS */
+    var sg=document.createElement('span');sg.className='sk-segs';
+    for(var i=0;i<12;i++){
+      var s=document.createElement('span');s.className='sk-s';
+      if(i<sk.fill){
+        s.classList.add('on');
+        s.style.setProperty('--c',CAT_C[sk.cat]);
+        if(animate){s.classList.add('anim');s.style.setProperty('--d',(row*45+i*18)+'ms');}
+      }
+      sg.appendChild(s);
+    }
+    r.appendChild(sg);
+    /* no level badge */
+    t.appendChild(r);
+  });
+}
+/* Initial build with animation on scroll-into-view */
+buildSkills('en',false);
+(function(){
+  if(!('IntersectionObserver' in window)){buildSkills('en',true);return;}
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){buildSkills(currentLang,true);obs.unobserve(en.target);}
+    });
+  },{threshold:0.15});
+  var sk=document.getElementById('sk-track');if(sk)obs.observe(sk);
+})();
+
+/* ══════════════════════════════════════════
+   3. PIPE RENDERER
+══════════════════════════════════════════ */
+function renderPipe(el,raw,addCur){
+  el.innerHTML='';
+  var parts=raw.split('|').map(function(p){return p.trim();}).filter(Boolean);
+  if(raw.trim().charAt(0)==='|'){
+    var ps=document.createElement('span');ps.className='p';ps.textContent='|';el.appendChild(ps);
+    if(parts.length){
+      el.appendChild(document.createTextNode(' '));
+      el.appendChild(Object.assign(document.createElement('span'),{className:'t',textContent:parts[0]}));
+      if(parts.length>1){el.appendChild(document.createTextNode(' '));el.appendChild(Object.assign(document.createElement('span'),{className:'p',textContent:'|'}));el.appendChild(document.createTextNode(' '));el.appendChild(Object.assign(document.createElement('span'),{className:'s',textContent:parts.slice(1).join(' | ')}));}
+    }
+  }else{el.textContent=raw;}
+  if(addCur){var c=document.createElement('span');c.className='cur';c.setAttribute('aria-hidden','true');el.appendChild(c);}
+}
+
+/* ══════════════════════════════════════════
+   4. INITIAL TYPEWRITER
+══════════════════════════════════════════ */
+var TW={
+  en:{logo:'| Saleh ElGaberty'},
+  ar:{logo:'| صالح الجبرتي'}
+};
+function startTypewriter(){
+  var IDS=['logo'];
+  var totalCh=IDS.reduce(function(s,k){return s+TW.en[k].length;},0);
+  var CD=Math.max(6,600/Math.max(totalCh,1));
+  var delay=50;
+  IDS.forEach(function(k){
+    var el=document.getElementById('tw-'+k);if(!el)return;
+    var raw=TW.en[k],keep=(k==='logo');
+    var cur=document.createElement('span');cur.className='cur';cur.setAttribute('aria-hidden','true');
+    el.innerHTML='';el.appendChild(cur);
+    setTimeout(function(r,kp,e,c){return function(){var i=0;(function t(){renderPipe(e,r.slice(0,i),kp||i<r.length);if(i<r.length){i++;setTimeout(t,CD);}else if(!kp&&c.parentNode)c.parentNode.removeChild(c);})();};}(raw,keep,el,cur),delay);
+    delay+=raw.length*CD+80;
+  });
+}
+
+/* ══════════════════════════════════════════
+   5. i18n STRINGS
+══════════════════════════════════════════ */
+var I18N={
+  en:{
+    hero_name:'Saleh ElGaberty',hero_role:'System Architect \u00b7 Founder \u00b7 Innovator',
+    hero_sub:'Founder of Aseel \u2014 a visual language for system architecture. Building scalable enterprise systems shaped by research, organic stability & sustainable technical growth.',
+    status:'Open to consulting & collaborations',btn_book:'Book an Appointment',
+    s_about:'About',s_about_sub:'\u2014 Saleh ElGaberty',skills_lbl:'Core Skills',skills_sub:'\u2014 Proficiency Levels',
+    s_work:'Work',s_work_sub:'\u2014 Media & Projects',
+    img1_ttl:'Aseel Architecture Diagram',img1_desc:'Visual notation system for communicating distributed enterprise architecture without ambiguity.',
+    img2_ttl:'ERP System Blueprint',img2_desc:'Modular architecture design for a large-scale enterprise resource planning platform.',
+    yt_lbl:'Featured Talk \u2014 System Architecture Deep Dive',
+    s_cases:'Case Studies',s_cases_sub:'\u2014 Selected Work',case_lbl:'Case',read_more:'Read more',
+    s_ach:'Achievements',s_ach_sub:'\u2014 Career Highlights',
+    footer_copy:'\u00a9 2025 Saleh ElGaberty. All rights reserved.'
+  },
+  ar:{
+    hero_name:'\u0635\u0627\u0644\u062d \u0627\u0644\u062c\u0628\u0631\u062a\u064a',
+    hero_role:'\u0645\u0647\u0646\u062f\u0633 \u0623\u0646\u0638\u0645\u0629 \u00b7 \u0645\u0624\u0633\u0633 \u00b7 \u0645\u0628\u062a\u0643\u0631',
+    hero_sub:'\u0645\u0624\u0633\u0633 \u0623\u0635\u064a\u0644 \u2014 \u0623\u0648\u0644 \u0644\u063a\u0629 \u0628\u0635\u0631\u064a\u0629 \u0644\u0647\u0646\u062f\u0633\u0629 \u0627\u0644\u0623\u0646\u0638\u0645\u0629. \u0628\u0646\u0627\u0621 \u0623\u0646\u0638\u0645\u0629 \u0645\u0624\u0633\u0633\u064a\u0629 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u062a\u0648\u0633\u0639 \u0645\u062f\u0641\u0648\u0639\u0629 \u0628\u0627\u0644\u0628\u062d\u062b \u0648\u0627\u0644\u0627\u0633\u062a\u0642\u0631\u0627\u0631 \u0648\u0627\u0644\u0646\u0645\u0648 \u0627\u0644\u062a\u0642\u0646\u064a \u0627\u0644\u0645\u0633\u062a\u062f\u0627\u0645.',
+    status:'\u0645\u062a\u0627\u062d \u0644\u0644\u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0648\u0627\u0644\u062a\u0639\u0627\u0648\u0646',btn_book:'\u0627\u062d\u062c\u0632 \u0645\u0648\u0639\u062f',
+    s_about:'\u0639\u0646',s_about_sub:'\u2014 \u0635\u0627\u0644\u062d \u0627\u0644\u062c\u0628\u0631\u062a\u064a',skills_lbl:'\u0627\u0644\u0645\u0647\u0627\u0631\u0627\u062a \u0627\u0644\u0623\u0633\u0627\u0633\u064a\u0629',skills_sub:'\u2014 \u0645\u0633\u062a\u0648\u064a\u0627\u062a \u0627\u0644\u0625\u062a\u0642\u0627\u0646',
+    s_work:'\u0623\u0639\u0645\u0627\u0644',s_work_sub:'\u2014 \u0648\u0633\u0627\u0626\u0637 \u0648\u0645\u0634\u0627\u0631\u064a\u0639',
+    img1_ttl:'\u0645\u062e\u0637\u0637 \u0645\u0639\u0645\u0627\u0631\u064a\u0629 \u0623\u0635\u064a\u0644',img1_desc:'\u0646\u0638\u0627\u0645 \u062a\u062f\u0648\u064a\u0646 \u0628\u0635\u0631\u064a \u0644\u062a\u0648\u0635\u064a\u0644 \u0627\u0644\u0645\u0639\u0645\u0627\u0631\u064a\u0629 \u0627\u0644\u0645\u0648\u0632\u0639\u0629 \u062f\u0648\u0646 \u0644\u0628\u0633.',
+    img2_ttl:'\u0645\u062e\u0637\u0637 \u0646\u0638\u0627\u0645 ERP',img2_desc:'\u062a\u0635\u0645\u064a\u0645 \u0645\u0639\u0645\u0627\u0631\u064a \u0645\u0639\u064a\u0627\u0631\u064a \u0644\u0645\u0646\u0635\u0629 \u062a\u062e\u0637\u064a\u0637 \u0645\u0648\u0627\u0631\u062f \u0645\u0624\u0633\u0633\u064a\u0629 \u0643\u0628\u064a\u0631\u0629.',
+    yt_lbl:'\u0645\u062d\u0627\u062f\u062b\u0629 \u0628\u0627\u0631\u0632\u0629 \u2014 \u063a\u0648\u0635 \u0639\u0645\u064a\u0642 \u0641\u064a \u0647\u0646\u062f\u0633\u0629 \u0627\u0644\u0623\u0646\u0638\u0645\u0629',
+    s_cases:'\u062f\u0631\u0627\u0633\u0627\u062a \u062d\u0627\u0644\u0629',s_cases_sub:'\u2014 \u0623\u0639\u0645\u0627\u0644 \u0645\u062e\u062a\u0627\u0631\u0629',case_lbl:'\u062d\u0627\u0644\u0629',read_more:'\u0627\u0642\u0631\u0623 \u0627\u0644\u0645\u0632\u064a\u062f',
+    s_ach:'\u0625\u0646\u062c\u0627\u0632\u0627\u062a',s_ach_sub:'\u2014 \u0623\u0628\u0631\u0632 \u0627\u0644\u0645\u0633\u064a\u0631\u0629',
+    footer_copy:'\u00a9 2025 \u0635\u0627\u0644\u062d \u0627\u0644\u062c\u0628\u0631\u062a\u064a. \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0642\u0648\u0642 \u0645\u062d\u0641\u0648\u0638\u0629.'
+  }
+};
+
+/* ══════════════════════════════════════════
+   6. LANGUAGE SWITCH
+   Architecture: CSS grid-stacking (both languages always in DOM).
+   initDualLang()     — wraps [data-i18n] in .lv-en/.lv-ar spans.
+   lockMinDimensions() — pins min-width/min-height after grid measures max(EN,AR).
+   setLang()           — toggles html[lang] (CSS opacity) + clip-path typewriter.
+══════════════════════════════════════════ */
+var currentLang='en';
+
+/* ── initDualLang ─────────────────────────────────────────────────
+   Converts every [data-i18n] element into a grid-stacked dual-lang
+   container. Cell size = max(EN, AR) by CSS grid — permanently.    */
+function initDualLang(){
+  var t=I18N;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key=el.getAttribute('data-i18n');
+    var enText=t.en[key],arText=t.ar[key];
+    if(!enText||!arText)return;
+    var enSpan=document.createElement('span');
+    enSpan.className='lv lv-en';enSpan.textContent=enText;
+    var arSpan=document.createElement('span');
+    arSpan.className='lv lv-ar';arSpan.textContent=arText;
+    el.innerHTML='';
+    el.classList.add('dl');
+    el.appendChild(enSpan);
+    el.appendChild(arSpan);
+  });
+  /* Lock dimensions after both langs are rendered */
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    lockMinDimensions();
+  });});
+}
+
+/* ── lockMinDimensions ────────────────────────────────────────────
+   Lock min-width on elements that cause SIBLING movement when they
+   resize (nav items, logo). Intentionally skip h2 titles, btn-book,
+   and btn-book-lbl — these should adapt naturally to their content. */
+function lockMinDimensions(){
+  /* Nav links + logo: these sit in a flex row — width changes shift siblings */
+  document.querySelectorAll('.nav a, .logo, #tw-logo').forEach(function(el){
+    var r=el.getBoundingClientRect();
+    if(r.width>2)  el.style.minWidth  = Math.ceil(r.width)+'px';
+    if(r.height>2) el.style.minHeight = Math.ceil(r.height)+'px';
+  });
+  /* Hero layout row: height stability (status + book button row) */
+  document.querySelectorAll('.hero-row,.hero-role').forEach(function(el){
+    var r=el.getBoundingClientRect();
+    if(r.height>2) el.style.minHeight = Math.ceil(r.height)+'px';
+  });
+  /* dl-p paragraphs: height stability so sections don't jump */
+  document.querySelectorAll('.dl-p').forEach(function(el){
+    var r=el.getBoundingClientRect();
+    if(r.height>2) el.style.minHeight = Math.ceil(r.height)+'px';
+  });
+  /* NOTE: h2, .btn-book, .btn-book-lbl, .ct-ttl intentionally NOT locked
+     so they adapt to their content width naturally.                      */
+}
+
+/* ── setLang ──────────────────────────────────────────────────────
+   1. Toggle html[lang] → CSS transitions handle outgoing opacity.
+   2. Clip-path typewriter on all incoming spans (fast, staggered).
+   3. Rebuild skills for the new language.                          */
+function setLang(newLang){
+  if(newLang===currentLang)return;
+  currentLang=newLang;
+
+  /* Toggle state */
+  document.documentElement.lang=newLang;
+  document.getElementById('btn-en').classList.toggle('active',newLang==='en');
+  document.getElementById('btn-ar').classList.toggle('active',newLang==='ar');
+
+  /* Brief transition class for smooth slide */
+  document.body.classList.add('lang-switching');
+  setTimeout(function(){document.body.classList.remove('lang-switching');},500);
+
+  /* Fast typewriter clip-path reveal on incoming spans */
+  var inSpans=document.querySelectorAll('.lv-'+newLang);
+  inSpans.forEach(function(el,idx){
+    var txt=el.textContent||'';
+    var chars=Math.max(5,Math.min(txt.length,25)); /* 5–25 steps */
+    var dur=chars*16;  /* 16ms per char = crisp fast typewriter */
+    var lag=Math.min(idx*16,160); /* stagger capped at 160ms total */
+
+    /* Clip to invisible — direction-aware start position */
+    var isAR=(newLang==='ar');
+    el.style.transition='none';
+    /* AR: start clipped from LEFT (right→left reveal) */
+    /* EN: start clipped from RIGHT (left→right reveal) */
+    el.style.clipPath=isAR?'inset(0 0 0 100%)':'inset(0 100% 0 0)';
+
+    /* After stagger: reveal left→right in typewriter steps */
+    setTimeout(function(){
+      el.style.transition='clip-path '+dur+'ms steps('+chars+',end)';
+      el.style.clipPath='inset(0 0% 0 0)';
+      /* Release inline style after animation completes */
+      setTimeout(function(){
+        el.style.transition='';
+        el.style.clipPath='';
+      },dur+40);
+    },lag);
+  });
+
+  buildSkills(newLang,true);
+}
+
+/* ── Page load init ─────────────────────────────────────────────── */
+(function(){
+  function init(){
+    initDualLang();
+    /* Start typewriter after dual-lang is ready to avoid span conflicts */
+    startTypewriter();
+  }
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(init);}
+  else{setTimeout(init,500);}
+})();
+
+/* ══════════════════════════════════════════
+   7. SCROLL REVEAL & STICKY HEADER
+══════════════════════════════════════════ */
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');obs.unobserve(en.target);}});},{threshold:0.06,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.ct').forEach(function(el,i){el.style.transitionDelay=(i*55)+'ms';obs.observe(el);});
+})();
+(function(){var h=document.getElementById('hdr');window.addEventListener('scroll',function(){h.classList.toggle('sc',window.scrollY>10);},{passive:true});})();
+</script>
 </body>
 </html>
