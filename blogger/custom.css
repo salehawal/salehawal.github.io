@@ -1,3 +1,119 @@
+/* ==========================================================================
+   UNIFIED RIGHT-ALIGNMENT & OVERRIDES FOR LAL.ONE (ALIGNED SHARING POPUP)
+   ========================================================================== */
+
+/* 1. Main Navigation Menu Alignment */
+#PageList1 .container {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+}
+#PageList1 ul.tabs {
+    display: flex !important;
+    justify-content: flex-end !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+#PageList1 ul.tabs li.overflowable-item {
+    float: none !important;
+}
+
+/* 2. Main Page Title / Blog Header */
+.header-inner, 
+.titlewrapper, 
+.Header h1, 
+.Header .description {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* 3. Post Titles */
+.post-title, 
+.entry-title, 
+.post-title a {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+/* 4. Push Native Share Button Container to Right Edge */
+.post-share-buttons-container,
+button.sharing-button.touch-icon-button {
+    float: right !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+/* ==========================================================================
+   5. POPUP WINDOW LAYOUT STABILIZATION (SHIFTED TO THE RIGHT SIDE)
+   ========================================================================== */
+
+ul.share-buttons.btns-init {
+    display: block !important;
+    z-index: 999999 !important;
+    
+    /* Box Structural Design Properties */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    padding: 8px 0 !important;
+    background: #ffffff !important;
+    width: 180px !important;
+    box-sizing: border-box !important;
+    border-radius: 4px !important;
+    
+    /* THE MOVEMENT FIX:
+       Increased from 40px to 190px. This completely pushes the box out from 
+       underneath the left side and locks it fully onto the right side of the icon.
+    */
+    margin-left: 190px !important;
+    transform: none !important;
+}
+
+/* Structural item consistency */
+ul.share-buttons.btns-init li {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* 2-column Grid alignment container set to LTR (Icon Left, Text Right) */
+ul.share-buttons.btns-init li .sharing-platform-button {
+    display: grid !important;
+    grid-template-columns: 24px 1fr !important; 
+    grid-gap: 12px !important;                  
+    align-items: center !important;
+    padding: 10px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    direction: ltr !important;                 
+}
+
+/* Places individual graphic icons firmly into column 1 (Left Side) */
+ul.share-buttons.btns-init li svg {
+    grid-column: 1 !important;
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+/* Places text titles firmly into column 2 (Right Side of the icon) left-aligned */
+ul.share-buttons.btns-init li .platform-sharing-text {
+    grid-column: 2 !important;
+    font-size: 14px !important;
+    line-height: 24px !important;
+    color: #333333 !important;
+    text-align: left !important;               
+    white-space: nowrap !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    display: block !important;
+}
+
 pre {
 	padding: 10px;
     background-color: #222;
