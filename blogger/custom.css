@@ -1,297 +1,256 @@
 /* ==========================================================================
    General
    ========================================================================== */
-
-pre {
-	padding: 10px;
-    background-color: #222;
-}
-
-code {
-	padding: 10px;
-	margin-left: -9px;
-	color: #a6a4a4;
-	background-color: #222;
-}
-.header-widget p{
-	font-size: 16px;
-}
+.header-widget p { font-size: 16px; }
 
 /* ==========================================================================
-   UNIFIED RIGHT-ALIGNMENT & OVERRIDES FOR LAL.ONE (ALIGNED SHARING POPUP)
+   Navigation
    ========================================================================== */
-
-/* 1. Main Navigation Menu Alignment */
 #PageList1 .container {
-    display: flex !important;
-    justify-content: flex-end !important;
-    width: 100% !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
 }
 #PageList1 ul.tabs {
-    display: flex !important;
-    justify-content: flex-end !important;
-    padding: 0 !important;
-    margin: 0 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
-#PageList1 ul.tabs li.overflowable-item {
-    float: none !important;
+#PageList1 ul.tabs li.overflowable-item { float: none !important; }
+
+/* ==========================================================================
+   Blog Header & Post Titles (RTL)
+   ========================================================================== */
+.header-inner, .titlewrapper, .Header h1, .Header .description,
+.post-title, .entry-title, .post-title a {
+  direction: rtl !important;
+  text-align: right !important;
 }
 
-/* 2. Main Page Title / Blog Header */
-.header-inner, 
-.titlewrapper, 
-.Header h1, 
-.Header .description {
-    direction: rtl !important;
-    text-align: right !important;
-}
-
-/* 3. Post Titles */
-.post-title, 
-.entry-title, 
-.post-title a {
-    direction: rtl !important;
-    text-align: right !important;
-}
-
-/* 4. Push Native Share Button Container to Right Edge */
+/* ==========================================================================
+   Share Button
+   ========================================================================== */
 .post-share-buttons-container,
 button.sharing-button.touch-icon-button {
-    float: right !important;
-    margin-right: auto !important;
-    margin-left: 0 !important;
+  float: right !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
 }
-
-/* ==========================================================================
-   POPUP WINDOW LAYOUT STABILIZATION (SHIFTED TO THE RIGHT SIDE)
-   ========================================================================== */
 
 ul.share-buttons.btns-init {
-    display: block !important;
-    z-index: 999999 !important;
-    
-    /* Box Structural Design Properties */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
-    padding: 8px 0 !important;
-    background: #ffffff !important;
-    width: 180px !important;
-    box-sizing: border-box !important;
-    border-radius: 4px !important;
-    
-    /* THE MOVEMENT FIX:
-       Increased from 40px to 190px. This completely pushes the box out from 
-       underneath the left side and locks it fully onto the right side of the icon.
-    */
-    margin-left: 190px !important;
-    transform: none !important;
+  display: block !important;
+  z-index: 999999 !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+  padding: 8px 0 !important;
+  background: #fff !important;
+  width: 180px !important;
+  box-sizing: border-box !important;
+  border-radius: 4px !important;
+  margin-left: 190px !important;
+  transform: none !important;
 }
-
-/* Structural item consistency */
 ul.share-buttons.btns-init li {
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    float: none !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
 }
-
-/* 2-column Grid alignment container set to LTR (Icon Left, Text Right) */
 ul.share-buttons.btns-init li .sharing-platform-button {
-    display: grid !important;
-    grid-template-columns: 24px 1fr !important; 
-    grid-gap: 12px !important;                  
-    align-items: center !important;
-    padding: 10px 16px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    text-decoration: none !important;
-    cursor: pointer !important;
-    direction: ltr !important;                 
+  display: grid !important;
+  grid-template-columns: 24px 1fr !important;
+  grid-gap: 12px !important;
+  align-items: center !important;
+  padding: 10px 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  direction: ltr !important;
 }
-
-/* Places individual graphic icons firmly into column 1 (Left Side) */
 ul.share-buttons.btns-init li svg {
-    grid-column: 1 !important;
-    width: 24px !important;
-    height: 24px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
+  grid-column: 1 !important;
+  width: 24px !important;
+  height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
 }
-
-/* Places text titles firmly into column 2 (Right Side of the icon) left-aligned */
 ul.share-buttons.btns-init li .platform-sharing-text {
-    grid-column: 2 !important;
-    font-size: 14px !important;
-    line-height: 24px !important;
-    color: #333333 !important;
-    text-align: left !important;               
-    white-space: nowrap !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-    display: block !important;
+  grid-column: 2 !important;
+  font-size: 14px !important;
+  line-height: 24px !important;
+  color: #333 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
 }
 
-.video-container {
+/* ==========================================================================
+   YouTube Embed
+   ========================================================================== */
+/* =========================
+   YTL Auto Detect Embed System
+   ========================= */
+
+.ytl {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  height: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  background: #000;
+  border-radius: 8px;
   overflow: hidden;
-  max-width: 100%;
-  margin-bottom: 20px; /* space between videos */
+  outline: 1px solid rgba(156, 139, 139, 0.15);
+  aspect-ratio: 16 / 9; /* Modern replacement for the padding-top hack */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.video-container iframe {
+.ytl iframe,
+.ytl .ytl-thumb,
+.ytl .ytl-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  border: 0;
 }
 
+.ytl .ytl-thumb {
+  object-fit: cover;
+  border: 0;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Subtle image zoom and darken effect to make the play button pop */
+.ytl:hover .ytl-thumb {
+  transform: scale(1.03);
+  filter: brightness(0.85);
+}
+
+.ytl-overlay {
+  cursor: pointer;
+  background: transparent;
+  z-index: 2;
+}
+
+.ytl-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(33, 33, 33, 0.85); /* Standard dark YouTube button */
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+/* Switch to standard YouTube red on hover */
+.ytl-overlay:hover .ytl-play {
+  background: #ff0000;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.ytl-play::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent #fff;
+}
+
+.ytl-youtube {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.ytl-youtube:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.ytl-youtube svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  opacity: 0.95;
+}
+
+.ytl iframe {
+  border: 0;
+  z-index: 3;
+}
 
 /* ==========================================================================
-   Products Grid Layout
+   Products Grid
    ========================================================================== */
-  .product-grid {
-    display: grid;
-    gap: 20px;
-    padding: 15px 0;
-    font-family: Arial, sans-serif;
-    width: 100%;
-  }
+.product-grid {
+  display: grid;
+  gap: 20px;
+  padding: 15px 0;
+  font-family: Arial, sans-serif;
+  width: 100%;
+}
+.product-grid.count-1 { grid-template-columns: 1fr; }
+.product-grid.count-2 {
+  grid-template-columns: repeat(2, minmax(250px, 400px));
+  justify-content: center;
+}
+.product-grid.count-3-plus { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 
-  /* Condition 1: If there is exactly 1 item, expand to fill the row */
-  .product-grid.count-1 {
-    grid-template-columns: 1fr;
-  }
-
-  /* Condition 2: If there are exactly 2 items, center them side-by-side */
-  .product-grid.count-2 {
-    grid-template-columns: repeat(2, minmax(250px, 400px));
-    justify-content: center;
-  }
-
-  /* Condition 3: If there are 3 or more items, use the classic auto-fill grid */
-  .product-grid.count-3-plus {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-
-  .product-block {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-  }
-  .product-block:hover {
-    transform: translateY(-3px);
-  }
-  .product-block a {
-    text-decoration: none;
-    color: #333;
-  }
-  .product-thumb-wrap {
-    width: 100%;
-    height: 240px; /* Slightly taller to accommodate full-width single views beautifully */
-    background: #f5f5f5;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .product-thumb {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .product-info {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex-grow: 1;
-  }
-  .block-title {
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #e91e63;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-  }
-  .post-title {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.4;
-    margin: 0;
-    color: #222;
-  }
-
+.product-block {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.product-block:hover { transform: translateY(-3px); }
+.product-block a { text-decoration: none; color: #333; }
+.product-thumb-wrap {
+  width: 100%; height: 240px;
+  background: #f5f5f5; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.product-thumb { width: 100%; height: 100%; object-fit: cover; }
+.product-info { padding: 15px; display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+.block-title { font-size: 14px; text-transform: uppercase; color: #e91e63; font-weight: bold; letter-spacing: 0.5px; }
+.post-title { font-size: 16px; font-weight: 600; line-height: 1.4; margin: 0; color: #222; }
 
 /* ==========================================================================
-   Youtube Video Embed
+   Code Blocks
    ========================================================================== */
-  .lite-yt-box {
-    background-color: #000;
-    position: relative;
-    display: block;
-    contain: content;
-    background-position: center;
-    background-size: cover;
-    cursor: pointer;
-    max-width: 100%;
-    aspect-ratio: 16/9;
-  }
-  .lite-yt-box::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    background-image: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
-    transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-  }
-  .lite-yt-box .lite-play-btn {
-    width: 68px;
-    height: 48px;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    z-index: 1;
-    background-color: #212121;
-    opacity: 0.8;
-    border-radius: 14% / 20%;
-    transition: all 0.25s cubic-bezier(0, 0, 0.2, 1);
-    border: none;
-    cursor: pointer;
-  }
-  .lite-yt-box:hover .lite-play-btn {
-    background-color: #f00;
-    opacity: 1;
-  }
-  .lite-yt-box .lite-play-btn::before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 11px 0 11px 20px;
-    border-color: transparent transparent transparent #fff;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 55%;
-  }
-  .lite-yt-box iframe {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 0;
-  }
+pre { padding: 10px; background-color: #222; }
+pre code { padding: 10px; margin-left: -9px; color: #a6a4a4; background-color: #222; display: block; }
+p code, li code, span code {
+  padding: 2px 6px !important;
+  margin: 0 4px !important;
+  display: inline-block !important;
+  background-color: #f0f0f0 !important;
+  color: #333 !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 4px !important;
+  font-size: 0.9em !important;
+  font-family: monospace !important;
+  vertical-align: middle !important;
+}
