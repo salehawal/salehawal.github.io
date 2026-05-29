@@ -63,7 +63,7 @@ button.sharing-button.touch-icon-button {
 }
 
 /* ==========================================================================
-   5. POPUP WINDOW LAYOUT STABILIZATION (SHIFTED TO THE RIGHT SIDE)
+   POPUP WINDOW LAYOUT STABILIZATION (SHIFTED TO THE RIGHT SIDE)
    ========================================================================== */
 
 ul.share-buttons.btns-init {
@@ -153,7 +153,7 @@ ul.share-buttons.btns-init li .platform-sharing-text {
 
 
 /* ==========================================================================
-   5. Products Grid Layout
+   Products Grid Layout
    ========================================================================== */
   .product-grid {
     display: grid;
@@ -230,4 +230,68 @@ ul.share-buttons.btns-init li .platform-sharing-text {
     line-height: 1.4;
     margin: 0;
     color: #222;
+  }
+
+
+/* ==========================================================================
+   Youtube Video Embed
+   ========================================================================== */
+  .lite-yt-box {
+    background-color: #000;
+    position: relative;
+    display: block;
+    contain: content;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    max-width: 100%;
+    aspect-ratio: 16/9;
+  }
+  .lite-yt-box::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    background-image: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
+    transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  }
+  .lite-yt-box .lite-play-btn {
+    width: 68px;
+    height: 48px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    background-color: #212121;
+    opacity: 0.8;
+    border-radius: 14% / 20%;
+    transition: all 0.25s cubic-bezier(0, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+  }
+  .lite-yt-box:hover .lite-play-btn {
+    background-color: #f00;
+    opacity: 1;
+  }
+  .lite-yt-box .lite-play-btn::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 11px 0 11px 20px;
+    border-color: transparent transparent transparent #fff;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 55%;
+  }
+  .lite-yt-box iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
   }
