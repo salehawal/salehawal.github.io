@@ -45,6 +45,7 @@
     viewYear: null,
     viewMonth: null,     // 1-12
     selectedDate: null,
+    selectedHourKey: null,
     selectedSlot: null
   };
 
@@ -199,22 +200,86 @@
     container.querySelectorAll('.gmb-available').forEach(function (cell) {
       cell.addEventListener('click', function () {
         state.selectedDate = cell.dataset.date;
-        renderSlotsStep();
+        renderHoursStep();
       });
     });
   }
 
-  // ---------- step 3: time slots ----------
+  // ---------- step 3a: hour picker, step 3b: minute picker ----------
+  // Slot labels arrive from the backend already formatted per meeting type
+  // (e.g. "10:15 AM"), computed using that type's own duration/step. We
+  // group those into hour buckets client-side -- no backend change needed,
+  // since the exact-minute options for a given hour are already correct
+  // for whichever meeting type is selected; we're just presenting them in
+  // two steps (pick an hour, then pick the minute) instead of one long list.
 
-  function renderSlotsStep() {
+  function parseLabelParts(label) {
+    var m = /^(\d{1,2}):(\d{2})\s*([AaPp][Mm])$/.exec(String(label).trim());
+    if (!m) return null;
+    return { hour12: Number(m[1]), minute: Number(m[2]), ampm: m[3].toUpperCase() };
+  }
+
+  // Unique per hour-of-day, e.g. "10AM", "1PM" -- used only as a grouping key.
+  function hourBucketKey(label) {
+    var p = parseLabelParts(label);
+    return p ? (p.hour12 + p.ampm) : label;
+  }
+
+  // Zero-padded display form, e.g. "10AM", "11AM", "01PM".
+  function hourBucketDisplay(label) {
+    var p = parseLabelParts(label);
+    return p ? (pad(p.hour12) + p.ampm) : label;
+  }
+
+  function renderHoursStep() {
     var daysData = state.availability[state.selectedType.id] || {};
     var slots = daysData[state.selectedDate] || [];
+
+    // Slots arrive in chronological order from the backend, so the first
+    // slot seen for each hour bucket is enough to fix that bucket's
+    // position in the list -- no separate sort needed.
+    var seen = {};
+    var hours = [];
+    slots.forEach(function (s) {
+      var key = hourBucketKey(s.label);
+      if (!seen[key]) {
+        seen[key] = true;
+        hours.push({ key: key, display: hourBucketDisplay(s.label) });
+      }
+    });
 
     var html = '<button class="gmb-back" id="gmb-back-to-cal">&larr; Back to calendar</button>';
     html += '<h2 class="gmb-title">' + formatNiceDate(state.selectedDate) + '</h2>';
     html += '<div class="gmb-slots">';
-    if (slots.length === 0) {
+    if (hours.length === 0) {
       html += '<div class="gmb-empty-msg">No available times this day.</div>';
+    } else {
+      hours.forEach(function (h) {
+        html += '<button class="gmb-slot-btn gmb-hour-btn" data-hour="' + h.key + '">' + h.display + '</button>';
+      });
+    }
+    html += '</div>';
+    renderShell(html, 2);
+
+    document.getElementById('gmb-back-to-cal').addEventListener('click', renderCalendarStep);
+    container.querySelectorAll('.gmb-hour-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.selectedHourKey = btn.dataset.hour;
+        renderMinutesStep();
+      });
+    });
+  }
+
+  function renderMinutesStep() {
+    var daysData = state.availability[state.selectedType.id] || {};
+    var allSlots = daysData[state.selectedDate] || [];
+    var slots = allSlots.filter(function (s) { return hourBucketKey(s.label) === state.selectedHourKey; });
+
+    var html = '<button class="gmb-back" id="gmb-back-to-hours">&larr; Back to times</button>';
+    html += '<h2 class="gmb-title">' + formatNiceDate(state.selectedDate) + '</h2>';
+    html += '<div class="gmb-slots">';
+    if (slots.length === 0) {
+      html += '<div class="gmb-empty-msg">No available minutes in this hour.</div>';
     } else {
       slots.forEach(function (s) {
         html += '<button class="gmb-slot-btn" data-iso="' + s.startISO + '">' + s.label + '</button>';
@@ -223,7 +288,7 @@
     html += '</div>';
     renderShell(html, 2);
 
-    document.getElementById('gmb-back-to-cal').addEventListener('click', renderCalendarStep);
+    document.getElementById('gmb-back-to-hours').addEventListener('click', renderHoursStep);
     container.querySelectorAll('.gmb-slot-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         state.selectedSlot = slots.filter(function (s) { return s.startISO === btn.dataset.iso; })[0];
@@ -247,7 +312,7 @@
     html += '</form>';
     renderShell(html, 3);
 
-    document.getElementById('gmb-back-to-slots').addEventListener('click', renderSlotsStep);
+    document.getElementById('gmb-back-to-slots').addEventListener('click', renderMinutesStep);
     document.getElementById('gmb-form').addEventListener('submit', function (e) {
       e.preventDefault();
       var fd = new FormData(e.target);
@@ -356,6 +421,7 @@
       '.gmb-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;}',
       '.gmb-slot-btn{padding:11px 8px;border:1.5px solid var(--gmb-border);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:.15s;}',
       '.gmb-slot-btn:hover{border-color:var(--gmb-primary);background:#EEF0FF;color:var(--gmb-primary);transform:translateY(-1px);}',
+      '.gmb-hour-btn{font-size:14px;font-weight:600;padding:14px 8px;}',
 
       '.gmb-summary-card{background:#EEF0FF;border-radius:14px;padding:16px 18px;font-size:14px;font-weight:500;line-height:1.7;margin-bottom:20px;color:var(--gmb-text);}',
       '.gmb-form{display:flex;flex-direction:column;gap:12px;max-width:380px;}',
