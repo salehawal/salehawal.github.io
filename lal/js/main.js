@@ -135,8 +135,18 @@
    theme stays clean. (clipboard.min.js is intentionally NOT
    merged in here -- it stays loaded as its own separate
    <script src> tag, unchanged.)
-   ============================================================ */
 
+   This used to be an inline <script> sitting near the end of
+   <body>, after all the page's HTML (including the post grid)
+   had already been parsed, so querying elements like '.reveal'
+   or '.card' at the top of the script always found them. Now
+   that it's loaded via a <script src> tag placed in <head>, it
+   would otherwise run BEFORE that markup exists -- e.g. '.reveal'
+   cards would never be found, never get their '.in' class, and
+   stay at opacity:0 forever (invisible). Wrapping it so it only
+   runs once the DOM is actually ready fixes that regardless of
+   where the <script> tag ends up in the page. ============ */
+function lalMainInit(){
     const $  = s => document.querySelector(s);
     const $$ = s => Array.from(document.querySelectorAll(s));
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -559,7 +569,6 @@
         var WHEEL_TICK_CAP = 24;
         var IDLE_RESET_MS = 700;
         var atBottom = false;
-        var touchY = null;
         var idleTimer = null;
 
         function resetIdleTimer(){
@@ -584,22 +593,62 @@
           }
         }, {passive:true});
 
+        /* Touch: mobile browsers mostly don't rubber-band the whole page,
+           so "past the bottom" has to be approximated as "finger still
+           dragging upward while already pinned at the bottom" rather than
+           an actual overscroll position. We measure the drag distance from
+           a fixed reference point (where the finger was when it first
+           entered the "near bottom" zone), not from the previous touchmove
+           event -- resetting the reference on every event would mean the
+           measured distance is only ever the few px between two consecutive
+           events, which never adds up to anything.
+
+           The "near bottom" zone uses a generous tolerance (not the exact
+           2px used for the wheel/desktop check) because on mobile the
+           address bar showing/hiding changes window.innerHeight mid-scroll,
+           which would otherwise make a tight bottom check unreliable. */
+        var TOUCH_NEAR_BOTTOM_PX = 160;
+        var touchRefY = null;
+        var touchWasNear = false;
+
+        function nearBottomForTouch(){
+          return distanceToBottom() < TOUCH_NEAR_BOTTOM_PX;
+        }
+
         addEventListener('touchstart', function(e){
-          touchY = e.touches[0] ? e.touches[0].clientY : null;
+          var y = e.touches[0] ? e.touches[0].clientY : null;
+          touchWasNear = nearBottomForTouch();
+          touchRefY = touchWasNear ? y : null;
         }, {passive:true});
 
         addEventListener('touchmove', function(e){
-          updateAtBottom();
           var y = e.touches[0] ? e.touches[0].clientY : null;
-          if(atBottom && touchY !== null && y !== null){
-            var delta = touchY - y; // finger moving up the screen = scrolling down
+          if(y === null) return;
+
+          var isNear = nearBottomForTouch();
+          if(isNear && !touchWasNear){
+            /* Just crossed into the near-bottom zone mid-swipe: start
+               measuring from right here rather than from wherever the
+               finger started (which could've been far up the page). */
+            touchRefY = y;
+          }
+          touchWasNear = isNear;
+
+          if(isNear && touchRefY !== null){
+            var delta = touchRefY - y; // finger moving up the screen = scrolling down
             if(delta > 0){
               dragAccum = delta;
               resetIdleTimer();
               if(dragAccum >= OVERSCROLL_PX) maybeLoad();
             }
+          } else {
+            dragAccum = 0;
           }
-          touchY = y;
+        }, {passive:true});
+
+        addEventListener('touchend', function(){
+          touchRefY = null;
+          touchWasNear = false;
         }, {passive:true});
 
         updateAtBottom();
@@ -776,6 +825,12 @@
         img.addEventListener('error', ()=> img.classList.add('loaded'), {once:true});
       });
     })();
+}
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', lalMainInit);
+} else {
+  lalMainInit();
+}
 
 /* ---- copy button for code blocks (moved from the HTML3 gadget's
    stored content -- that gadget's content setting is now empty) ---- */
