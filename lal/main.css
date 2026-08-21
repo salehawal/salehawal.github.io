@@ -261,3 +261,734 @@ p code, li code, span code {
   font-family: monospace !important;
   vertical-align: middle !important;
 }
+
+/* ============================================================
+   Below this point: the theme's own inline CSS, moved out of
+   the Blogger template XML and into this file so the theme
+   stays clean. Originally lived directly in <head> because
+   Blogger's b:skin parser rejects modern CSS syntax.
+   ============================================================ */
+
+/* LAL design CSS - kept out of b:skin because Blogger's skin parser rejects modern CSS.
+   Plain style in head is passed through unparsed (same mechanism as Blogger's Add CSS). */
+/*! LAL theme - upgrade of VegeClub (theme.xml) */
+
+
+/* ============ Design tokens ============ */
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overscroll-behavior-y:none;}
+body{
+  background:#f8fafc;
+  color:#0f172a;
+  font-family:'Cairo',sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;overscroll-behavior-y:none;
+}
+::selection{background:rgba(37,99,235,.14);color:#0f172a}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-thumb{background:#d4dae6;border-radius:99px;border:2px solid #fff}
+::-webkit-scrollbar-thumb:hover{background:#b6c3dd}
+a{color:inherit}
+img{display:block;max-width:100%}
+.ar{font-family:'Cairo',sans-serif;font-weight:600;direction:rtl;unicode-bidi:isolate}
+
+/* ============ Blogger icons ============
+   The theme disables Blogger's default CSS (b:css=false), so the
+   .svg-icon-24 / .touch-icon utility classes need explicit sizing. */
+.svg-icon-24{width:24px;height:24px;min-width:24px;cursor:pointer}
+.touch-icon{margin:-12px;padding:12px}
+svg:not(:root).touch-icon{overflow:visible}
+.centered-top .svg-icon-24{fill:#2563eb}
+.post-wrapper .svg-icon-24.touch-icon,.post-wrapper a .svg-icon-24,.post-wrapper button .svg-icon-24{fill:#2563eb}
+.share-buttons .svg-icon-24{fill:#2563eb}
+
+/* ============ Matrix rain background ============ */
+#matrix{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ============ Scroll progress bar ============ */
+.progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:60;
+  background:linear-gradient(90deg,#2563eb,#3b82f6);
+  transform-origin:0 50%;transform:scaleX(0);
+}
+
+/* ============ Page shell ============ */
+.page_body{
+  /* translucent so the fixed matrix canvas shows through the transparent hero/footer */
+  background:linear-gradient(180deg,rgba(246,249,255,.5) 0%,rgba(255,255,255,.55) 400px);
+  position:relative;
+}
+.centered{max-width:1240px;margin:0 auto}
+.centered-top-placeholder{height:76px}
+.item-view .page_body{padding-top:90px}
+
+/* ============ Navigation (items only) ============ */
+.centered-top-container{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  /* the menu keeps its background (unlike the hero) so links stay readable over the matrix */
+  background:rgba(255,255,255,.88);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(230,234,242,.7);
+  transition:transform .5s cubic-bezier(.22,1,.36,1),background .35s,box-shadow .35s,border-color .35s;
+}
+.centered-top-container.scrolled{
+  background:rgba(255,255,255,.94);
+  border-bottom-color:#e6eaf2;
+  box-shadow:0 10px 34px -22px rgba(15,23,42,.3);
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+}
+.centered-top{
+  max-width:1240px;margin:0 auto;position:relative;
+  padding:1.05rem 1.5rem;
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+}
+/* Header search (BlogSearch1 in search_top): transparent boxed field, inline
+   with the menu so the whole block (menu + search) centers together */
+.centered-top .search{
+  display:block;position:static;
+  width:auto;margin:0;height:auto;
+}
+.centered-top .search .search-expand{display:none}
+.centered-top .search .section{
+  position:static;width:auto;height:auto;overflow:visible;
+  background:transparent;box-sizing:border-box;line-height:normal;
+}
+.centered-top .search .widget h3.title{display:none}
+.centered-top .search form{
+  display:flex;align-items:center;gap:.35rem;
+  background:transparent;border:1px solid transparent;border-radius:10px;
+  padding:.32rem .4rem .32rem .9rem;position:relative;
+  transition:border-color .3s,box-shadow .3s;
+}
+.centered-top .search form:focus-within{border-color:rgba(37,99,235,.4);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+/* Input first, magnifying-glass submit icon on the right */
+.centered-top .search form .search-input{display:flex;align-items:center;order:0}
+.centered-top .search form input[name='q']{
+  border:none;outline:none;background:transparent;
+  font-family:'Cairo',sans-serif;font-size:.88rem;color:#0f172a;width:150px;
+}
+.centered-top .search form input[name='q']::placeholder{color:#94a3b8}
+/* Submit is a plain magnifying-glass icon (no blue button) */
+.centered-top .search form .search-submit-container{
+  display:flex;align-items:center;justify-content:center;
+  padding:5px;border-radius:50%;order:1;
+  background:transparent;cursor:pointer;flex:0 0 auto;
+  transition:background .3s;
+}
+.centered-top .search form .search-submit-container:hover{background:#eef2ff}
+.centered-top .search form .search-submit-container input{display:none}
+.centered-top .search form .search-submit-container .search-icon{padding:0}
+.centered-top .search form .search-submit-container .svg-icon-24{
+  fill:#64748b;width:18px;height:18px;min-width:18px;
+}
+/* Item pages use the same fixed header as the home page — neutralize the
+   stock VegeClub .sticky tweaks so the menu looks identical everywhere. */
+.centered-top-container.sticky{
+  position:fixed;left:0;right:0;top:0;width:auto;z-index:50;
+  transition:transform .5s cubic-bezier(.22,1,.36,1),background .35s,box-shadow .35s,border-color .35s;
+}
+.sticky .centered-top{padding:1.05rem 1.5rem;box-sizing:border-box;flex-wrap:nowrap;align-items:center}
+.sticky .centered-top .search{flex:0 0 auto}
+
+/* Live search suggestions dropdown (posts + pages) */
+.search-suggestions{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:120;
+  background:#fff;border:1px solid #e6eaf2;border-radius:12px;
+  box-shadow:0 18px 40px -18px rgba(15,23,42,.25);
+  overflow:hidden;display:none;text-align:start;
+}
+.search-suggestions.open{display:block}
+.search-suggestions a{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.6rem .9rem;color:#0f172a;text-decoration:none;font-size:.85rem;
+  font-family:'Cairo',sans-serif;line-height:1.35;
+}
+.search-suggestions a:hover{background:#eef2ff}
+.search-suggestions .ss-thumb{flex:0 0 40px;width:40px;height:40px;object-fit:cover;border-radius:8px}
+.search-suggestions .ss-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-suggestions .ss-type{
+  flex:0 0 auto;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#2563eb;background:#eef2ff;border:1px solid #dbe4f5;border-radius:999px;padding:.14rem .55rem;
+}
+.search-suggestions .ss-empty{padding:.7rem .9rem;font-size:.82rem;color:#94a3b8}
+/* VegeClub header chrome is replaced by the LAL nav (sections kept in the XML) */
+.hamburger-section,.blog-name,.top-nav{display:none !important}
+/* The PageList section in the header is layout-transparent; only its ul shows */
+#page_list_top,#page_list_top .widget{display:contents}
+.nav-menu{display:flex;align-items:center;gap:2.5rem;list-style:none;margin:0;padding:0}
+.nav-menu li{margin:0}
+/* Site logo in the menu bar, left of the nav links (same on every page) */
+.header-logo{display:flex;align-items:center;flex:0 0 auto}
+.header-logo img{height:41px;width:auto;display:block}
+.nav-link{
+  position:relative;color:#2563eb;font-weight:500;font-size:.95rem;
+  text-decoration:none;padding:.35rem 0;transition:color .3s;
+  /* inline-block makes the underline span ALL the text (incl. Arabic in mixed
+     bidi links like "Products | منتجات") in every browser */
+  display:inline-block;
+}
+.nav-link:visited{color:#2563eb}
+.nav-link:active{color:#2563eb}
+.nav-link.active{color:#2563eb}
+.nav-link::after{
+  content:'';position:absolute;left:0;right:0;bottom:-4px;height:2px;
+  background:#2563eb;
+  transform:scaleX(0);transform-origin:left center;transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+.nav-link:hover{color:#60a5fa}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+.nav-toggle{
+  display:none;position:absolute;inset-inline-end:1.25rem;top:50%;transform:translateY(-50%);
+  width:42px;height:42px;border:1px solid #e6eaf2;border-radius:12px;
+  background:#fff;cursor:pointer;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;
+}
+.nav-toggle span{display:block;width:18px;height:2px;background:#0f172a;border-radius:2px;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .25s}
+body.menu-open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.menu-open .nav-toggle span:nth-child(2){opacity:0}
+body.menu-open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* mobile drawer */
+.mobile-menu{
+  position:fixed;inset:0;z-index:40;
+  background:rgba(255,255,255,.96);
+  -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
+}
+body.menu-open .mobile-menu{opacity:1;visibility:visible}
+.mobile-menu a.mm-link{
+  font-family:'Cairo',sans-serif;font-size:1.7rem;font-weight:600;color:#0f172a;
+  text-decoration:none;opacity:0;transform:translateY(14px);
+  transition:opacity .45s cubic-bezier(.22,1,.36,1),transform .45s cubic-bezier(.22,1,.36,1),color .3s;
+}
+.mobile-menu a.mm-link:hover{color:#2563eb}
+body.menu-open .mobile-menu a.mm-link{opacity:1;transform:none}
+body.menu-open .mobile-menu a.mm-link:nth-child(1){transition-delay:.08s}
+body.menu-open .mobile-menu a.mm-link:nth-child(2){transition-delay:.16s}
+body.menu-open .mobile-menu a.mm-link:nth-child(3){transition-delay:.24s}
+
+/* ============ Hero - big centered logo + booking link ============ */
+.lal-hero{
+  position:relative;z-index:1;
+  min-height:auto;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:5.6rem 1.5rem 1.5rem;
+  /* fully transparent: the matrix animation shows straight through */
+  background:transparent;
+}
+/* Search results show only the menu + results grid — no hero, no featured row */
+body.search-view .lal-hero{display:none}
+body.search-view .featured-post,
+body.label-view .featured-post,
+body.archive-view .featured-post,
+body.item-view .featured-post{display:none !important}
+.hero-inner{
+  /* width:100% + min-width:0 keep this flex child (of .lal-hero) from
+     growing to its content's max-content width, which made the hero and
+     the slider overflow small viewports. */
+  width:100%;min-width:0;
+  max-width:1120px;margin:40px auto 0;
+  text-align:center;
+}
+.hero-text{max-width:100%}
+.hero-tagline{
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(16px,1.9vw,26px);
+  font-weight:600;color:#334155;
+  animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .5s both;
+}
+.hero-sub{
+  margin:1.1rem auto 0;max-width:560px;
+  color:#64748b;font-size:clamp(13px,.95vw,15px);
+  animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .62s both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* Book Now CTA - clear bilingual label */
+.btn-book{
+  position:relative;display:inline-flex;align-items:center;gap:.65rem;
+  margin-top:2.4rem;padding:1.05rem 2.4rem;border-radius:999px;
+  background:#2563eb;color:#fff;
+  font-size:1.05rem;font-weight:600;text-decoration:none;
+  overflow:hidden;isolation:isolate;
+  box-shadow:0 14px 34px -14px rgba(15,23,42,.5),0 0 0 1px rgba(37,99,235,.22);
+  transition:box-shadow .4s;
+  animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .74s both,ctaBreath 3.2s ease-in-out 1.6s infinite;
+}
+.btn-book:visited{color:#fff}
+.btn-book:active{color:#fff}
+.btn-book:hover{
+  background:#1d4ed8;transform:translateY(-3px);
+  box-shadow:0 22px 44px -16px rgba(37,99,235,.5),0 0 0 1px rgba(59,130,246,.45),0 0 34px -6px rgba(37,99,235,.28);
+}
+.btn-book::after{
+  content:'';position:absolute;top:0;bottom:0;left:-70%;width:45%;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:skewX(-18deg);z-index:-1;animation:shimmer 3.4s ease-in-out infinite;
+}
+@keyframes shimmer{0%{left:-70%}55%,100%{left:130%}}
+@keyframes ctaBreath{
+  0%,100%{box-shadow:0 14px 34px -14px rgba(15,23,42,.5),0 0 0 1px rgba(37,99,235,.22)}
+  50%{box-shadow:0 14px 40px -12px rgba(37,99,235,.42),0 0 0 1px rgba(59,130,246,.4)}
+}
+.btn-book .ic{font-size:1.1rem}
+.btn-book .ar{font-size:1.02rem}
+
+/* ============ Insights - 4 x 4 thumbnail grid ============ */
+.main-container{
+  position:relative;z-index:1;
+  max-width:1240px;margin:0 auto;
+  padding:2rem 1.5rem 2rem;
+}
+.main-heading{display:none}
+.section-head{text-align:center;margin-bottom:3.2rem}
+.kicker{
+  display:inline-block;color:#2563eb;font-size:.78rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;margin-bottom:.7rem;
+  padding:.3rem 1rem;border-radius:999px;background:#eef2ff;
+  border:1px solid #dbe4f5;
+}
+.section-head h2{
+  font-family:'Cairo',sans-serif;
+  font-size:2.3vw;font-weight:700;letter-spacing:-.02em;
+  background:linear-gradient(120deg,#0f172a 40%,#2563eb);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.section-head p{color:#64748b;margin-top:.6rem}
+
+/* Featured post — the latest post as a full-width hero row above the grid (homepage only) */
+body.feed-view:not(.search-view):not(.label-view):not(.archive-view) .featured-post{
+  display:block;margin-bottom:20px;
+}
+.feed-view .featured-post .post-wrapper.hero{
+  position:relative;width:100%;margin:0;border-radius:1.15rem;overflow:hidden;
+  background-color:#0f172a;height:auto !important;
+  min-height:clamp(240px,32vw,420px);
+}
+.feed-view .featured-post .snippet-thumbnail-container{
+  position:absolute;inset:0;width:100%;height:100% !important;max-height:none !important;
+  overflow:hidden;background-color:#0f172a;
+}
+.feed-view .featured-post .snippet-thumbnail{
+  width:100%;height:100% !important;max-height:none !important;
+  background-size:cover;background-position:center;
+  background-color:transparent;padding:0;
+}
+.feed-view .featured-post .slide{
+  position:absolute;inset:0;display:flex;align-items:flex-end;
+  padding:clamp(1.2rem,2.6vw,2.2rem);
+  background:linear-gradient(180deg,rgba(15,23,42,0) 25%,rgba(15,23,42,.55) 60%,rgba(15,23,42,.88) 100%);
+}
+.feed-view .featured-post .post{
+  position:static !important;margin:0 !important;width:auto !important;
+  background:transparent !important;padding:0 !important;box-shadow:none !important;
+}
+.feed-view .featured-post .post-title-container{margin:0;padding:0}
+.feed-view .featured-post .post-wrapper.hero .post-title a{
+  display:block;margin:0 !important;padding:0 !important;position:static !important;
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(1.25rem,2.6vw,2.1rem);font-weight:700;line-height:1.3;
+  color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.4);
+}
+.feed-view .featured-post .post-title a .snippet-container{
+  height:auto !important;max-height:none !important;
+}
+.feed-view .featured-post .post-title a .snippet-fade{display:none !important}
+.feed-view .featured-post .post-header{padding:0;margin-top:.6rem}
+.feed-view .featured-post .byline{color:rgba(255,255,255,.9);position:static !important;z-index:auto}
+.feed-view .featured-post .byline a{color:#fff}
+.feed-view .featured-post .post-footer{display:none}
+
+/* The Blog widget section renders as the grid itself; widget wrappers flatten */
+.feed-view #page_body{display:grid;grid-template-columns:repeat(4,1fr);gap:1.7rem}
+#page_body .widget,#page_body .widget-wrap,#page_body .widget-content{display:contents}
+/* Featured block and posts grid share the same width and stay centered together:
+   the stock theme pins .main-container and .main to a fixed narrower width and
+   floats them left, which made the grid narrower/wider than the featured hero and
+   pushed the whole block off-center. */
+.feed-view .main-container{float:none;width:100%}
+.feed-view #page_body{float:none;width:100%}
+
+.card{
+  display:flex;flex-direction:column;
+  background:#fff;border:1px solid #e8edf6;border-radius:1.15rem;
+  overflow:hidden;text-decoration:none;color:inherit;
+  box-shadow:0 1px 2px rgba(15,23,42,.04);
+  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s cubic-bezier(.22,1,.36,1),border-color .5s;
+  will-change:transform;
+}
+.card:hover{
+  transform:translateY(-5px);border-color:#c9d8f2;
+  box-shadow:0 18px 40px -20px rgba(37,99,235,.25),0 0 0 1px rgba(37,99,235,.08);
+}
+.card-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:linear-gradient(135deg,#eef2ff,#f8fafc)}
+.card-media img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,1,.36,1),opacity .4s}
+.card:hover .card-media img{transform:scale(1.04)}
+.card-media::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 55%,rgba(15,23,42,.28));
+  opacity:0;transition:opacity .5s;
+}
+.card:hover .card-media::after{opacity:1}
+.card-ph{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:1.7rem;
+  letter-spacing:.05em;color:#c3cfe6;
+}
+.card-ph .dot{color:#2563eb}
+.card-date{
+  position:absolute;inset-inline-start:.75rem;bottom:.75rem;z-index:2;
+  background:rgba(255,255,255,.88);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  padding:.28rem .75rem;border-radius:999px;
+  font-size:.72rem;font-weight:500;color:#334155;
+  box-shadow:0 4px 12px -6px rgba(15,23,42,.25);
+}
+.card-body{padding:1.2rem 1.3rem 1.35rem;display:flex;flex-direction:column;gap:.85rem;flex:1}
+.card h3{
+  font-family:'Cairo',sans-serif;
+  font-size:1rem;line-height:1.45;font-weight:600;color:#0f172a;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.card h3::after{content:'';display:block;height:2px;width:0;margin-top:.6rem;
+  background:#2563eb;border-radius:2px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.card:hover h3::after{width:2.2rem}
+.card:nth-child(1){transition-delay:0ms}
+.card:nth-child(2){transition-delay:60ms}
+.card:nth-child(3){transition-delay:120ms}
+.card:nth-child(4){transition-delay:180ms}
+
+/* Infinite scroll sentinel + loading spinner */
+.load-sentinel{grid-column:1/-1;height:1px}
+.load-spinner{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:.5rem;padding:2rem 0}
+.load-spinner-dot{width:10px;height:10px;border-radius:50%;background:#2563eb;animation:spinnerBounce 1.2s ease-in-out infinite}
+.load-spinner-dot:nth-child(2){animation-delay:.15s}
+.load-spinner-dot:nth-child(3){animation-delay:.3s}
+@keyframes spinnerBounce{0%,80%,100%{transform:scale(0);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* archive / search filter message */
+.post-filter-message{
+  max-width:720px;margin:0 auto 2.5rem;padding:1rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  background:#eef2ff;border:1px solid #dbe4f5;border-radius:1.1rem;
+  color:#334155;font-size:.92rem;
+}
+.post-filter-message a{color:#2563eb;font-weight:600;text-decoration:none}
+
+/* Sidebar is hidden on feed pages (home / search / label). On item pages
+   (single blog posts + static pages) it appears as a right column. */
+.sidebar-container{display:none}
+.item-view .sidebar-container{display:block}
+
+/* ============ Single post / static page view (Blogger default post markup) ============ */
+/* Hero is homepage-only: hidden on single posts and static pages */
+.item-view .lal-hero{display:none}
+.item-view .hero-sub{display:none}
+.item-view .main-container{padding-top:12px}
+.item-view .section-head{display:none}
+/* Item pages (posts + static pages): content + sidebar side by side.
+   Content column is ~30% wider than before (container 1240 -> 1460). */
+.item-view #page_body{display:block;max-width:860px;margin:0 auto}
+.item-view .centered{max-width:1460px;width:100%}
+.item-view .centered-bottom{display:flex;gap:3rem;align-items:flex-start;max-width:1460px;margin:0 auto;padding:0 1.5rem}
+.item-view .main-container{flex:1;min-width:0;width:auto;max-width:none;margin:0;padding-top:12px;float:none}
+/* Constrain the content so it can never blow out the column (the stock
+   .centered .main{float:left} shrink-to-fit + wide post content made pages
+   like /p/partners.html expand past the sidebar). */
+.item-view #page_body{float:none;width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+.item-view .post-body{max-width:100%;overflow-wrap:break-word}
+.item-view .post-body img{max-width:100%;height:auto}
+.item-view .sidebar-container{flex:0 0 300px;width:300px;max-width:300px;position:sticky;top:110px;margin:0;padding:0;float:none;background:transparent}
+.item-view .vertical-ad-container{display:none !important}
+.item-view .sidebar-container .widget{background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid #e6eaf2;border-radius:0.55rem;padding:1.4rem;margin-bottom:1.6rem}
+.item-view .sidebar-container .widget img{border-radius:.8rem;max-width:100%}
+.item-view .sidebar-container .widget .title{font-family:'Cairo',sans-serif;font-size:1rem;font-weight:700;color:#0f172a;margin:0 0 1rem}
+.item-view .sidebar-container .widget .widget-content>div{display:block}
+.item-view .sidebar-container .PopularPosts .post{display:flex;gap:.9rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid #f1f5f9;position:relative}
+/* Whole Popular Posts item is clickable, not just the title */
+.item-view .sidebar-container .PopularPosts .post-title a::after{content:'';position:absolute;inset:0;z-index:1}
+.item-view .sidebar-container .PopularPosts .post:last-child{border-bottom:none}
+.item-view .sidebar-container .PopularPosts .item-thumbnail{flex:0 0 64px;width:64px;height:64px;border-radius:.7rem;overflow:hidden}
+.item-view .sidebar-container .PopularPosts .item-thumbnail img{width:64px;height:64px;object-fit:cover;border-radius:0}
+.item-view .sidebar-container .PopularPosts .post-title{font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:600;line-height:1.45;margin:0}
+.item-view .sidebar-container .PopularPosts .post-title a{color:#0f172a;text-decoration:none}
+.item-view .sidebar-container .PopularPosts .post-title a:hover{color:#2563eb}
+.item-view .sidebar-container .PopularPosts .popular-posts-snippet{display:none}
+.item-view .sidebar-container .navigation{display:none}
+.item-view .sidebar-container .widget-content h2{font-family:'Cairo',sans-serif;font-size:1.05rem;margin-bottom:.9rem}
+.item-view .snippet-thumbnail-container{display:none}
+.post-wrapper{
+  background:#fff;border:1px solid #e8edf6;border-radius:0.55rem;
+  padding:2.2rem 2.4rem;
+  box-shadow:0 12px 40px -30px rgba(15,23,42,.18);
+}
+.post-wrapper .post-title{
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(1.3rem,2vw,2.2rem);font-weight:700;
+  letter-spacing:-.02em;line-height:1.3;margin:0 0 .4rem;
+}
+.post-wrapper .post-header{margin:1rem 0 1.6rem}
+.post-wrapper .byline{color:#64748b;font-size:.85rem;margin-inline-end:1rem}
+.post-wrapper .byline a{color:#334155;text-decoration:none}
+.post-wrapper .byline a:hover{color:#2563eb}
+.post-body{font-size:1.02rem;color:#334155;line-height:1.75}
+.post-body h2,.post-body h3,.post-body h4{
+  font-family:'Cairo',sans-serif;color:#0f172a;margin:1.6em 0 .5em;line-height:1.3;
+}
+.post-body p{margin:0 0 1.1em}
+.post-body a{color:#2563eb}
+.post-body img{border-radius:1.1rem;margin:1.2rem auto;display:block;float:none !important}
+.post-body .separator{text-align:center;clear:both}
+.post-body a[imageanchor='1']{display:block;text-align:center}
+.post-body ul,.post-body ol{margin:0 0 1.1em;padding-inline-start:1.4em}
+.post-body li{margin:.35em 0}
+.post-body blockquote{
+  border-inline-start:3px solid #2563eb;background:#eef2ff;
+  padding:.9rem 1.2rem;border-radius:0 1.1rem 1.1rem 0;
+  margin:1.2rem 0;color:#0f172a;
+}
+.post-body pre{
+  background:#0f172a;color:#e2e8f0;padding:1.1rem 1.3rem;
+  border-radius:1.1rem;overflow-x:auto;font-size:.9rem;margin:1.2rem 0;
+}
+.post-body code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
+  background:#eef2f7;padding:.15em .4em;border-radius:6px;
+}
+.post-body pre code{background:none;padding:0}
+.post-body table{width:100%;border-collapse:collapse;margin:1.2rem 0}
+.post-body th,.post-body td{border:1px solid #e6eaf2;padding:.55rem .8rem;text-align:start}
+.code-wrap{position:relative;margin:1.2rem 0}
+.code-wrap pre{margin:0}
+.copy-btn{
+  position:absolute;top:.6rem;inset-inline-end:.6rem;z-index:2;
+  padding:.3rem .8rem;border-radius:999px;border:1px solid #334155;
+  background:rgba(15,23,42,.7);color:#e2e8f0;font-size:.72rem;font-weight:600;cursor:pointer;
+  font-family:'Cairo',sans-serif;
+}
+
+/* comments */
+.comments{
+  margin-top:3rem;padding-top:2rem;border-top:1px solid #e6eaf2;
+  color:#334155;
+}
+.comments h3,.comments h4{font-family:'Cairo',sans-serif;color:#0f172a;margin-bottom:1rem}
+.comments .comment{margin-bottom:1.4rem}
+.comments .comment-header{font-size:.82rem;color:#64748b;margin-bottom:.3rem}
+.comments .comment-content{background:#f8fafc;border:1px solid #e6eaf2;border-radius:1.1rem;padding:.9rem 1.1rem}
+.comments .comment-actions a{color:#2563eb;font-size:.8rem;text-decoration:none;margin-inline-end:.8rem}
+.comments .comment-form input,.comments .comment-form textarea{
+  font-family:'Cairo',sans-serif;width:100%;padding:.7rem .9rem;margin:.4rem 0;
+  border:1px solid #e6eaf2;border-radius:12px;background:#fff;color:#0f172a;font-size:.92rem;
+}
+.comments .comment-form button,.comments .comment-form input[type='submit']{
+  padding:.65rem 1.5rem;border-radius:999px;border:none;background:#0f172a;color:#fff;
+  font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Cairo',sans-serif;
+}
+
+/* post pager (item view) */
+.blog-pager{
+  max-width:860px;margin:2.5rem auto 0;display:flex;justify-content:center;gap:1rem;
+}
+.blog-pager a{
+  display:inline-flex;align-items:center;padding:.7rem 1.5rem;border-radius:999px;
+  border:1.5px solid #d9e1f3;background:#fff;color:#0f172a;
+  font-size:.88rem;font-weight:600;text-decoration:none;
+  transition:background .35s cubic-bezier(.22,1,.36,1),color .35s,border-color .35s,transform .35s cubic-bezier(.22,1,.36,1);
+}
+.blog-pager a:hover{background:#0f172a;color:#fff;border-color:#0f172a;transform:translateY(-2px)}
+
+/* ============ Footer ============ */
+.lal-footer{
+  position:relative;z-index:1;margin-top:5rem;
+  background:#0d2349;color:#eef2fb;
+}
+.lal-footer-inner{
+  max-width:640px;margin:0 auto;padding:5.2rem 1.5rem 3rem;
+  text-align:center;
+}
+.lal-footer-mark{
+  font-size:2.6rem;font-weight:900;letter-spacing:-.06em;line-height:1;
+  color:#fff;
+}
+.lal-footer-statement{
+  margin:1.3rem auto 0;max-width:440px;
+  font-size:1.02rem;line-height:1.65;color:rgba(238,242,251,.82);
+}
+.lal-footer-statement span{
+  display:block;margin-top:.35rem;font-size:.92rem;
+  color:rgba(238,242,251,.56);
+}
+.lal-footer-actions{
+  margin-top:2.4rem;display:flex;align-items:center;justify-content:center;
+  gap:14px;flex-wrap:wrap;
+}
+.lal-footer-actions .btn-book{margin-top:0}
+.lal-footer-social{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:52px;height:52px;border-radius:50%;
+  border:1px solid rgba(238,242,251,.28);color:#eef2fb;
+  transition:background .3s,border-color .3s,transform .3s;
+}
+.lal-footer-social:hover{
+  background:rgba(238,242,251,.12);border-color:rgba(238,242,251,.5);
+  transform:translateY(-2px);
+}
+.lal-footer-bottom{
+  border-top:1px solid rgba(238,242,251,.14);
+  padding:1.3rem 1.5rem 1.8rem;
+  text-align:center;font-size:.76rem;color:rgba(238,242,251,.48);
+}
+/* kill the 1em padding-bottom the stock .page rule adds below the footer */
+.page{padding-bottom:0}
+@media(max-width:600px){
+  .lal-footer-inner{padding:4rem 1.25rem 2.4rem}
+  .lal-footer-mark{font-size:2.2rem}
+}
+
+
+
+/* Attribution widget inside the kept Footer section */
+.footer{display:none!important;
+  padding:1.2rem 1.5rem 2.4rem;text-align:center;position:relative;z-index:1;
+  font-size:.78rem;color:#64748b;
+}
+.footer .widget-content>div{display:flex;align-items:center;justify-content:center;gap:.4rem;flex-wrap:wrap}
+.footer a{color:#64748b;text-decoration:none}
+.footer a:hover{color:#2563eb}
+.footer .image-attribution{display:block;margin-top:.4rem}
+
+/* ============ Scroll-reveal ============ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ Motion: card tilt / magnetic CTA / ripple ============
+   Pointer-driven micro-interactions layered on top of the existing
+   hover/reveal system. All are opt-out under prefers-reduced-motion
+   (see JS guards + the reduced-motion block below); colors reuse the
+   existing palette (#2563eb / #1d4ed8 / white), nothing new introduced. */
+.card{transform-style:preserve-3d}
+.card-body,.card-media{transform:translateZ(0)}
+
+.btn-book{--mx:50%;--my:50%}
+.btn-book::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;z-index:0;
+  background:radial-gradient(160px 160px at var(--mx) var(--my),rgba(255,255,255,.38),transparent 70%);
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.btn-book:hover::before{opacity:1}
+.btn-book>span{position:relative;z-index:1}
+
+.btn-book,.pager-link,.blog-pager a{position:relative;overflow:hidden}
+.ripple{
+  position:absolute;border-radius:50%;transform:scale(0);
+  background:rgba(255,255,255,.5);pointer-events:none;
+  animation:rippleFX .6s cubic-bezier(.22,1,.36,1);z-index:0;
+}
+.pager-link .ripple,.blog-pager a .ripple{background:rgba(37,99,235,.2)}
+@keyframes rippleFX{to{transform:scale(2.6);opacity:0}}
+
+@media (pointer:coarse){
+  .card{transform:none !important}
+}
+
+/* ============ Responsive ============ */
+@media (max-width:1080px){
+  .feed-view #page_body{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:820px){
+  .feed-view #page_body{grid-template-columns:repeat(2,1fr)}
+  .centered-top{justify-content:center}
+  .nav-menu{display:none}
+  .nav-toggle{display:flex}
+  .centered-top .search{display:none}
+  .hero-inner{text-align:center}
+  .hero-text{max-width:100%}
+  .item-view .centered-bottom{flex-direction:column;gap:2rem}
+  .item-view .sidebar-container{position:static;width:100%;max-width:100%;flex:none}
+  .item-view .main-container{flex:none;width:100%}
+}
+@media (max-width:520px){
+  .feed-view #page_body{grid-template-columns:1fr}
+  .lal-hero{padding-top:3rem}
+  .main-container{padding-top:1.5rem}
+  .btn-book{padding:.95rem 1.9rem;font-size:.98rem}
+  .post-wrapper{padding:1.5rem 1.25rem}
+}
+
+/* Mobile item pages: make the post/page block span the full viewport width. */
+@media (max-width:820px){
+  .item-view .centered-bottom{width:100%;max-width:none;padding-left:0;padding-right:0}
+  .item-view .main-container{width:100%;max-width:none;margin:0;padding-left:0;padding-right:0}
+  .item-view #page_body{width:100%;max-width:none}
+  .item-view .post-wrapper{width:100%;box-sizing:border-box;border-radius:0}
+}
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+}
+
+    
+/* ==== Neutralize stock VegeClub skin rules that fight the LAL design ====
+   The old JS adds a .sticky class to .centered-top-container and the stock
+   skin styles it with higher specificity, which would gray out the header
+   and crush its height. We re-assert our design (same specificity, later). */
+.centered-top-container.sticky{background:transparent}
+.sticky .centered-top{background:transparent;padding:1.05rem 1.5rem}
+.centered-top .return_link{width:42px;height:42px;min-width:42px}
+.item-view .post-wrapper{padding:2.2rem 2.4rem;border-radius:0.55rem}
+.item-view .post-outer .post-wrapper{padding:2.2rem 2.4rem}
+.item-view .bg-photo-container+.centered .centered-bottom .post-wrapper{margin-top:0}
+.item-view .bg-photo-container{display:none}
+/* re-assert the scrolled state (added by our own JS) so it beats .sticky */
+.centered-top-container.scrolled{background:rgba(255,255,255,.82);-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom-color:#e6eaf2;box-shadow:0 10px 34px -22px rgba(15,23,42,.3)}
+/* The stock VegeClub bundle ALSO runs a CollapsedHeader scroll handler that
+   hides the fixed header with inline transform/opacity, toggles
+   .sticky/.animating and relocates the node. That hide-then-pop-back dance
+   is the flicker seen when scrolling down toward the footer. !important
+   beats the bundle's inline styles, so the always-fixed LAL header never
+   slides or fades. */
+.centered-top-container,
+.centered-top-container.sticky,
+.centered-top-container.animating{
+  transform:none !important;
+  opacity:1 !important;
+}
+
+
+/* ============ Back to top ============ */
+.to-top{
+  position:fixed;inset-inline-end:1.5rem;bottom:1.5rem;z-index:55;
+  width:46px;height:46px;border-radius:50%;
+  background:#2563eb;color:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 14px 30px -12px rgba(15,23,42,.45);
+  opacity:0;visibility:hidden;transform:translateY(14px) scale(.9);
+  transition:opacity .4s,visibility .4s,transform .4s cubic-bezier(.22,1,.36,1),background .3s;
+}
+.to-top.show{opacity:1;visibility:visible;transform:none}
+.to-top:hover{background:#1d4ed8}
+.to-top svg{width:20px;height:20px}
+
+/* ============ Media fade-in on load ============
+   Scoped to grid thumbnails only (small, controlled set that's always
+   observed by the load-listener JS). Post-body content images (which
+   include video thumbnails, embeds, etc. and can arrive in many ways)
+   render immediately so they never depend on JS to become visible. */
+.card-media img{opacity:1;transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.card-media img.loaded{opacity:1}
+.card:hover .card-media img.loaded{transform:scale(1.04)}
+
+@media (max-width:520px){
+  .to-top{width:42px;height:42px;inset-inline-end:1rem;bottom:1rem}
+}
