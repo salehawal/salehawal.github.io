@@ -225,10 +225,10 @@
     return p ? (p.hour12 + p.ampm) : label;
   }
 
-  // Zero-padded display form, e.g. "10AM", "11AM", "01PM".
+  // Zero-padded display form, e.g. "10 AM", "11 AM", "01 PM".
   function hourBucketDisplay(label) {
     var p = parseLabelParts(label);
-    return p ? (pad(p.hour12) + p.ampm) : label;
+    return p ? (pad(p.hour12) + ' ' + p.ampm) : label;
   }
 
   function renderHoursStep() {
