@@ -373,9 +373,42 @@ function lalMainInit(){
       if(!document.body.classList.contains('feed-view')) return;
 
       var MIN_CARDS = 8;
+      /* Cards we've already fetched (so no data is ever lost/skipped) but
+         are intentionally keeping hidden until they're actually needed --
+         this is the single reserve that both the very first view and every
+         later "load more" trigger draw from, so both can always assemble
+         a full batch of MIN_CARDS cards instead of showing whatever
+         happened to be left over. */
+      var queued = [];
 
-      function cardCount(){
-        return grid.querySelectorAll('.card[href]').length;
+      function enqueue(cards, fromNetwork){
+        cards.forEach(function(c){
+          c.classList.add('lal-queued');
+          if(fromNetwork) c.classList.add('lal-net');
+          c.style.display = 'none';
+          queued.push(c);
+        });
+      }
+
+      /* Reveal a queued card. Cards that were already server-rendered on
+         this page (just hidden by us) keep their original 'reveal' class
+         so the existing scroll-fade IntersectionObserver (set up earlier,
+         before any of this hiding happened) still fades them in normally
+         once they're actually scrolled into view. Cards that came from a
+         fresh network fetch (marked 'lal-net') were never seen by that
+         observer, so they're shown immediately instead -- otherwise
+         they'd carry the 'reveal' class forever with nothing ever adding
+         '.in' to it. */
+      function reveal(cards){
+        cards.forEach(function(c){
+          c.style.display = '';
+          c.classList.remove('lal-queued');
+          if(c.classList.contains('lal-net')){
+            c.classList.remove('lal-net');
+            c.classList.add('in');
+            c.classList.remove('reveal');
+          }
+        });
       }
 
       function featuredUrl(){
@@ -422,7 +455,13 @@ function lalMainInit(){
         }));
       }
 
-      function loadNextPage(){
+      /* Fetches one Blogger page's worth of posts and drops them into the
+         reserve queue, hidden -- it does NOT decide how many of them get
+         shown; that's entirely up to revealBatch() below, so a network
+         fetch always contributes to the same pool the initial SSR reserve
+         cards came from, and every "load more" trigger reveals a
+         consistent MIN_CARDS regardless of where those cards came from. */
+      function fetchNextPageIntoQueue(){
         var sentinel = grid.querySelector('.load-sentinel');
         if(!sentinel) return Promise.resolve();
         var url = sentinel.getAttribute('data-url');
@@ -437,6 +476,7 @@ function lalMainInit(){
           var fu = featuredUrl();
           var seen = currentUrls();
           var frag = document.createDocumentFragment();
+          var newCards = [];
 
           doc.querySelectorAll('.card[href]').forEach(function(card){
             var raw = card.getAttribute('href');
@@ -446,13 +486,13 @@ function lalMainInit(){
               if(u === fu || seen.has(u)) return;
               seen.add(u);
             } catch(e) { return; }
-            card.classList.add('in');
-            card.classList.remove('reveal');
             frag.appendChild(card);
+            newCards.push(card);
           });
 
           if(frag.childNodes.length){
             sentinel.parentNode.insertBefore(frag, sentinel);
+            enqueue(newCards, true);
           }
 
           var nextSentinel = doc.querySelector('.load-sentinel');
@@ -471,50 +511,37 @@ function lalMainInit(){
       clean(grid);
       prepare(grid);
 
-      /* Fallback: if IntersectionObserver is unavailable (e.g. reduced-motion
-         preference), just load all pages up front. */
-      if(reduced || !('IntersectionObserver' in window)){
-        (function loadAll(){
-          var s = grid.querySelector('.load-sentinel');
-          if(!s) return;
-          loadNextPage().then(function(){
-            if(grid.querySelector('.load-sentinel')) loadAll();
-          });
-        })();
-        return;
-      }
+      /* Everything the server rendered on this page beyond what a single
+         request needs starts life in the reserve queue too -- the very
+         first view and every later trigger both pull from the exact same
+         pool, so both can always assemble a full MIN_CARDS batch. */
+      enqueue(Array.prototype.slice.call(grid.querySelectorAll('.card[href]')));
 
       var loading = false;
       var dragAccum = 0;
-      /* Cards we've already fetched (so no data is ever lost/skipped) but
-         are intentionally keeping hidden until the user actually scrolls
-         for more -- these get revealed instantly, with no network request,
-         before we ever fetch a fresh page. */
-      var queued = [];
 
-      function ensureMinCards(){
-        var s = grid.querySelector('.load-sentinel');
-        if(!s || cardCount() >= MIN_CARDS || loading) return Promise.resolve();
-        loading = true;
-        return loadNextPage().then(function(){
-          loading = false;
-          return ensureMinCards();
-        });
+      /* Tops the reserve queue up (fetching real pages, hidden, as needed)
+         until it holds at least `n` cards or there's nothing left to fetch. */
+      function ensureQueueHas(n){
+        if(queued.length >= n) return Promise.resolve();
+        if(!grid.querySelector('.load-sentinel')) return Promise.resolve();
+        return fetchNextPageIntoQueue().then(function(){ return ensureQueueHas(n); });
       }
 
-      /* Show exactly the first MIN_CARDS cards and hold any extras already
-         sitting in the DOM (e.g. the widget's page size fetched more than
-         one grid's worth) in reserve rather than dumping them all in at
-         once -- this is what keeps the very first view to a clean 2 rows
-         of 8, no matter how many posts the initial fetch returned. */
-      function trimToMin(){
-        var all = Array.prototype.slice.call(grid.querySelectorAll('.card[href]'));
-        all.slice(MIN_CARDS).forEach(function(c){
-          if(!c.classList.contains('lal-queued')){
-            c.classList.add('lal-queued');
-            c.style.display = 'none';
-            queued.push(c);
-          }
+      /* The one operation both the initial view and every later trigger
+         use: make sure the reserve has a full batch available (fetching
+         more pages transparently if it's short), then reveal exactly
+         MIN_CARDS of them -- or fewer, only if the blog has truly run out
+         of posts entirely. */
+      function revealBatch(){
+        if(loading) return Promise.resolve();
+        loading = true;
+        return ensureQueueHas(MIN_CARDS).then(function(){
+          var take = queued.splice(0, MIN_CARDS);
+          reveal(take);
+        }).then(function(){
+          loading = false;
+          dragAccum = 0;
         });
       }
 
@@ -528,29 +555,26 @@ function lalMainInit(){
 
       function maybeLoad(){
         if(loading) return;
-        if(queued.length){
-          loading = true;
-          queued.forEach(function(c){
-            c.style.display = '';
-            c.classList.remove('lal-queued');
-          });
-          queued = [];
-          dragAccum = 0;
-          loading = false;
-          return;
-        }
-        if(!grid.querySelector('.load-sentinel')) return;
-        loading = true;
-        loadNextPage().then(function(){
-          loading = false;
-          dragAccum = 0;
-        });
+        if(!queued.length && !grid.querySelector('.load-sentinel')) return; // truly nothing left
+        revealBatch();
       }
 
-      /* Top up the very first view so a full 8-card grid (excluding the
-         featured post) is there immediately, before any scrolling happens. */
-      ensureMinCards().then(function(){
-        trimToMin();
+      /* Users who prefer reduced motion get everything loaded up front in
+         full batches, rather than needing to perform a drag/scroll gesture
+         to reveal more. */
+      if(reduced){
+        (function loadAll(){
+          if(!queued.length && !grid.querySelector('.load-sentinel')) return;
+          revealBatch().then(loadAll);
+        })();
+        return;
+      }
+
+      /* Fill the very first view: reveal one full batch immediately (no
+         scrolling needed), pulling from the reserve and, only if the blog
+         doesn't have enough posts to fill it, transparently fetching more
+         pages first. */
+      revealBatch().then(function(){
         if(!grid.querySelector('.load-sentinel') && !queued.length) return;
 
         /* Trigger only once the user has actually reached the true end of
