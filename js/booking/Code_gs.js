@@ -36,7 +36,7 @@ const CONFIG = {
   MAX_ADVANCE_DAYS: 15,                // can't book more than X days into the future
   MAX_DAILY_BOOKED_HOURS: 8,           // stop offering slots once this many hours are already booked that day
 
-  DEFAULT_SLOT_STEP_MINUTES: 30,       // used for any meeting type below that doesn't set its own slotStepMinutes
+  BUFFER_MINUTES: 10,                  // required gap after one meeting ends before the next can start
 
   ADMIN_EMAIL: 'saleh.awal@gmail.com', // gets a rich confirmation email too, same as the booker
 
@@ -59,16 +59,19 @@ const CONFIG = {
 
   // Meeting types shown to the user. Emojis are welcome in title/description.
   // durationMinutes controls both the slot length AND the calendar event length.
-  // slotStepMinutes controls how far apart start times are offered for THIS type
-  // (e.g. 15 -> 9:00, 9:15, 9:30 ...; 30 -> 9:00, 9:30, 10:00 ...). If you omit
-  // slotStepMinutes on a type, it falls back to DEFAULT_SLOT_STEP_MINUTES above.
+  // Start times are NOT offered on a fixed grid (like every 15 or 30 minutes) --
+  // instead the earliest genuinely open point is always offered first: the top
+  // of a working-hours window if it's free, or BUFFER_MINUTES after whatever
+  // existing booking/event is in the way. E.g. with a 20-minute meeting and a
+  // 10-minute buffer: someone books 3:00–3:20, so the next open start offered
+  // is 3:30 (not 3:15 or 3:45 from some fixed step), ending 3:50, and so on.
   // A slot never offered will end after your working-hours window closes —
   // e.g. if you're available until 15:00, the last offered start time for a
-  // 30-minute session is 14:30, never 14:45 or later.
+  // 20-minute session is 14:40, never later.
   MEETING_TYPES: [
-    { id: 'discovery', title: '🔍 Discovery Open Session',   description: 'A quick intro chat to explore your needs.',        durationMinutes: 20, slotStepMinutes: 15 },
-    { id: 'consult',   title: '💡 Needs Assessment Session', description: 'A focused session to dig into your project.',      durationMinutes: 60, slotStepMinutes: 30 },
-    { id: 'followup',  title: '🔁 Follow-up Session',        description: 'A check-in on progress and next steps session.',   durationMinutes: 20, slotStepMinutes: 20 }
+    { id: 'discovery', title: '🔍 Discovery Open Session',   description: 'A quick intro chat to explore your needs.',        durationMinutes: 20 },
+    { id: 'consult',   title: '💡 Needs Assessment Session', description: 'A focused session to dig into your project.',      durationMinutes: 60 },
+    { id: 'followup',  title: '🔁 Follow-up Session',        description: 'A check-in on progress and next steps session.',   durationMinutes: 20 }
   ]
 };
 
@@ -137,8 +140,7 @@ function getAllData() {
       if (windows && windows.length > 0) {
         const dateStr = Utilities.formatDate(cursorDate, CONFIG.TIMEZONE, 'yyyy-MM-dd');
         const busy = busyByDay[dateStr] || [];
-        const stepMinutes = type.slotStepMinutes || CONFIG.DEFAULT_SLOT_STEP_MINUTES;
-        const slots = computeSlotsForDay(cursorDate, windows, type.durationMinutes, busy, minBookable, stepMinutes);
+        const slots = computeSlotsForDay(cursorDate, windows, type.durationMinutes, busy, minBookable, CONFIG.BUFFER_MINUTES);
         if (slots.length > 0) {
           days[dateStr] = slots.map(function (s) {
             return { startISO: s.toISOString(), label: Utilities.formatDate(s, CONFIG.TIMEZONE, 'h:mm a') };
@@ -181,18 +183,24 @@ function getDaySlots(typeId, dateStr) {
   const events = cal.getEvents(dayStart, dayEnd);
   const busy = events.map(function (ev) { return { start: ev.getStartTime(), end: ev.getEndTime() }; });
 
-  const stepMinutes = type.slotStepMinutes || CONFIG.DEFAULT_SLOT_STEP_MINUTES;
-  const slots = computeSlotsForDay(date, windows, type.durationMinutes, busy, minBookable, stepMinutes);
+  const slots = computeSlotsForDay(date, windows, type.durationMinutes, busy, minBookable, CONFIG.BUFFER_MINUTES);
   return slots.map(function (s) {
     return { startISO: s.toISOString(), label: Utilities.formatDate(s, CONFIG.TIMEZONE, 'h:mm a') };
   });
 }
 
-function computeSlotsForDay(date, windows, durationMinutes, busyEvents, minBookable, stepMinutes) {
+// Computes the earliest-available start times for a day: the top of each
+// working-hours window if it's free, otherwise BUFFER_MINUTES after
+// whatever existing event is in the way -- never a fixed 15/30-min grid.
+// This means two people booking "the same time" back-to-back naturally get
+// pushed apart by exactly duration + buffer, with no gap larger than that.
+function computeSlotsForDay(date, windows, durationMinutes, busyEvents, minBookable, bufferMinutes) {
   const slots = [];
   let bookedMinutesToday = 0;
   busyEvents.forEach(function (b) { bookedMinutesToday += (b.end - b.start) / 60000; });
   if (bookedMinutesToday >= CONFIG.MAX_DAILY_BOOKED_HOURS * 60) return [];
+
+  const busy = busyEvents.slice().sort(function (a, b) { return a.start - b.start; });
 
   windows.forEach(function (w) {
     const winStart = toDateTime(date, w.start);
@@ -200,18 +208,32 @@ function computeSlotsForDay(date, windows, durationMinutes, busyEvents, minBooka
     let cursor = new Date(winStart);
 
     // The <= here is what guarantees a slot never runs past the end of your
-    // working-hours window — e.g. available until 15:00 with a 30-min session
-    // means the last offered start is 14:30 (ends exactly at 15:00), never 14:45+.
+    // working-hours window — e.g. available until 15:00 with a 20-min session
+    // means the last offered start is 14:40 (ends exactly at 15:00), never later.
     while (cursor.getTime() + durationMinutes * 60000 <= winEnd.getTime()) {
       const slotStart = new Date(cursor);
       const slotEnd = new Date(cursor.getTime() + durationMinutes * 60000);
 
-      const overlaps = busyEvents.some(function (b) { return slotStart < b.end && slotEnd > b.start; });
+      // If this candidate overlaps one or more existing events, skip straight
+      // to BUFFER_MINUTES after the latest of those events ends, and try
+      // again from there -- rather than advancing by a fixed step and
+      // possibly re-checking (and re-rejecting) times still inside the
+      // conflict.
+      const conflicts = busy.filter(function (b) { return slotStart < b.end && slotEnd > b.start; });
+      if (conflicts.length) {
+        const latestEnd = conflicts.reduce(function (max, b) { return b.end > max ? b.end : max; }, conflicts[0].end);
+        cursor = new Date(latestEnd.getTime() + bufferMinutes * 60000);
+        continue;
+      }
+
       const tooSoon = slotStart < minBookable;
       const overDailyCap = (bookedMinutesToday + durationMinutes) > CONFIG.MAX_DAILY_BOOKED_HOURS * 60;
 
-      if (!overlaps && !tooSoon && !overDailyCap) slots.push(slotStart);
-      cursor = new Date(cursor.getTime() + stepMinutes * 60000);
+      if (!tooSoon && !overDailyCap) slots.push(slotStart);
+
+      // Next candidate always starts BUFFER_MINUTES after this one ends —
+      // that's what keeps every offered slot at least a full gap apart.
+      cursor = new Date(slotEnd.getTime() + bufferMinutes * 60000);
     }
   });
   return slots;
