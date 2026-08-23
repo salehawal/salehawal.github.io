@@ -45,7 +45,6 @@
     viewYear: null,
     viewMonth: null,     // 1-12
     selectedDate: null,
-    selectedHourKey: null,
     selectedSlot: null
   };
 
@@ -237,14 +236,17 @@
 
     // Slots arrive in chronological order from the backend, so the first
     // slot seen for each hour bucket is enough to fix that bucket's
-    // position in the list -- no separate sort needed.
+    // position in the list -- no separate sort needed. We keep the first
+    // slot's own startISO here too: clicking the hour books that exact
+    // slot directly (the earliest genuinely open start in that hour for
+    // this meeting type's duration), no separate minute step needed.
     var seen = {};
     var hours = [];
     slots.forEach(function (s) {
       var key = hourBucketKey(s.label);
       if (!seen[key]) {
         seen[key] = true;
-        hours.push({ key: key, display: hourBucketDisplay(s.label) });
+        hours.push({ key: key, display: hourBucketDisplay(s.label), slot: s });
       }
     });
 
@@ -255,7 +257,7 @@
       html += '<div class="gmb-empty-msg">No available times this day.</div>';
     } else {
       hours.forEach(function (h) {
-        html += '<button class="gmb-slot-btn gmb-hour-btn" data-hour="' + h.key + '">' + h.display + '</button>';
+        html += '<button class="gmb-slot-btn gmb-hour-btn" data-iso="' + h.slot.startISO + '">' + h.display + '</button>';
       });
     }
     html += '</div>';
@@ -263,33 +265,6 @@
 
     document.getElementById('gmb-back-to-cal').addEventListener('click', renderCalendarStep);
     container.querySelectorAll('.gmb-hour-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        state.selectedHourKey = btn.dataset.hour;
-        renderMinutesStep();
-      });
-    });
-  }
-
-  function renderMinutesStep() {
-    var daysData = state.availability[state.selectedType.id] || {};
-    var allSlots = daysData[state.selectedDate] || [];
-    var slots = allSlots.filter(function (s) { return hourBucketKey(s.label) === state.selectedHourKey; });
-
-    var html = '<button class="gmb-back" id="gmb-back-to-hours">&larr; Back to times</button>';
-    html += '<h2 class="gmb-title">' + formatNiceDate(state.selectedDate) + '</h2>';
-    html += '<div class="gmb-slots">';
-    if (slots.length === 0) {
-      html += '<div class="gmb-empty-msg">No available minutes in this hour.</div>';
-    } else {
-      slots.forEach(function (s) {
-        html += '<button class="gmb-slot-btn" data-iso="' + s.startISO + '">' + s.label + '</button>';
-      });
-    }
-    html += '</div>';
-    renderShell(html, 2);
-
-    document.getElementById('gmb-back-to-hours').addEventListener('click', renderHoursStep);
-    container.querySelectorAll('.gmb-slot-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         state.selectedSlot = slots.filter(function (s) { return s.startISO === btn.dataset.iso; })[0];
         renderFormStep();
@@ -312,7 +287,7 @@
     html += '</form>';
     renderShell(html, 3);
 
-    document.getElementById('gmb-back-to-slots').addEventListener('click', renderMinutesStep);
+    document.getElementById('gmb-back-to-slots').addEventListener('click', renderHoursStep);
     document.getElementById('gmb-form').addEventListener('submit', function (e) {
       e.preventDefault();
       var fd = new FormData(e.target);
