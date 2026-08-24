@@ -326,7 +326,6 @@ function sendBookingEmails(type, start, end, body, meetLink) {
       to: CONFIG.ADMIN_EMAIL,
       subject: '📥 New booking: ' + type.title + ' — ' + dateLabel,
       htmlBody: buildBookingEmailHtml({
-        heading: '📥 New Booking Received',
         intro: 'Someone just booked a session with you:',
         type: type, dateLabel: dateLabel, timeLabel: timeLabel, name: body.name, email: body.email, phone: body.phone,
         meetLink: meetLink,
@@ -351,7 +350,7 @@ function buildBookingEmailHtml(opts) {
         '</div>' +
 
         '<div style="padding:0 24px 28px;text-align:center;">' +
-          '<div style="display:inline-block;background:#e8f0fe;color:#1a56db;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;margin-bottom:16px;">' + opts.heading + '</div>' +
+          (opts.heading ? '<div style="display:inline-block;background:#e8f0fe;color:#1a56db;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;margin-bottom:16px;">' + opts.heading + '</div>' : '') +
           '<div style="font-size:14px;color:#555;margin-bottom:20px;line-height:1.5;">' + escapeHtml(opts.intro) + '</div>' +
 
           '<div style="margin-bottom:20px;">' +
