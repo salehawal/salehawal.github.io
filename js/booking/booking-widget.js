@@ -351,8 +351,20 @@
       '@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");',
       '.gmb-widget{--gmb-primary:#4F46E5;--gmb-primary-dark:#4338CA;--gmb-bg:#F7F8FC;--gmb-text:#1F2430;--gmb-muted:#6B7280;--gmb-border:#E7E9F3;',
       '  width:100%;max-width:640px;margin:0 auto;font-family:"Poppins",system-ui,-apple-system,Arial,sans-serif;color:var(--gmb-text);box-sizing:border-box;',
+      '  direction:ltr;text-align:left;unicode-bidi:isolate;',
       '  background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(31,36,48,0.08);overflow:hidden;border:1px solid var(--gmb-border);}',
-      '.gmb-widget *{box-sizing:border-box;}',
+      '.gmb-widget *{box-sizing:border-box;direction:ltr;}',
+      /* The widget sits inside pages the site owner doesn't always control the
+         CSS of (this one happens to be RTL/Arabic) -- headings, buttons, and
+         divs can otherwise inherit the page's own typography/underline/RTL
+         styling. This resets the raw elements we use before any of our own
+         rules below apply their specific look, so nothing from the host page
+         leaks in (a stray heading underline, a right-to-left flip that clips
+         text, a themed button background, etc). */
+      ':where(.gmb-widget) :where(h1,h2,h3,h4,p,div,button,input){',
+      '  margin:0;padding:0;border:0;background:none;box-shadow:none;text-decoration:none;list-style:none;',
+      '  font:inherit;color:inherit;text-align:inherit;line-height:normal;outline:none;-webkit-tap-highlight-color:transparent;}',
+      ':where(.gmb-widget) button{appearance:none;-webkit-appearance:none;}',
 
       '.gmb-progress{display:flex;align-items:center;padding:24px 28px 4px;}',
       '.gmb-progress-step{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:56px;}',
