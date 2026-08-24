@@ -429,29 +429,42 @@
       '.gmb-empty-msg{color:var(--gmb-muted);margin:0 0 12px;font-size:13px;}',
 
       /* ---- mobile ----
-         Below 640px (basically every phone) the widget breaks out to 98% of
-         the actual device width, not just 98% of whatever column/padding
-         the surrounding page puts it in -- the calc() trick below computes
-         exactly the negative margin needed to do that regardless of how the
-         widget is nested on the page. The progress bar at the top switches
-         from stretching edge-to-edge (which crowds the step numbers and can
-         wrap the labels on narrow screens) to a centered, tighter group. */
+         Your page's own CSS sets `overflow-x:hidden` on the content column
+         (#page_body), so any trick that tries to bleed the widget outside
+         its parent (negative margins, 100vw-style widths) gets silently
+         clipped at that boundary -- which is exactly what "cut off on both
+         ends" looks like. The safe, correct fix is the opposite approach:
+         make the widget's box exactly 100% of whatever width its parent
+         actually gives it, never more, so there's nothing to clip. Combined
+         with the base rule above (width:100%), this alone makes the widget
+         fill the full content column edge-to-edge, matching every other
+         block of content on the page -- true bleed past the page's own
+         content padding isn't possible without changing that shared page
+         CSS (which would affect every other page on the site, not just
+         this widget).
+         Below 640px we also tighten inner spacing and shrink/center the
+         progress bar so the extra width is used for actual content instead
+         of wasted padding, and nothing wraps awkwardly on narrow phones. */
       '@media (max-width:640px){',
-      '  .gmb-widget{width:98vw;max-width:98vw;margin-left:calc(50% - 49vw);margin-right:calc(50% - 49vw);border-radius:14px;}',
-      '  .gmb-body{padding:18px 16px 24px;}',
-      '  .gmb-progress{justify-content:center;padding:18px 10px 4px;}',
-      '  .gmb-progress-step{min-width:44px;gap:4px;}',
+      '  .gmb-widget{max-width:100%;border-radius:14px;}',
+      '  .gmb-body{padding:16px 14px 22px;}',
+      '  .gmb-progress{justify-content:center;padding:16px 6px 4px;flex-wrap:wrap;}',
+      '  .gmb-progress-step{min-width:0;flex:1 1 0;gap:4px;}',
       '  .gmb-progress-dot{width:24px;height:24px;font-size:11px;}',
       '  .gmb-progress-label{font-size:10px;}',
-      '  .gmb-progress-line{max-width:28px;margin:0 2px 16px;}',
+      '  .gmb-progress-line{flex:0 1 24px;margin:0 2px 16px;}',
       '  .gmb-title{font-size:17px;}',
-      '  .gmb-slots{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;}',
+      '  .gmb-types{gap:10px;}',
+      '  .gmb-type-card{padding:14px;}',
+      '  .gmb-slots{grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;}',
       '  .gmb-form{max-width:none;}',
+      '  .gmb-cal-grid{gap:4px;}',
       '  .gmb-cal-cell{padding:9px 0;font-size:13px;}',
       '}',
       '@media (max-width:360px){',
       '  .gmb-progress-label{display:none;}',
-      '  .gmb-progress-step{min-width:0;}',
+      '  .gmb-body{padding:14px 10px 20px;}',
+      '  .gmb-slots{grid-template-columns:repeat(auto-fill,minmax(68px,1fr));}',
       '}'
     ].join('');
     document.head.appendChild(style);
