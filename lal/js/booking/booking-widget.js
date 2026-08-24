@@ -350,7 +350,7 @@
     style.textContent = [
       '@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");',
       '.gmb-widget{--gmb-primary:#4F46E5;--gmb-primary-dark:#4338CA;--gmb-bg:#F7F8FC;--gmb-text:#1F2430;--gmb-muted:#6B7280;--gmb-border:#E7E9F3;',
-      '  width:100%;max-width:640px;margin:0 auto;font-family:"Poppins",system-ui,-apple-system,Arial,sans-serif;color:var(--gmb-text);box-sizing:border-box;',
+      '  width:98%;max-width:98%;margin:0 auto;font-family:"Poppins",system-ui,-apple-system,Arial,sans-serif;color:var(--gmb-text);box-sizing:border-box;',
       '  direction:ltr;text-align:left;unicode-bidi:isolate;',
       '  background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(31,36,48,0.08);overflow:hidden;border:1px solid var(--gmb-border);}',
       '.gmb-widget *{box-sizing:border-box;direction:ltr;}',
@@ -429,24 +429,19 @@
       '.gmb-empty-msg{color:var(--gmb-muted);margin:0 0 12px;font-size:13px;}',
 
       /* ---- mobile ----
-         Your page's own CSS sets `overflow-x:hidden` on the content column
-         (#page_body), so any trick that tries to bleed the widget outside
-         its parent (negative margins, 100vw-style widths) gets silently
-         clipped at that boundary -- which is exactly what "cut off on both
-         ends" looks like. The safe, correct fix is the opposite approach:
-         make the widget's box exactly 100% of whatever width its parent
-         actually gives it, never more, so there's nothing to clip. Combined
-         with the base rule above (width:100%), this alone makes the widget
-         fill the full content column edge-to-edge, matching every other
-         block of content on the page -- true bleed past the page's own
-         content padding isn't possible without changing that shared page
-         CSS (which would affect every other page on the site, not just
-         this widget).
+         .gmb-widget's width/max-width are both pinned to 98% in the base
+         rule above so they apply identically here and on desktop -- nothing
+         below touches those two properties again, so there's no cap left
+         that could override it back down. Your page's own CSS sets
+         `overflow-x:hidden` on the content column (#page_body), so any
+         trick that tries to bleed the widget outside its parent (negative
+         margins, 100vw-style widths) gets silently clipped at that
+         boundary -- 98% of the parent stays safely inside it instead.
          Below 640px we also tighten inner spacing and shrink/center the
          progress bar so the extra width is used for actual content instead
          of wasted padding, and nothing wraps awkwardly on narrow phones. */
       '@media (max-width:640px){',
-      '  .gmb-widget{max-width:100%;border-radius:14px;}',
+      '  .gmb-widget{border-radius:14px;}',
       '  .gmb-body{padding:16px 14px 22px;}',
       '  .gmb-progress{justify-content:center;padding:16px 6px 4px;flex-wrap:wrap;}',
       '  .gmb-progress-step{min-width:0;flex:1 1 0;gap:4px;}',
