@@ -992,3 +992,28 @@ body.feed-view:not(.search-view):not(.label-view):not(.archive-view) .featured-p
 @media (max-width:520px){
   .to-top{width:42px;height:42px;inset-inline-end:1rem;bottom:1rem}
 }
+
+/* ============ Fix: post/page content padding too wide on mobile ============
+   .item-view .post-wrapper and .item-view .post-outer .post-wrapper (further
+   up this file, unconditional, higher specificity) both set a fixed
+   2.2rem/2.4rem side padding for every post and page. That's fine on desktop,
+   but on a ~375px-wide phone it alone eats over 75px of horizontal space --
+   a large share of the screen -- and it wins over the smaller mobile padding
+   defined earlier at @media(max-width:520px){.post-wrapper{...}} because it
+   has higher specificity. Placed here, at the end of the file, this rule
+   comes after both of those (equal-or-higher specificity + later in source
+   order), so it reliably takes over below 640px. This affects every post and
+   page on the site, including the booking page, giving embedded widgets like
+   .gmb-widget real width to work with on mobile. */
+@media (max-width:640px){
+  .item-view .post-wrapper,
+  .item-view .post-outer .post-wrapper{
+    padding:1.1rem 0.75rem;
+  }
+}
+@media (max-width:380px){
+  .item-view .post-wrapper,
+  .item-view .post-outer .post-wrapper{
+    padding:1rem 0.5rem;
+  }
+}
