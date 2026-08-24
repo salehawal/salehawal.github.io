@@ -350,8 +350,9 @@
     style.textContent = [
       '@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");',
       '.gmb-widget{--gmb-primary:#4F46E5;--gmb-primary-dark:#4338CA;--gmb-bg:#F7F8FC;--gmb-text:#1F2430;--gmb-muted:#6B7280;--gmb-border:#E7E9F3;',
-      '  max-width:640px;margin:0 auto;font-family:"Poppins",system-ui,-apple-system,Arial,sans-serif;color:var(--gmb-text);',
+      '  width:100%;max-width:640px;margin:0 auto;font-family:"Poppins",system-ui,-apple-system,Arial,sans-serif;color:var(--gmb-text);box-sizing:border-box;',
       '  background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(31,36,48,0.08);overflow:hidden;border:1px solid var(--gmb-border);}',
+      '.gmb-widget *{box-sizing:border-box;}',
 
       '.gmb-progress{display:flex;align-items:center;padding:24px 28px 4px;}',
       '.gmb-progress-step{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:56px;}',
@@ -413,7 +414,33 @@
       '.gmb-confirm-note{font-size:13px;color:var(--gmb-muted);margin-top:4px;}',
 
       '.gmb-error{color:#DC2626;text-align:center;padding:40px 20px;font-size:14px;font-weight:500;}',
-      '.gmb-empty-msg{color:var(--gmb-muted);margin:0 0 12px;font-size:13px;}'
+      '.gmb-empty-msg{color:var(--gmb-muted);margin:0 0 12px;font-size:13px;}',
+
+      /* ---- mobile ----
+         Below 640px (basically every phone) the widget breaks out to 98% of
+         the actual device width, not just 98% of whatever column/padding
+         the surrounding page puts it in -- the calc() trick below computes
+         exactly the negative margin needed to do that regardless of how the
+         widget is nested on the page. The progress bar at the top switches
+         from stretching edge-to-edge (which crowds the step numbers and can
+         wrap the labels on narrow screens) to a centered, tighter group. */
+      '@media (max-width:640px){',
+      '  .gmb-widget{width:98vw;max-width:98vw;margin-left:calc(50% - 49vw);margin-right:calc(50% - 49vw);border-radius:14px;}',
+      '  .gmb-body{padding:18px 16px 24px;}',
+      '  .gmb-progress{justify-content:center;padding:18px 10px 4px;}',
+      '  .gmb-progress-step{min-width:44px;gap:4px;}',
+      '  .gmb-progress-dot{width:24px;height:24px;font-size:11px;}',
+      '  .gmb-progress-label{font-size:10px;}',
+      '  .gmb-progress-line{max-width:28px;margin:0 2px 16px;}',
+      '  .gmb-title{font-size:17px;}',
+      '  .gmb-slots{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;}',
+      '  .gmb-form{max-width:none;}',
+      '  .gmb-cal-cell{padding:9px 0;font-size:13px;}',
+      '}',
+      '@media (max-width:360px){',
+      '  .gmb-progress-label{display:none;}',
+      '  .gmb-progress-step{min-width:0;}',
+      '}'
     ].join('');
     document.head.appendChild(style);
   }
